@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        /* Estilos específicos de la página que complementan el sistema de temas */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            background: var(--bg-sidebar);
+            color: var(--text-inverse);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #374151;
+            text-align: center;
+        }
+
+        .sidebar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar-brand:hover {
+            color: #d1d5db;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            margin: 0.25rem 1rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #d1d5db;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--sidebar-hover);
+            color: white;
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nav-link i {
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-primary);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            border-radius: 0.5rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-primary-hover);
+            border-color: var(--accent-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+        }
+
+        .btn-danger {
+            background: var(--accent-danger);
+            border-color: var(--accent-danger);
+        }
+
+        .btn-warning {
+            background: var(--accent-warning);
+            border-color: var(--accent-warning);
+        }
+
+        .btn-info {
+            background: var(--accent-info);
+            border-color: var(--accent-info);
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-primary);
+            border-radius: 1rem 1rem 0 0 !important;
+            padding: 1.5rem 2rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-secondary);
+            padding: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 500;
+        }
+
+        .badge-pendiente { background: var(--accent-warning); color: var(--text-inverse); }
+        .badge-en-revisión { background: var(--accent-info); color: var(--text-inverse); }
+        .badge-en-progreso { background: var(--accent-primary); color: var(--text-inverse); }
+        .badge-completado { background: var(--accent-success); color: var(--text-inverse); }
+        .badge-rechazado { background: var(--accent-danger); color: var(--text-inverse); }
+
+        /* Loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--border-secondary);
+            border-top: 5px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            min-width: 300px;
+        }
+
+        /* Botón de cambio de tema */
+        .theme-toggle-btn {
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <a href="/admin" class="sidebar-brand">
+                <i class="bi bi-shield-check me-2"></i>
+                Admin Panel
+            </a>
+            <div class="text-muted small">MiCiudadSV</div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-item">
+                <a href="/admin" class="nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/admin/usuarios" class="nav-link">
+                    <i class="bi bi-people"></i>
+                    Usuarios
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/admin/reportes" class="nav-link active">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Reportes
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/admin/comunidades" class="nav-link">
+                    <i class="bi bi-building"></i>
+                    Comunidades
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/admin/logs" class="nav-link">
+                    <i class="bi bi-journal-text"></i>
+                    Logs
+                </a>
+            </div>
+            <div class="nav-item mt-4">
+                <a href="/" class="nav-link">
+                    <i class="bi bi-house"></i>
+                    Ir al Sitio
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="/logout" class="nav-link text-danger">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Cerrar Sesión
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <a href="/admin/reportes" class="btn btn-outline-secondary mb-3">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Volver a Reportes
+                    </a>
+                    <h1 class="page-title">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Editar Reporte #<span id="reporteId"><%= reporteId %></span>
+                    </h1>
+                    <p class="page-subtitle">Gestiona y modifica la información del reporte</p>
+                </div>
+                                 <div class="d-flex gap-2">
+                     <button type="button" class="btn btn-outline-secondary" id="btnActualizar">
+                         <i class="bi bi-arrow-clockwise me-2"></i>
+                         Actualizar
+                     </button>
+                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoReporteModal">
+                         <i class="bi bi-plus me-2"></i>
+                         Nuevo Reporte
+                     </button>
+                     <button type="button" class="btn btn-primary btn-lg" id="btnGuardarCambios">
+                         <i class="bi bi-check-lg me-2"></i>
+                         Guardar Cambios
+                     </button>
+                     <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                         <i class="bi bi-moon-stars"></i>
+                     </button>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Información del Reporte -->
+        <div id="reporteInfo" class="d-none">
+            <!-- Información Básica -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Información Básica
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Título del Reporte *</label>
+                            <input type="text" class="form-control" id="tituloReporte" name="titulo" required>
+                        </div>
+                                                 <div class="col-md-6 mb-3">
+                             <label class="form-label">Categoría *</label>
+                             <select class="form-select" id="categoriaReporte" name="categoria" required>
+                                 <option value="">Seleccionar categoría</option>
+                                 <option value="general">📋 General</option>
+                                 <option value="seguridad">🛡️ Seguridad</option>
+                                 <option value="infraestructura">🏗️ Infraestructura</option>
+                                 <option value="emergencia">🚨 Emergencia</option>
+                             </select>
+                         </div>
+                                                 <div class="col-md-6 mb-3">
+                             <label class="form-label">Estado del Reporte *</label>
+                             <select class="form-select" id="estadoReporte" name="estado" required>
+                                 <option value="Pendiente">🟡 Pendiente</option>
+                                 <option value="En revisión">🔍 En Revisión</option>
+                                 <option value="En progreso">🔵 En Progreso</option>
+                                 <option value="Completado">🟢 Completado</option>
+                                 <option value="Rechazado">🔴 Rechazado</option>
+                             </select>
+                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Fecha de Creación</label>
+                            <div id="fechaCreacion" class="form-control-plaintext"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Indicador del Estado Actual -->
+                    <div class="mt-3">
+                        <label class="form-label">Estado Actual:</label>
+                        <div id="estadoActual" class="form-control-plaintext"></div>
+                    </div>
+                    
+                                         <!-- Botón para guardar cambios -->
+                     <div class="mt-4 text-center">
+                         <button type="button" class="btn btn-primary btn-lg" id="btnGuardarCambiosCard">
+                             <i class="bi bi-check-lg me-2"></i>
+                             Guardar Cambios
+                         </button>
+                         <button type="button" class="btn btn-outline-info btn-sm ms-2" id="btnVerDatos">
+                             <i class="bi bi-eye me-1"></i>
+                             Ver Datos
+                         </button>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        <i class="bi bi-align-left me-2"></i>
+                        Descripción
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Descripción Detallada *</label>
+                        <textarea class="form-control" id="descripcionReporte" name="descripcion" rows="4" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ubicación -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        <i class="bi bi-geo-alt me-2"></i>
+                        Ubicación
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Ubicación del Incidente *</label>
+                        <input type="text" class="form-control" id="ubicacionReporte" name="ubicacion" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información del Usuario -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        <i class="bi bi-person me-2"></i>
+                        Información del Usuario
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nombre del Usuario</label>
+                            <div id="usuarioNombre" class="form-control-plaintext"></div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email del Usuario</label>
+                            <div id="usuarioEmail" class="form-control-plaintext"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones del Reporte -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        <i class="bi bi-gear me-2"></i>
+                        Acciones del Reporte
+                    </h5>
+                </div>
+                <div class="card-body">
+                                         <div class="row">
+                         <div class="col-md-4 mb-3">
+                             <button type="button" class="btn btn-warning w-100" id="btnRechazarReporte">
+                                 <i class="bi bi-x-circle me-2"></i>
+                                 Rechazar Reporte
+                             </button>
+                         </div>
+                         <div class="col-md-4 mb-3">
+                             <button type="button" class="btn btn-danger w-100" id="btnEliminarReporte">
+                                 <i class="bi bi-trash me-2"></i>
+                                 Eliminar Reporte
+                             </button>
+                         </div>
+                         <div class="col-md-4 mb-3">
+                             <button type="button" class="btn btn-info w-100" id="btnRecargarDatos">
+                                 <i class="bi bi-arrow-clockwise me-2"></i>
+                                 Recargar Datos
+                             </button>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje de Error -->
+        <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <span id="errorText"></span>
+        </div>
+    </div>
+
+    <!-- Modal para Crear Nuevo Reporte -->
+    <div class="modal fade" id="nuevoReporteModal" tabindex="-1" aria-labelledby="nuevoReporteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nuevoReporteModalLabel">Crear Nuevo Reporte</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formNuevoReporte">
+                    <div class="modal-body p-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 mb-4">
+                                        <label for="tituloNuevoReporte" class="form-label">
+                                            <i class="bi bi-card-heading text-primary me-2"></i>
+                                            Título del Reporte *
+                                        </label>
+                                        <input type="text" class="form-control" id="tituloNuevoReporte" name="titulo" required placeholder="Título breve del incidente...">
+                                    </div>
+                                    <div class="col-md-12 mb-4">
+                                        <label for="descripcionNuevoReporte" class="form-label">
+                                            <i class="bi bi-chat-left-text text-primary me-2"></i>
+                                            Descripción Detallada *
+                                        </label>
+                                        <textarea class="form-control" id="descripcionNuevoReporte" name="descripcion" rows="4" required placeholder="Describe el incidente con detalle..."></textarea>
+                                    </div>
+                                                                         <div class="col-md-12 mb-4">
+                                         <label for="categoriaNuevoReporte" class="form-label">
+                                             <i class="bi bi-tags text-primary me-2"></i>
+                                             Categoría *
+                                         </label>
+                                         <select class="form-select" id="categoriaNuevoReporte" name="categoria" required>
+                                             <option value="">Seleccionar categoría</option>
+                                             <option value="general">📋 General</option>
+                                             <option value="seguridad">🛡️ Seguridad</option>
+                                             <option value="infraestructura">🏗️ Infraestructura</option>
+                                             <option value="emergencia">🚨 Emergencia</option>
+                                         </select>
+                                     </div>
+                                    <div class="col-md-12 mb-4">
+                                        <label for="ubicacionNuevoReporte" class="form-label">
+                                            <i class="bi bi-geo-alt text-primary me-2"></i>
+                                            Ubicación *
+                                        </label>
+                                        <input type="text" class="form-control" id="ubicacionNuevoReporte" name="ubicacion" required placeholder="Dirección específica del incidente...">
+                                    </div>
+                                    <div class="col-md-12 mb-4">
+                                        <label for="usuarioNuevoReporte" class="form-label">
+                                            <i class="bi bi-person text-primary me-2"></i>
+                                            Usuario Asignado *
+                                        </label>
+                                        <select class="form-select" id="usuarioNuevoReporte" name="idUsuario" required>
+                                            <option value="">Seleccionar usuario</option>
+                                        </select>
+                                        <small class="text-muted">El reporte será asignado a este usuario</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-circle me-2"></i>
+                            Crear Reporte
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay d-none">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Sistema de Temas -->
+    <script src="/js/theme-switcher.js"></script>
+    
+    <script>
+        // Variables globales
+        let reporteActual = null;
+
+        // Obtener ID del reporte de la URL
+        function obtenerIdReporte() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Funciones de utilidad
+        function mostrarLoading() {
+            document.getElementById('loadingOverlay').classList.remove('d-none');
+        }
+
+        function ocultarLoading() {
+            document.getElementById('loadingOverlay').classList.add('d-none');
+        }
+
+        function mostrarToast(mensaje, tipo = 'info', duracion = 5000) {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const colores = {
+                'success': { bg: 'bg-success', icon: 'bi bi-check-circle' },
+                'error': { bg: 'bg-danger', icon: 'bi bi-exclamation-triangle' },
+                'warning': { bg: 'bg-warning', icon: 'bi bi-exclamation-circle' },
+                'info': { bg: 'bg-info', icon: 'bi bi-info-circle' }
+            };
+            
+            const config = colores[tipo] || colores.info;
+            
+            const toastHtml = `
+                <div id="${toastId}" class="toast align-items-center text-white ${config.bg} border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body d-flex align-items-center">
+                            <i class="${config.icon} me-2"></i>
+                            ${mensaje}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: duracion });
+            toast.show();
+            
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                this.remove();
+            });
+        }
+
+        // Cargar información del reporte
+        async function cargarReporte() {
+            const reporteId = obtenerIdReporte();
+            if (!reporteId) {
+                mostrarError('No se especificó un ID de reporte válido');
+                return;
+            }
+
+            document.getElementById('reporteId').textContent = reporteId;
+            mostrarLoading();
+
+            try {
+                const response = await fetch(`/admin/api/reportes/${reporteId}/detalles`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    reporteActual = data.reporte;
+                    mostrarInformacionReporte(data.reporte);
+                    document.getElementById('reporteInfo').classList.remove('d-none');
+                } else {
+                    mostrarError('Error al cargar el reporte: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error de conexión al cargar el reporte');
+            } finally {
+                ocultarLoading();
+            }
+        }
+
+        function mostrarInformacionReporte(reporte) {
+            // Llenar campos del formulario
+            document.getElementById('tituloReporte').value = reporte.titulo || '';
+            document.getElementById('categoriaReporte').value = reporte.categoria || '';
+            document.getElementById('descripcionReporte').value = reporte.descripcion || '';
+            document.getElementById('ubicacionReporte').value = reporte.ubicacion || '';
+            
+            // Llenar selector de estado - mapear valores de la BD a los del formulario
+            let estadoFormulario = 'Pendiente'; // valor por defecto
+            if (reporte.estado) {
+                switch(reporte.estado) {
+                    case 'Pendiente':
+                        estadoFormulario = 'Pendiente';
+                        break;
+                    case 'En revisión':
+                        estadoFormulario = 'En revisión';
+                        break;
+                    case 'En progreso':
+                        estadoFormulario = 'En progreso';
+                        break;
+                    case 'Completado':
+                        estadoFormulario = 'Completado';
+                        break;
+                    case 'Rechazado':
+                        estadoFormulario = 'Rechazado';
+                        break;
+                    default:
+                        estadoFormulario = 'Pendiente';
+                }
+            }
+            document.getElementById('estadoReporte').value = estadoFormulario;
+
+            // Mostrar información del usuario
+            document.getElementById('usuarioNombre').textContent = reporte.usuarioNombre || 'Usuario Anónimo';
+            document.getElementById('usuarioEmail').textContent = reporte.usuarioEmail || 'Sin email';
+            
+            // Mostrar fecha de creación
+            const fechaCreacion = reporte.fechaCreacion ? new Date(reporte.fechaCreacion).toLocaleString('es-SV') : 'No disponible';
+            document.getElementById('fechaCreacion').textContent = fechaCreacion;
+
+            // Mostrar estado actual
+            const estadoTexto = reporte.estado || 'Pendiente';
+            document.getElementById('estadoActual').innerHTML = `<span class="badge badge-${estadoFormulario.toLowerCase().replace(' ', '-')}">${estadoTexto}</span>`;
+        }
+
+        function mostrarError(mensaje) {
+            document.getElementById('errorText').textContent = mensaje;
+            document.getElementById('errorMessage').classList.remove('d-none');
+        }
+
+        // Guardar cambios generales
+        async function guardarCambios() {
+            try {
+                console.log('🔄 Iniciando guardado de cambios...');
+                
+                // Verificar que haya un reporte cargado
+                if (!reporteActual || !reporteActual.idReporte) {
+                    mostrarToast('No hay reporte cargado para guardar', 'error');
+                    return;
+                }
+                
+                mostrarLoading();
+                
+                // Obtener todos los valores del formulario
+                const titulo = document.getElementById('tituloReporte').value;
+                const descripcion = document.getElementById('descripcionReporte').value;
+                const categoria = document.getElementById('categoriaReporte').value;
+                const ubicacion = document.getElementById('ubicacionReporte').value;
+                const estado = document.getElementById('estadoReporte').value;
+                
+                console.log('📝 Datos a guardar:', { titulo, descripcion, categoria, ubicacion, estado });
+                
+                // Validar que los campos requeridos estén llenos
+                if (!titulo || !descripcion || !categoria || !ubicacion || !estado) {
+                    mostrarToast('Por favor completa todos los campos requeridos', 'warning');
+                    ocultarLoading();
+                    return;
+                }
+                
+                const formData = {
+                    titulo: titulo,
+                    descripcion: descripcion,
+                    categoria: categoria,
+                    ubicacion: ubicacion,
+                    estado: estado
+                };
+
+                console.log('📤 Enviando datos al servidor...');
+                
+                // Actualizar los datos básicos del reporte
+                const responseEditar = await fetch(`/admin/api/reportes/${reporteActual.idReporte}/editar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                console.log('📥 Respuesta del servidor (editar):', responseEditar.status);
+                
+                if (!responseEditar.ok) {
+                    throw new Error(`HTTP error! status: ${responseEditar.status}`);
+                }
+                
+                const dataEditar = await responseEditar.json();
+                console.log('📊 Datos de respuesta (editar):', dataEditar);
+                
+                if (!dataEditar.success) {
+                    mostrarToast('Error al guardar los cambios: ' + dataEditar.error, 'error');
+                    ocultarLoading();
+                    return;
+                }
+
+                // Si el estado cambió, actualizarlo también
+                if (formData.estado !== reporteActual.estado) {
+                    console.log('🔄 Estado cambió, actualizando...');
+                    
+                    const responseEstado = await fetch(`/admin/api/reportes/${reporteActual.idReporte}/estado`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            nuevoEstado: formData.estado, 
+                            comentarioAdmin: `Estado cambiado a ${formData.estado} por administrador` 
+                        })
+                    });
+                    
+                    console.log('📥 Respuesta del servidor (estado):', responseEstado.status);
+                    
+                    if (!responseEstado.ok) {
+                        throw new Error(`HTTP error! status: ${responseEstado.status}`);
+                    }
+                    
+                    const dataEstado = await responseEstado.json();
+                    console.log('📊 Datos de respuesta (estado):', dataEstado);
+                    
+                    if (!dataEstado.success) {
+                        mostrarToast('Error al cambiar el estado: ' + dataEstado.error, 'error');
+                        ocultarLoading();
+                        return;
+                    }
+                }
+
+                // Actualizar el reporte actual en memoria
+                reporteActual = { ...reporteActual, ...formData };
+                
+                // Actualizar la visualización
+                mostrarInformacionReporte(reporteActual);
+                
+                console.log('✅ Cambios guardados exitosamente');
+                mostrarToast('Cambios guardados exitosamente', 'success');
+                
+                // Mostrar confirmación adicional
+                setTimeout(() => {
+                    mostrarToast('El reporte se ha actualizado correctamente', 'success');
+                }, 1000);
+                
+            } catch (error) {
+                console.error('❌ Error al guardar cambios:', error);
+                mostrarToast('Error al guardar los cambios: ' + error.message, 'error');
+            } finally {
+                ocultarLoading();
+            }
+        }
+
+        // Función para verificar datos del formulario
+        function verificarDatos() {
+            console.log('🔍 Verificando datos del formulario...');
+            
+            const titulo = document.getElementById('tituloReporte')?.value;
+            const descripcion = document.getElementById('descripcionReporte')?.value;
+            const categoria = document.getElementById('categoriaReporte')?.value;
+            const ubicacion = document.getElementById('ubicacionReporte')?.value;
+            const estado = document.getElementById('estadoReporte')?.value;
+            
+            console.log('📋 Datos actuales:', { titulo, descripcion, categoria, ubicacion, estado });
+            console.log('📊 Reporte actual:', reporteActual);
+            
+            mostrarToast('Datos verificados. Revisa la consola.', 'info');
+        }
+
+        // Rechazar reporte
+        async function rechazarReporte() {
+            const comentario = prompt('Ingresa el motivo del rechazo:');
+            if (!comentario) return;
+
+            if (confirm('¿Estás seguro de que deseas rechazar este reporte?')) {
+                try {
+                    mostrarLoading();
+                    const response = await fetch(`/admin/api/reportes/${reporteActual.idReporte}/estado`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            nuevoEstado: 'Rechazado', 
+                            comentarioAdmin: `Rechazado: ${comentario}` 
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        mostrarToast('Reporte rechazado exitosamente', 'success');
+                        reporteActual.estado = 'Rechazado';
+                        mostrarInformacionReporte(reporteActual);
+                    } else {
+                        mostrarToast('Error al rechazar el reporte: ' + data.error, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    mostrarToast('Error al rechazar el reporte', 'error');
+                } finally {
+                    ocultarLoading();
+                }
+            }
+        }
+
+        // Eliminar reporte
+        async function eliminarReporte() {
+            const razon = prompt('Ingresa la razón de la eliminación:');
+            if (!razon) return;
+
+            if (confirm('¿Estás SEGURO de que deseas eliminar PERMANENTEMENTE este reporte? Esta acción no se puede deshacer.')) {
+                try {
+                    mostrarLoading();
+                    const response = await fetch(`/admin/api/reportes/${reporteActual.idReporte}/eliminar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ razon: `Eliminado: ${razon}` })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        mostrarToast('Reporte eliminado exitosamente', 'success');
+                        setTimeout(() => {
+                            window.location.href = '/admin/reportes';
+                        }, 1500);
+                    } else {
+                        mostrarToast('Error al eliminar el reporte: ' + data.error, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    mostrarToast('Error al eliminar el reporte', 'error');
+                } finally {
+                    ocultarLoading();
+                }
+            }
+        }
+
+        // Crear nuevo reporte
+        async function crearNuevoReporte(formData) {
+            try {
+                mostrarLoading();
+                
+                const response = await fetch('/admin/api/reportes/crear', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        titulo: formData.get('titulo'),
+                        descripcion: formData.get('descripcion'),
+                        categoria: formData.get('categoria'),
+                        ubicacion: formData.get('ubicacion'),
+                        idUsuario: formData.get('idUsuario')
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    mostrarToast('Reporte creado exitosamente', 'success');
+                    
+                    // Cerrar modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('nuevoReporteModal'));
+                    if (modal) modal.hide();
+                    
+                    // Limpiar formulario
+                    document.getElementById('formNuevoReporte').reset();
+                    
+                    // Redirigir a la lista de reportes
+                    setTimeout(() => {
+                        window.location.href = '/admin/reportes';
+                    }, 1500);
+                } else {
+                    mostrarToast('Error al crear el reporte: ' + data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarToast('Error de conexión al crear el reporte', 'error');
+            } finally {
+                ocultarLoading();
+            }
+        }
+
+
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Página cargada, inicializando...');
+            
+            // Cargar reporte después de un pequeño delay para asegurar que el DOM esté listo
+            setTimeout(() => {
+                cargarReporte();
+            }, 100);
+            
+            // Event listener para crear nuevo reporte
+            document.getElementById('formNuevoReporte')?.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                crearNuevoReporte(formData);
+            });
+            
+            // Event listener para cambios en el estado
+            document.getElementById('estadoReporte')?.addEventListener('change', function() {
+                const nuevoEstado = this.value;
+                console.log('🔄 Estado cambiado a:', nuevoEstado);
+                // Actualizar visualmente el estado actual
+                if (reporteActual) {
+                    reporteActual.estado = nuevoEstado;
+                    mostrarInformacionReporte(reporteActual);
+                }
+            });
+            
+            // Event listeners para todos los botones
+            document.getElementById('btnActualizar')?.addEventListener('click', function() {
+                location.reload();
+            });
+            
+            document.getElementById('btnGuardarCambios')?.addEventListener('click', function() {
+                guardarCambios();
+            });
+            
+            document.getElementById('btnGuardarCambiosCard')?.addEventListener('click', function() {
+                guardarCambios();
+            });
+            
+            document.getElementById('btnVerDatos')?.addEventListener('click', function() {
+                verificarDatos();
+            });
+            
+            document.getElementById('btnRechazarReporte')?.addEventListener('click', function() {
+                rechazarReporte();
+            });
+            
+            document.getElementById('btnEliminarReporte')?.addEventListener('click', function() {
+                eliminarReporte();
+            });
+            
+            document.getElementById('btnRecargarDatos')?.addEventListener('click', function() {
+                cargarReporte();
+            });
+            
+            console.log('✅ Inicialización completada');
+        });
+
+
+    </script>
+    
+</body>
+</html>

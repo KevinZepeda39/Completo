@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test del Sistema de Temas</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        body {
+            padding: 2rem;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .test-card {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .theme-toggle-btn {
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1>🌙 Test del Sistema de Temas</h1>
+                    <button type="button" class="btn btn-outline-secondary theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                        <i class="bi bi-moon-stars"></i>
+                    </button>
+                </div>
+                
+                <div class="alert alert-info">
+                    <strong>Instrucciones:</strong> Haz clic en el botón de la luna para cambiar entre tema claro y oscuro.
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card test-card">
+                            <div class="card-header">
+                                <h5>📋 Tarjeta de Prueba</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Esta es una tarjeta de prueba para verificar que el sistema de temas funciona correctamente.</p>
+                                <button class="btn btn-primary">Botón Primario</button>
+                                <button class="btn btn-success">Botón Éxito</button>
+                                <button class="btn btn-danger">Botón Peligro</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card test-card">
+                            <div class="card-header">
+                                <h5>🔧 Formulario de Prueba</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Campo de Texto</label>
+                                    <input type="text" class="form-control" placeholder="Escribe algo aquí...">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Selector</label>
+                                    <select class="form-select">
+                                        <option>Opción 1</option>
+                                        <option>Opción 2</option>
+                                        <option>Opción 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card test-card">
+                            <div class="card-header">
+                                <h5>📊 Tabla de Prueba</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Columna 1</th>
+                                            <th>Columna 2</th>
+                                            <th>Columna 3</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Dato 1</td>
+                                            <td>Dato 2</td>
+                                            <td>Dato 3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dato 4</td>
+                                            <td>Dato 5</td>
+                                            <td>Dato 6</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>🎨 Estado del Tema:</h5>
+                    <p><strong>Tema actual:</strong> <span id="current-theme">Claro</span></p>
+                    <p><strong>Clase del body:</strong> <span id="body-classes">Ninguna</span></p>
+                    <p><strong>Atributo data-theme:</strong> <span id="data-theme">light</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Sistema de Temas -->
+    <script src="/js/theme-switcher.js"></script>
+    
+    <script>
+        // Función para actualizar la información del tema
+        function updateThemeInfo() {
+            const currentTheme = window.themeSwitcher ? window.themeSwitcher.getCurrentTheme() : 'No disponible';
+            const bodyClasses = document.body.className || 'Ninguna';
+            const dataTheme = document.documentElement.getAttribute('data-theme') || 'No establecido';
+            
+            document.getElementById('current-theme').textContent = currentTheme === 'light' ? 'Claro' : 'Oscuro';
+            document.getElementById('body-classes').textContent = bodyClasses;
+            document.getElementById('data-theme').textContent = dataTheme;
+        }
+        
+        // Actualizar información cuando cambie el tema
+        document.addEventListener('themeChanged', updateThemeInfo);
+        
+        // Actualizar información inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(updateThemeInfo, 100);
+        });
+        
+        // Actualizar información cada segundo para debugging
+        setInterval(updateThemeInfo, 1000);
+    </script>
+</body>
+</html>
+

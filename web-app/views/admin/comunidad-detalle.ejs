@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --dark-bg: #1e293b;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #334155 100%);
+            box-shadow: var(--shadow-lg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link {
+            color: #cbd5e1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 4px 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .sidebar .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .sidebar .nav-link i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: var(--light-bg);
+            width: calc(100% - 280px);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: var(--primary-color); }
+        .stat-icon.success { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: var(--success-color); }
+        .stat-icon.warning { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: var(--warning-color); }
+        .stat-icon.info { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: var(--info-color); }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .table {
+            margin: 0;
+            width: 100%;
+        }
+
+        .table th {
+            background: #f8fafc;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 1rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+            word-wrap: break-word;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8fafc;
+            transform: scale(1.01);
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            min-width: fit-content;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge.bg-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%) !important;
+        }
+
+        .badge.bg-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%) !important;
+        }
+
+        .badge.bg-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%) !important;
+        }
+
+        .badge.bg-info {
+            background: linear-gradient(135deg, var(--info-color) 0%, #0ea5e9 100%) !important;
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-responsive {
+                font-size: 0.875rem;
+            }
+            
+            .page-header {
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 0.5rem;
+            }
+            
+            .page-header {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Spinner animation */
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .toast-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toast-body {
+            padding: 16px;
+        }
+
+        .toast.success .toast-header {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: var(--success-color);
+        }
+
+        .toast.error .toast-header {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: var(--danger-color);
+        }
+
+        .toast.info .toast-header {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: var(--info-color);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            max-width: 100%;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            border-radius: 16px 16px 0 0;
+            border: none;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+
+        /* Member Avatar */
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        /* Comment Card */
+        .comment-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .comment-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .comment-date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .comment-content {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="sidebar" style="width: 280px;">
+            <div class="p-4">
+                <div class="text-center mb-4">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check text-white" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="text-white fw-bold">Admin Panel</h4>
+                    <small class="text-light opacity-75">MiCiudadSV</small>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">
+                            <i class="bi bi-speedometer2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin/comunidades">
+                            <i class="bi bi-house-door"></i>
+                            Comunidades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/reportes">
+                            <i class="bi bi-file-earmark-text"></i>
+                            Reportes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/usuarios">
+                            <i class="bi bi-people"></i>
+                            Usuarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/logs">
+                            <i class="bi bi-journal-text"></i>
+                            Logs
+                        </a>
+                    </li>
+                    <li class="nav-item mt-4">
+                        <hr class="text-light opacity-25">
+                        <a class="nav-link" href="/">
+                            <i class="bi bi-house"></i>
+                            Ir al Sitio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+        </div>
+    </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="page-header fade-in">
+                <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                        <h1 class="page-title">
+                            <i class="bi bi-house-door me-3"></i>
+                                <%= comunidad.titulo %>
+                            </h1>
+                        <p class="page-subtitle">
+                            <%= comunidad.descripcion %>
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex gap-2">
+                            <a href="/admin/comunidades" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Volver
+                            </a>
+                            <button type="button" class="btn btn-primary" onclick="cambiarEstadoComunidad()">
+                                <i class="bi bi-gear me-2"></i>
+                                Cambiar Estado
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Badges de información -->
+                <div class="mt-3">
+                    <span class="badge <%= comunidad.estado === 'activa' ? 'bg-success' : comunidad.estado === 'suspendida' ? 'bg-warning' : 'bg-danger' %> me-2">
+                        <i class="bi <%= comunidad.estado === 'activa' ? 'bi-check-circle' : comunidad.estado === 'suspendida' ? 'bi-pause-circle' : 'bi-x-circle' %> me-1"></i>
+                        <%= comunidad.estado.charAt(0).toUpperCase() + comunidad.estado.slice(1) %>
+                                </span>
+                    <span class="badge bg-info me-2">
+                        <i class="bi bi-tag me-1"></i>
+                                    <%= comunidad.categoria.charAt(0).toUpperCase() + comunidad.categoria.slice(1) %>
+                                </span>
+                                <% if (comunidad.tags) { %>
+                                <span class="badge bg-light text-dark">
+                        <i class="bi bi-tags me-1"></i>
+                                    <%= comunidad.tags %>
+                                </span>
+                                <% } %>
+                            </div>
+                        </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid fade-in">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="bi bi-people"></i>
+                        </div>
+                    <div class="stat-number"><%= comunidad.totalMiembros || 0 %></div>
+                    <div class="stat-label">Total Miembros</div>
+                    </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="bi bi-chat-dots"></i>
+                </div>
+                    <div class="stat-number"><%= comunidad.totalComentarios || 0 %></div>
+                    <div class="stat-label">Total Comentarios</div>
+        </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="bi bi-calendar-event"></i>
+            </div>
+                    <div class="stat-number">
+                        <%= Math.floor((new Date() - new Date(comunidad.fechaCreacion)) / (1000 * 60 * 60 * 24)) %>
+                    </div>
+                    <div class="stat-label">Días Activa</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon info">
+                        <i class="bi bi-info-circle"></i>
+            </div>
+                    <div class="stat-number">#<%= comunidad.idComunidad %></div>
+                    <div class="stat-label">ID Comunidad</div>
+            </div>
+        </div>
+
+            <!-- Información de la Comunidad -->
+            <div class="table-container fade-in">
+                <div class="table-header">
+                    <h5 class="table-title mb-0">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Información de la Comunidad
+                        </h5>
+                    </div>
+                
+                <div class="p-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-person text-primary me-2"></i>
+                                    Creador
+                                </label>
+                                <p class="mb-0"><%= comunidad.creadorNombre %></p>
+                                <small class="text-muted">ID: <%= comunidad.creadorId %></small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-envelope text-primary me-2"></i>
+                                    Email del Creador
+                                </label>
+                                <p class="mb-0"><%= comunidad.creadorEmail %></p>
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-calendar text-primary me-2"></i>
+                                    Fecha de Creación
+                                </label>
+                                <p class="mb-0">
+                                    <%= new Date(comunidad.fechaCreacion).toLocaleDateString('es-SV', { 
+                                        day: '2-digit', 
+                                        month: '2-digit', 
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    }) %>
+                                </p>
+                                </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-flag text-primary me-2"></i>
+                                    Estado Actual
+                                </label>
+                                <p class="mb-0">
+                                    <span class="badge <%= comunidad.estado === 'activa' ? 'bg-success' : comunidad.estado === 'suspendida' ? 'bg-warning' : 'bg-danger' %>">
+                                        <%= comunidad.estado.charAt(0).toUpperCase() + comunidad.estado.slice(1) %>
+                                    </span>
+                                </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Miembros de la Comunidad -->
+            <div class="table-container fade-in">
+                <div class="table-header">
+                    <h5 class="table-title mb-0">
+                        <i class="bi bi-people me-2"></i>
+                        Miembros de la Comunidad (<%= miembros.length %>)
+                        </h5>
+                    </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Miembro</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Fecha de Unión</th>
+                                <th>ID Usuario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (miembros && miembros.length > 0) { %>
+                                <% miembros.forEach(function(miembro) { %>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                    <div class="member-avatar me-3">
+                                        <%= miembro.nombre.charAt(0).toUpperCase() %>
+                                    </div>
+                                                <div>
+                                                    <div class="fw-semibold"><%= miembro.nombre %></div>
+                                    </div>
+                                </div>
+                                        </td>
+                                        <td><%= miembro.correo %></td>
+                                        <td>
+                                            <span class="badge <%= miembro.rolEnComunidad === 'administrador' ? 'bg-danger' : 'bg-secondary' %>">
+                                                <%= miembro.rolEnComunidad.charAt(0).toUpperCase() + miembro.rolEnComunidad.slice(1) %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <%= new Date(miembro.fechaUnion).toLocaleDateString('es-SV', { 
+                                                day: '2-digit', 
+                                                month: '2-digit', 
+                                                year: 'numeric' 
+                                            }) %>
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">#<%= miembro.idUsuario %></span>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">
+                                        <div class="text-muted">
+                                            <i class="bi bi-people fs-1 mb-3 d-block"></i>
+                                            No hay miembros registrados
+                            </div>
+                                    </td>
+                                </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Comentarios Recientes -->
+            <div class="table-container fade-in">
+                <div class="table-header">
+                    <h5 class="table-title mb-0">
+                        <i class="bi bi-chat-dots me-2"></i>
+                        Comentarios Recientes (<%= comentarios.length %>)
+                        </h5>
+                </div>
+                
+                <div class="p-4">
+                    <% if (comentarios && comentarios.length > 0) { %>
+                        <% comentarios.forEach(function(comentario) { %>
+                            <div class="comment-card">
+                                <div class="comment-header">
+                                    <div class="member-avatar">
+                                        <%= comentario.autorNombre.charAt(0).toUpperCase() %>
+                                    </div>
+                                    <div>
+                                        <div class="comment-author"><%= comentario.autorNombre %></div>
+                                        <div class="comment-date">
+                                            <%= new Date(comentario.fechaComentario).toLocaleDateString('es-SV', { 
+                                                day: '2-digit', 
+                                                month: '2-digit', 
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) %>
+                                        </div>
+                    </div>
+                            </div>
+                                <div class="comment-content">
+                                    <%= comentario.contenido %>
+                                    </div>
+                                </div>
+                                <% }); %>
+                    <% } else { %>
+                        <div class="text-center py-4">
+                            <div class="text-muted">
+                                <i class="bi bi-chat-dots fs-1 mb-3 d-block"></i>
+                                No hay comentarios en esta comunidad
+                            </div>
+                            </div>
+                        <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cambiar Estado -->
+    <div class="modal fade" id="modalCambiarEstado" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Cambiar Estado de Comunidad
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label for="nuevoEstado" class="form-label fw-semibold">
+                            <i class="bi bi-flag text-primary me-2"></i>
+                            Nuevo Estado
+                        </label>
+                        <select class="form-select" id="nuevoEstado">
+                            <option value="activa" <%= comunidad.estado === 'activa' ? 'selected' : '' %>>Activa</option>
+                            <option value="suspendida" <%= comunidad.estado === 'suspendida' ? 'selected' : '' %>>Suspendida</option>
+                            <option value="eliminada" <%= comunidad.estado === 'eliminada' ? 'selected' : '' %>>Eliminada</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="razonCambio" class="form-label fw-semibold">
+                            <i class="bi bi-chat text-primary me-2"></i>
+                            Razón del cambio (opcional)
+                        </label>
+                        <textarea class="form-control" id="razonCambio" rows="3" placeholder="Describe la razón de este cambio..."></textarea>
+                    </div>
+                    
+                    <div class="alert alert-warning d-none" id="alertaEliminacion">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>¡Atención!</strong> Esta acción afectará a todos los miembros de la comunidad.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-2"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmarCambio">
+                        <i class="bi bi-check me-2"></i>
+                        Confirmar Cambio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Función para cambiar estado de comunidad
+        function cambiarEstadoComunidad() {
+            const modal = new bootstrap.Modal(document.getElementById('modalCambiarEstado'));
+            modal.show();
+        }
+
+        // Confirmar cambio de estado
+        document.getElementById('btnConfirmarCambio').addEventListener('click', async function() {
+            const nuevoEstado = document.getElementById('nuevoEstado').value;
+            const razon = document.getElementById('razonCambio').value;
+            const btn = this;
+            const originalHTML = btn.innerHTML;
+            
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="bi bi-arrow-clockwise spin me-2"></i>Procesando...';
+                
+                const response = await fetch(`/admin/comunidades/<%= comunidad.idComunidad %>/estado`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nuevoEstado: nuevoEstado,
+                        razon: razon
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('modalCambiarEstado')).hide();
+                    showAlert('success', data.mensaje || 'Estado cambiado exitosamente');
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    showAlert('danger', data.error || 'Error al cambiar el estado');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('danger', 'Error de conexión al cambiar el estado');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            }
+        });
+
+        // Mostrar alertas
+        function showAlert(type, message) {
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const icon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle';
+            
+            const alertHTML = `
+                <div class="alert ${alertClass} alert-dismissible fade show position-fixed" 
+                     style="top: 20px; right: 20px; z-index: 9999; min-width: 300px;" role="alert">
+                    <i class="bi ${icon} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', alertHTML);
+            
+            // Auto dismiss después de 5 segundos
+            setTimeout(() => {
+                const alert = document.querySelector('.alert');
+                if (alert) {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                    bsAlert.close();
+                }
+            }, 5000);
+        }
+
+        // Limpiar modal al cerrarse
+        document.getElementById('modalCambiarEstado').addEventListener('hidden.bs.modal', function() {
+            document.getElementById('razonCambio').value = '';
+        });
+
+        // Actualizar alerta de eliminación según estado seleccionado
+        document.getElementById('nuevoEstado').addEventListener('change', function() {
+            const alertaEliminacion = document.getElementById('alertaEliminacion');
+            if (this.value === 'eliminada') {
+                alertaEliminacion.classList.remove('d-none');
+            } else {
+                alertaEliminacion.classList.add('d-none');
+            }
+        });
+    </script>
+    
+</body>
+</html>

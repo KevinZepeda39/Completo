@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --dark-bg: #1e293b;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #334155 100%);
+            box-shadow: var(--shadow-lg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link {
+            color: #cbd5e1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 4px 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .sidebar .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+                /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: var(--light-bg);
+            width: calc(100% - 280px);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .main-content {
+            background: #0a0a0a;
+        }
+        
+        /* Header */
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .page-header {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: var(--primary-color); }
+        .stat-icon.success { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: var(--success-color); }
+        .stat-icon.warning { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: var(--warning-color); }
+        .stat-icon.info { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: var(--info-color); }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .table {
+            margin: 0;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .table {
+            color: #ffffff;
+        }
+
+        .table th {
+            background: #f8fafc;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .table th {
+            background: #2d2d2d;
+            color: #ffffff;
+        }
+
+        .table td {
+            padding: 1rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .table td {
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            min-width: fit-content;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Badges */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Status Badges */
+        .badge-pendiente { background: var(--warning-color); color: white; }
+        .badge-en-progreso { background: var(--info-color); color: white; }
+        .badge-resuelto { background: var(--success-color); color: white; }
+        .badge-rechazado { background: var(--danger-color); color: white; }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn-view {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .action-btn-edit {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .action-btn-delete {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+            min-width: 300px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .toast {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Elementos adicionales en modo oscuro */
+        [data-theme="dark"] .stats-grid {
+            background: transparent;
+        }
+        
+        [data-theme="dark"] .stat-card {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .stat-number {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .stat-label {
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .table-container {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .table-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        [data-theme="dark"] .form-control,
+        [data-theme="dark"] .form-select {
+            background-color: #2d2d2d;
+            border-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .form-control:focus,
+        [data-theme="dark"] .form-select:focus {
+            background-color: #2d2d2d;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .form-label {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .input-group-text {
+            background-color: #2d2d2d;
+            border-color: #404040;
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .btn-outline-secondary {
+            color: #adb5bd;
+            border-color: #404040;
+        }
+        
+        [data-theme="dark"] .btn-outline-secondary:hover {
+            background-color: #404040;
+            border-color: #adb5bd;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-secondary {
+            background: #404040;
+            border-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-secondary:hover {
+            background: #2d2d2d;
+            border-color: #2d2d2d;
+        }
+        
+        [data-theme="dark"] .page-title {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .page-subtitle {
+            color: #adb5bd;
+        }
+        
+        /* Elementos adicionales en modo oscuro */
+        [data-theme="dark"] .stats-grid {
+            background: transparent;
+        }
+        
+        [data-theme="dark"] .stat-card {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .stat-number {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .stat-label {
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .table-container {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .table-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        [data-theme="dark"] .form-control,
+        [data-theme="dark"] .form-select {
+            background-color: #2d2d2d;
+            border-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .form-control:focus,
+        [data-theme="dark"] .form-select:focus {
+            background-color: #2d2d2d;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .form-label {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-primary {
+            color: #4d94ff;
+            border-color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .btn-outline-primary:hover {
+            background-color: #4d94ff;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-success {
+            color: #10b981;
+            border-color: #10b981;
+        }
+        
+        [data-theme="dark"] .btn-outline-success:hover {
+            background-color: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-warning {
+            color: #f59e0b;
+            border-color: #f59e0b;
+        }
+        
+        [data-theme="dark"] .btn-outline-warning:hover {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-danger {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        [data-theme="dark"] .btn-outline-danger:hover {
+            background-color: #ef4444;
+            border-color: #ef4444;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-info {
+            color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        [data-theme="dark"] .btn-outline-info:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-primary {
+            background: linear-gradient(135deg, #4d94ff 0%, #3b82f6 100%);
+            border-color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+        }
+        
+        [data-theme="dark"] .btn-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+            border-color: #3b82f6;
+        }
+        
+        [data-theme="dark"] .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-color: #f59e0b;
+        }
+        
+        [data-theme="dark"] .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-color: #ef4444;
+        }
+        
+        [data-theme="dark"] .alert {
+            background-color: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .alert-success {
+            background-color: #0f5132;
+            border-color: #10b981;
+            color: #d1fae5;
+        }
+        
+        [data-theme="dark"] .alert-warning {
+            background-color: #92400e;
+            border-color: #f59e0b;
+            color: #fef3c7;
+        }
+        
+        [data-theme="dark"] .alert-danger {
+            background-color: #7f1d1d;
+            border-color: #ef4444;
+            color: #fee2e2;
+        }
+        
+        [data-theme="dark"] .alert-info {
+            background-color: #0c4a6e;
+            border-color: #3b82f6;
+            color: #dbeafe;
+        }
+        
+        [data-theme="dark"] .bg-light {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .text-light {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .opacity-75 {
+            opacity: 0.75 !important;
+        }
+        
+        [data-theme="dark"] .opacity-50 {
+            opacity: 0.5 !important;
+        }
+        
+        [data-theme="dark"] .text-dark {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-primary {
+            color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .pagination .page-link {
+            background-color: #2d2d2d;
+            color: #4d94ff;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .pagination .page-link:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .pagination .page-item.active .page-link {
+            background-color: #4d94ff;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        /* Estilos adicionales para elementos que podrían estar en blanco */
+        [data-theme="dark"] .table tbody tr:hover {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .table tbody tr {
+            background-color: #1e1e1e;
+        }
+        
+        [data-theme="dark"] .table tbody tr:nth-child(even) {
+            background-color: #252525;
+        }
+        
+        [data-theme="dark"] .badge.bg-secondary {
+            background-color: #6c757d !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-warning {
+            background-color: #f59e0b !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-danger {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-success {
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-info {
+            background-color: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-truncate {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .fw-semibold {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .fw-bold {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-center {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .py-5 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .fs-1 {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .h6 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .p {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .bg-light.rounded-circle {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .bg-light.rounded-circle .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .input-group-text {
+            background-color: #2d2d2d !important;
+            border-color: #404040 !important;
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .border.rounded-3 {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        [data-theme="dark"] .border.rounded-3.bg-light {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .border.rounded-3.bg-light h6 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .border.rounded-3.bg-light .form-label {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .border.rounded-3.bg-light .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .modal-footer.bg-light {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .modal-footer.bg-light .btn {
+            color: #ffffff !important;
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        /* Toast personalizado */
+        .toast-container .toast {
+            background: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+        }
+        
+        [data-theme="dark"] .toast-container .toast {
+            background: #1e1e1e;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 sidebar">
+                <div class="position-sticky pt-4">
+                    <div class="text-center mb-4">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-gradient rounded-circle mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-building text-white fs-4"></i>
+                        </div>
+                        <h5 class="fw-bold text-white">MiCiudadSV</h5>
+                        <small class="text-light d-block">Panel Administrativo</small>
+                        <div class="badge bg-success bg-gradient mt-2">
+                            <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem;"></i>
+                            En línea
+                        </div>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">
+                                <i class="bi bi-speedometer2 me-3"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/usuarios">
+                                <i class="bi bi-people me-3"></i>
+                                Usuarios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/reportes">
+                                <i class="bi bi-flag me-3"></i>
+                                Reportes
+                                <% if (typeof reportes !== 'undefined' && reportes && reportes.length > 0) { %>
+                                    <span class="badge bg-warning rounded-pill ms-auto">
+                                        <%= reportes.filter(r => r.estado === 'pendiente').length %>
+                                    </span>
+                                <% } %>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/comunidades">
+                                <i class="bi bi-house-door me-3"></i>
+                                Comunidades
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/logs">
+                                <i class="bi bi-file-text me-3"></i>
+                                Logs del Sistema
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/configuracion">
+                                <i class="bi bi-gear me-3"></i>
+                                Configuración
+                            </a>
+                        </li>
+                    </ul>
+
+                    <hr class="my-4 border-light">
+                    
+                    <div class="px-3">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary bg-gradient rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-person text-white"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold text-white"><%= usuario.nombre %></div>
+                                <small class="text-light">Administrador</small>
+                            </div>
+                        </div>
+                        <a href="/auth/logout" class="nav-link text-danger">
+                            <i class="bi bi-box-arrow-right me-3"></i>
+                            Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 main-content">
+                <!-- Header -->
+                <div class="page-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="page-title">
+                                <i class="bi bi-flag me-3"></i>
+                                Gestión de Reportes
+                            </h1>
+                            <p class="page-subtitle">Administra y supervisa todos los reportes ciudadanos</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <!-- Botón de cambio de tema -->
+                            <button type="button" class="btn btn-outline-secondary theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                                <i class="bi bi-moon-stars"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
+                                <i class="bi bi-arrow-clockwise me-2"></i>
+                                Actualizar
+                            </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoReporteModal">
+                                <i class="bi bi-plus me-2"></i>
+                                Nuevo Reporte
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estadísticas -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="bi bi-flag"></i>
+                        </div>
+                        <div class="stat-number">
+                            <% if (typeof reportes !== 'undefined' && reportes && reportes.length > 0) { %>
+                                <%= reportes.length %>
+                            <% } else { %>
+                                0
+                            <% } %>
+                        </div>
+                        <div class="stat-label">Total Reportes</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <div class="stat-number">
+                            <% if (typeof reportes !== 'undefined' && reportes && reportes.length > 0) { %>
+                                <%= reportes.filter(r => r.estado === 'pendiente').length %>
+                            <% } else { %>
+                                0
+                            <% } %>
+                        </div>
+                        <div class="stat-label">Pendientes</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </div>
+                        <div class="stat-number">
+                            <% if (typeof reportes !== 'undefined' && reportes && reportes.length > 0) { %>
+                                <%= reportes.filter(r => r.estado === 'en-progreso').length %>
+                            <% } else { %>
+                                0
+                            <% } %>
+                        </div>
+                        <div class="stat-label">En Progreso</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        <div class="stat-number">
+                            <% if (typeof reportes !== 'undefined' && reportes && reportes.length > 0) { %>
+                                <%= reportes.filter(r => r.estado === 'resuelto').length %>
+                            <% } else { %>
+                                0
+                            <% } %>
+                        </div>
+                        <div class="stat-label">Resueltos</div>
+                    </div>
+                </div>
+
+                <!-- Filtros -->
+                <div class="table-container">
+                    <div class="p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-funnel text-primary me-2"></i>
+                            <h6 class="mb-0 fw-semibold">Filtros de Búsqueda</h6>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="filtroEstado" class="form-label">Estado</label>
+                                <select id="filtroEstado" class="form-select">
+                                    <option value="">Todos los estados</option>
+                                    <option value="pendiente">Pendiente</option>
+                                    <option value="en-progreso">En Progreso</option>
+                                    <option value="resuelto">Resuelto</option>
+                                    <option value="rechazado">Rechazado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="filtroCategoria" class="form-label">Categoría</label>
+                                <select id="filtroCategoria" class="form-select">
+                                    <option value="">Todas las categorías</option>
+                                    <option value="infraestructura">Infraestructura</option>
+                                    <option value="seguridad">Seguridad</option>
+                                    <option value="servicios">Servicios Públicos</option>
+                                    <option value="ambiente">Medio Ambiente</option>
+                                    <option value="transporte">Transporte</option>
+                                    <option value="salud">Salud</option>
+                                    <option value="educacion">Educación</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="buscarReporte" class="form-label">Buscar</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-search text-muted"></i>
+                                    </span>
+                                    <input type="text" id="buscarReporte" class="form-control border-start-0" placeholder="Buscar por título, ubicación...">
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">&nbsp;</label>
+                                <button type="button" class="btn btn-outline-secondary w-100" onclick="limpiarFiltros()">
+                                    <i class="bi bi-eraser me-2"></i>
+                                    Limpiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla de reportes -->
+                <div class="table-container">
+                    <div class="p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-table me-2"></i>
+                                <span class="fw-semibold">Lista de Reportes</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="exportarReportes()">
+                                    <i class="bi bi-download me-2"></i>
+                                    Exportar
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="verMapaGeneral()">
+                                    <i class="bi bi-map me-2"></i>
+                                    Ver Mapa
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0" id="tablaReportes">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Título</th>
+                                        <th>Categoría</th>
+                                        <th>Usuario</th>
+                                        <th>Ubicación</th>
+                                        <th>Estado</th>
+                                        <th>Prioridad</th>
+                                        <th>Fecha</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (typeof reportes !== 'undefined' && reportes.length > 0) { %>
+                                        <% reportes.forEach(function(reporte) { %>
+                                            <%
+                                                // Valores por defecto seguros
+                                                const prioridad = reporte.prioridad || 'media';
+                                                const estado = reporte.estado || 'pendiente';
+                                                const categoria = reporte.categoria || 'otro';
+                                                const titulo = reporte.titulo || 'Sin título';
+                                                const ubicacion = reporte.ubicacion || 'Sin ubicación';
+                                                const usuarioNombre = reporte.usuarioNombre || reporte.usuarioEmail || 'Usuario Anónimo';
+                                                const fechaCreacion = reporte.fechaCreacion ? new Date(reporte.fechaCreacion) : new Date();
+                                                const idReporte = reporte.idReporte || reporte.id || 0;
+                                            %>
+                                            <tr data-reporte-id="<%= idReporte %>">
+                                                <td>
+                                                    <span class="fw-semibold text-primary">#<%= idReporte %></span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div>
+                                                            <div class="fw-semibold text-dark"><%= titulo %></div>
+                                                            <% if (reporte.imagenes && reporte.imagenes.length > 0) { %>
+                                                                <small class="text-muted">
+                                                                    <i class="bi bi-camera me-1"></i>
+                                                                    <%= reporte.imagenes.length %> imagen(es)
+                                                                </small>
+                                                            <% } %>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary bg-gradient">
+                                                        <%= categoria.charAt(0).toUpperCase() + categoria.slice(1) %>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <div class="fw-semibold text-dark"><%= usuarioNombre %></div>
+                                                        <% if (reporte.usuarioEmail) { %>
+                                                            <small class="text-muted"><%= reporte.usuarioEmail %></small>
+                                                        <% } %>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-truncate" style="max-width: 200px;" title="<%= ubicacion %>">
+                                                        <%= ubicacion %>
+                                                    </div>
+                                                    <% if (reporte.latitud && reporte.longitud) { %>
+                                                        <small class="text-success">
+                                                            <i class="bi bi-geo-alt-fill me-1"></i>
+                                                            Geolocalizado
+                                                        </small>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-<%= estado %>">
+                                                        <%= estado.charAt(0).toUpperCase() + estado.slice(1).replace('-', ' ') %>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-<%= prioridad === 'alta' ? 'danger' : prioridad === 'media' ? 'warning' : 'success' %> bg-gradient">
+                                                        <%= prioridad.charAt(0).toUpperCase() + prioridad.slice(1) %>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div class="fw-semibold text-dark">
+                                                        <%= fechaCreacion.toLocaleDateString('es-SV') %>
+                                                    </div>
+                                                    <small class="text-muted">
+                                                        <%= fechaCreacion.toLocaleTimeString('es-SV', { hour: '2-digit', minute: '2-digit' }) %>
+                                                    </small>
+                                                </td>
+                                                <td>
+                                                    <div class="action-buttons">
+                                                        <button type="button" class="action-btn action-btn-view" 
+                                                                onclick="verReporte(<%= idReporte %>)"
+                                                                title="Ver detalles">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                        <a href="/admin/editar-reporte?id=<%= idReporte %>" class="action-btn action-btn-edit" 
+                                                           title="Editar reporte">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                        <button type="button" class="action-btn action-btn-delete delete-reporte-btn" 
+                                                                data-reporte-id="<%= idReporte %>"
+                                                                data-reporte-titulo="<%= titulo.replace(/'/g, '\\\'') %>"
+                                                                title="Eliminar reporte">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="9" class="text-center py-5">
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                                        <i class="bi bi-flag fs-1 text-muted"></i>
+                                                    </div>
+                                                    <h6 class="text-muted mb-2">No hay reportes disponibles</h6>
+                                                    <p class="text-muted mb-3">Comienza creando el primer reporte del sistema</p>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoReporteModal">
+                                                        <i class="bi bi-plus me-2"></i>
+                                                        Crear Primer Reporte
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Reporte -->
+    <div class="modal fade" id="nuevoReporteModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="bi bi-plus me-2"></i>
+                        Crear Nuevo Reporte
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formNuevoReporte">
+                    <div class="modal-body p-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-12 mb-4">
+                                        <label for="tituloReporte" class="form-label">
+                                            <i class="bi bi-heading text-primary me-2"></i>
+                                            Título del Reporte *
+                                        </label>
+                                        <input type="text" class="form-control" id="tituloReporte" name="titulo" required placeholder="Ingresa un título descriptivo...">
+                                    </div>
+                                    <div class="col-md-12 mb-4">
+                                        <label for="descripcionReporte" class="form-label">
+                                            <i class="bi bi-align-left text-primary me-2"></i>
+                                            Descripción Detallada *
+                                        </label>
+                                        <textarea class="form-control" id="descripcionReporte" name="descripcion" rows="4" required placeholder="Describe el problema o situación en detalle..."></textarea>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="categoriaReporte" class="form-label">
+                                            <i class="bi bi-tags text-primary me-2"></i>
+                                            Categoría *
+                                        </label>
+                                        <select class="form-select" id="categoriaReporte" name="categoria" required>
+                                            <option value="">Seleccionar categoría</option>
+                                            <option value="infraestructura">🏗️ Infraestructura</option>
+                                            <option value="seguridad">🛡️ Seguridad</option>
+                                            <option value="servicios">🔧 Servicios Públicos</option>
+                                            <option value="ambiente">🌱 Medio Ambiente</option>
+                                            <option value="transporte">🚌 Transporte</option>
+                                            <option value="salud">🏥 Salud</option>
+                                            <option value="educacion">📚 Educación</option>
+                                            <option value="otro">📋 Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="prioridadReporte" class="form-label">
+                                            <i class="bi bi-exclamation-triangle text-primary me-2"></i>
+                                            Nivel de Prioridad
+                                        </label>
+                                        <select class="form-select" id="prioridadReporte" name="prioridad">
+                                            <option value="baja">🟢 Baja</option>
+                                            <option value="media" selected>🟡 Media</option>
+                                            <option value="alta">🔴 Alta</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12 mb-4">
+                                        <label for="ubicacionReporte" class="form-label">
+                                            <i class="bi bi-geo-alt text-primary me-2"></i>
+                                            Ubicación *
+                                        </label>
+                                        <input type="text" class="form-control" id="ubicacionReporte" name="ubicacion" required placeholder="Dirección específica del incidente...">
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="latitudReporte" class="form-label">
+                                            <i class="bi bi-globe text-primary me-2"></i>
+                                            Latitud
+                                        </label>
+                                        <input type="number" step="any" class="form-control" id="latitudReporte" name="latitud" placeholder="13.7000">
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="longitudReporte" class="form-label">
+                                            <i class="bi bi-globe text-primary me-2"></i>
+                                            Longitud
+                                        </label>
+                                        <input type="number" step="any" class="form-control" id="longitudReporte" name="longitud" placeholder="-89.2000">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="border rounded-3 p-3 bg-light">
+                                    <h6 class="fw-semibold mb-3">
+                                        <i class="bi bi-person-badge text-primary me-2"></i>
+                                        Asignación
+                                    </h6>
+                                    <div class="mb-3">
+                                        <label for="usuarioReporte" class="form-label">Usuario Asignado *</label>
+                                        <select class="form-select" id="usuarioReporte" name="idUsuario" required>
+                                            <option value="">Seleccionar usuario</option>
+                                            <% if (typeof usuarios !== 'undefined' && usuarios.length > 0) { %>
+                                                <% usuarios.forEach(function(usuario) { %>
+                                                    <option value="<%= usuario.idUsuario %>"><%= usuario.nombre %> (<%= usuario.correo %>)</option>
+                                                <% }); %>
+                                            <% } %>
+                                        </select>
+                                        <small class="text-muted">El reporte será asignado a este usuario</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="responsableReporte" class="form-label">Responsable</label>
+                                        <input type="text" class="form-control" id="responsableReporte" name="responsable" placeholder="Asignar a...">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="comentariosReporte" class="form-label">Comentarios Internos</label>
+                                        <textarea class="form-control" id="comentariosReporte" name="comentarios" rows="3" placeholder="Notas para el equipo..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x me-2"></i>
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg me-2"></i>
+                            Crear Reporte
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ver Detalles -->
+    <div class="modal fade" id="verReporteModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="bi bi-eye me-2"></i>
+                        Detalles del Reporte
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="detalleReporteContent">
+                    <!-- Contenido dinámico -->
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-2"></i>
+                        Cerrar
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="editarReporteDesdeModal()">
+                        <i class="bi bi-pencil me-2"></i>
+                        Editar Reporte
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Reporte -->
+    <div class="modal fade" id="editarReporteModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="bi bi-pencil me-2"></i>
+                        Editar Reporte
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formEditarReporte">
+                    <div class="modal-body p-4" id="formEditarContent">
+                        <!-- Contenido dinámico del formulario de edición -->
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x me-2"></i>
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-check-lg me-2"></i>
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Confirmación Eliminar -->
+    <div class="modal fade" id="confirmarEliminarModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-danger border-0 bg-danger bg-opacity-10">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-exclamation-triangle text-danger me-3 fs-4"></i>
+                            <div>
+                                <strong class="text-danger">¡ADVERTENCIA!</strong>
+                                <p class="mb-0 text-danger">Esta acción es irreversible y eliminará permanentemente todos los datos.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="fw-semibold mb-3">¿Estás seguro de que deseas eliminar el siguiente reporte?</p>
+                    
+                    <div class="bg-light p-3 rounded-3 mb-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-flag text-primary me-3"></i>
+                            <div>
+                                <strong id="reporteAEliminarTitulo" class="text-dark"></strong>
+                                <div class="text-muted small">Se eliminará toda la información asociada</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="confirmarEliminacion" required>
+                        <label class="form-check-label fw-semibold" for="confirmarEliminacion">
+                            Confirmo que entiendo las consecuencias y deseo proceder
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-2"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" id="btnConfirmarEliminar" disabled>
+                        <i class="bi bi-trash me-2"></i>
+                        Eliminar Permanentemente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay d-none">
+        <div class="text-center">
+            <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <h6 class="text-white">Procesando...</h6>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Variables globales
+        let reporteAEliminar = null;
+        let reporteActual = null;
+
+        // Funciones de utilidad
+        function mostrarLoading() {
+            document.getElementById('loadingOverlay').classList.remove('d-none');
+        }
+
+        function ocultarLoading() {
+            document.getElementById('loadingOverlay').classList.add('d-none');
+        }
+
+        function mostrarToast(mensaje, tipo = 'info', duracion = 5000) {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const colores = {
+                'success': { bg: 'bg-success', icon: 'bi bi-check-circle' },
+                'error': { bg: 'bg-danger', icon: 'bi bi-exclamation-triangle' },
+                'warning': { bg: 'bg-warning', icon: 'bi bi-exclamation-circle' },
+                'info': { bg: 'bg-info', icon: 'bi bi-info-circle' }
+            };
+            
+            const config = colores[tipo] || colores.info;
+            
+            const toastHtml = `
+                <div id="${toastId}" class="toast align-items-center text-white ${config.bg} border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body d-flex align-items-center">
+                            <i class="${config.icon} me-2"></i>
+                            ${mensaje}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: duracion });
+            toast.show();
+            
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                this.remove();
+            });
+        }
+
+        // Función para ver detalles del reporte
+        function verReporte(id) {
+            console.log('👁️ Ver reporte:', id);
+            // Mostrar mensaje simple por ahora
+            mostrarToast(`Viendo reporte #${id}`, 'info');
+            
+            // Aquí puedes implementar la lógica completa para mostrar detalles
+            // Por ejemplo, abrir un modal con información del reporte
+        }
+
+        function mostrarDetallesReporte(reporte) {
+            const content = document.getElementById('detalleReporteContent');
+            const fecha = new Date(reporte.fechaCreacion).toLocaleString('es-SV');
+            const fechaActualizacion = reporte.fechaActualizacion ? 
+                new Date(reporte.fechaActualizacion).toLocaleString('es-SV') : 'No actualizado';
+
+            const estadoBadge = {
+                'pendiente': 'badge-pendiente',
+                'en-progreso': 'badge-en-progreso', 
+                'resuelto': 'badge-resuelto',
+                'rechazado': 'badge-rechazado'
+            }[reporte.estado] || 'badge-pendiente';
+
+            const prioridadColor = {
+                'alta': 'danger',
+                'media': 'warning',
+                'baja': 'success'
+            }[reporte.prioridad] || 'warning';
+
+            content.innerHTML = `
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <h4 class="fw-bold text-dark mb-2">${reporte.titulo}</h4>
+                            <div class="d-flex gap-2 mb-3">
+                                <span class="badge ${estadoBadge}">${reporte.estado.replace('-', ' ')}</span>
+                                <span class="badge bg-${prioridadColor} bg-gradient">${reporte.prioridad}</span>
+                                <span class="badge bg-secondary bg-gradient">${reporte.categoria}</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-light rounded-3 p-3 mb-4">
+                            <h6 class="fw-semibold mb-2">
+                                <i class="bi bi-align-left text-primary me-2"></i>
+                                Descripción
+                            </h6>
+                            <p class="mb-0 text-dark">${reporte.descripcion}</p>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="bg-light rounded-3 p-3 h-100">
+                                    <h6 class="fw-semibold mb-2">
+                                        <i class="bi bi-person text-primary me-2"></i>
+                                        Información del Usuario
+                                    </h6>
+                                    <p class="mb-1"><strong>Nombre:</strong> ${reporte.usuarioNombre || 'Usuario Anónimo'}</p>
+                                    ${reporte.usuarioEmail ? `<p class="mb-0"><strong>Email:</strong> ${reporte.usuarioEmail}</p>` : ''}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light rounded-3 p-3 h-100">
+                                    <h6 class="fw-semibold mb-2">
+                                        <i class="bi bi-clock text-primary me-2"></i>
+                                        Fechas
+                                    </h6>
+                                    <p class="mb-1"><strong>Creado:</strong> ${fecha}</p>
+                                    <p class="mb-0"><strong>Actualizado:</strong> ${fechaActualizacion}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-light rounded-3 p-3 mb-4">
+                            <h6 class="fw-semibold mb-2">
+                                <i class="bi bi-geo-alt text-primary me-2"></i>
+                                Ubicación
+                            </h6>
+                            <p class="mb-1">${reporte.ubicacion}</p>
+                            ${reporte.latitud && reporte.longitud ? `
+                                <small class="text-muted">
+                                    <i class="bi bi-globe me-1"></i>
+                                    Coordenadas: ${reporte.latitud}, ${reporte.longitud}
+                                </small>
+                            ` : '<small class="text-muted">Sin coordenadas GPS</small>'}
+                        </div>
+
+                        ${reporte.responsable ? `
+                            <div class="bg-light rounded-3 p-3 mb-4">
+                                <h6 class="fw-semibold mb-2">
+                                    <i class="bi bi-person-badge text-primary me-2"></i>
+                                    Responsable Asignado
+                                </h6>
+                                <p class="mb-0">${reporte.responsable}</p>
+                            </div>
+                        ` : ''}
+
+                        ${reporte.comentarios ? `
+                            <div class="bg-light rounded-3 p-3">
+                                <h6 class="fw-semibold mb-2">
+                                    <i class="bi bi-chat text-primary me-2"></i>
+                                    Comentarios Internos
+                                </h6>
+                                <p class="mb-0">${reporte.comentarios}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="col-md-4">
+                        ${reporte.imagenes && reporte.imagenes.length > 0 ? `
+                            <div class="bg-light rounded-3 p-3 mb-4">
+                                <h6 class="fw-semibold mb-3">
+                                    <i class="bi bi-images text-primary me-2"></i>
+                                    Imágenes (${reporte.imagenes.length})
+                                </h6>
+                                <div class="row">
+                                    ${reporte.imagenes.map((imagen, index) => `
+                                        <div class="col-6 mb-2">
+                                            <img src="${imagen}" class="img-fluid rounded shadow-sm" 
+                                                 style="height: 80px; width: 100%; object-fit: cover;">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="bg-light rounded-3 p-3 mb-4 text-center">
+                                <i class="bi bi-images text-muted fs-1 mb-2"></i>
+                                <p class="text-muted mb-0">Sin imágenes</p>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+
+            reporteActual = reporte;
+        }
+
+        // Función para editar reporte
+        async function editarReporte(id) {
+            try {
+                mostrarLoading();
+                const response = await fetch(`/admin/api/reportes/${id}/detalles`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    mostrarFormularioEdicion(data.reporte);
+                    const modal = new bootstrap.Modal(document.getElementById('editarReporteModal'));
+                    modal.show();
+                } else {
+                    mostrarToast('Error al cargar el reporte para editar: ' + data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarToast('Error al cargar el reporte para editar', 'error');
+            } finally {
+                ocultarLoading();
+            }
+        }
+
+        function mostrarFormularioEdicion(reporte) {
+            const content = document.getElementById('formEditarContent');
+            
+            content.innerHTML = `
+                <input type="hidden" name="id" value="${reporte.idReporte}">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-12 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-heading text-primary me-2"></i>
+                                    Título del Reporte *
+                                </label>
+                                <input type="text" class="form-control" name="titulo" value="${reporte.titulo || ''}" required>
+                            </div>
+                            <div class="col-md-12 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-align-left text-primary me-2"></i>
+                                    Descripción *
+                                </label>
+                                <textarea class="form-control" name="descripcion" rows="4" required>${reporte.descripcion || ''}</textarea>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-tags text-primary me-2"></i>
+                                    Categoría *
+                                </label>
+                                <select class="form-select" name="categoria" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="infraestructura" ${reporte.categoria === 'infraestructura' ? 'selected' : ''}>🏗️ Infraestructura</option>
+                                    <option value="seguridad" ${reporte.categoria === 'seguridad' ? 'selected' : ''}>🛡️ Seguridad</option>
+                                    <option value="servicios" ${reporte.categoria === 'servicios' ? 'selected' : ''}>🔧 Servicios Públicos</option>
+                                    <option value="ambiente" ${reporte.categoria === 'ambiente' ? 'selected' : ''}>🌱 Medio Ambiente</option>
+                                    <option value="transporte" ${reporte.categoria === 'transporte' ? 'selected' : ''}>🚌 Transporte</option>
+                                    <option value="salud" ${reporte.categoria === 'salud' ? 'selected' : ''}>🏥 Salud</option>
+                                    <option value="educacion" ${reporte.categoria === 'educacion' ? 'selected' : ''}>📚 Educación</option>
+                                    <option value="otro" ${reporte.categoria === 'otro' ? 'selected' : ''}>📋 Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-exclamation-triangle text-primary me-2"></i>
+                                    Prioridad
+                                </label>
+                                <select class="form-select" name="prioridad">
+                                    <option value="baja" ${reporte.prioridad === 'baja' ? 'selected' : ''}>🟢 Baja</option>
+                                    <option value="media" ${reporte.prioridad === 'media' ? 'selected' : ''}>🟡 Media</option>
+                                    <option value="alta" ${reporte.prioridad === 'alta' ? 'selected' : ''}>🔴 Alta</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-geo-alt text-primary me-2"></i>
+                                    Ubicación *
+                                </label>
+                                <input type="text" class="form-control" name="ubicacion" value="${reporte.ubicacion || ''}" required>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-globe text-primary me-2"></i>
+                                    Latitud
+                                </label>
+                                <input type="number" step="any" class="form-control" name="latitud" value="${reporte.latitud || ''}">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-globe text-primary me-2"></i>
+                                    Longitud
+                                </label>
+                                <input type="number" step="any" class="form-control" name="longitud" value="${reporte.longitud || ''}">
+                            </div>
+                            <div class="col-md-12 mb-4">
+                                <label class="form-label">
+                                    <i class="bi bi-flag text-primary me-2"></i>
+                                    Estado
+                                </label>
+                                <select class="form-select" name="estado">
+                                    <option value="pendiente" ${reporte.estado === 'pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
+                                    <option value="en-progreso" ${reporte.estado === 'en-progreso' ? 'selected' : ''}>🔄 En Progreso</option>
+                                    <option value="resuelto" ${reporte.estado === 'resuelto' ? 'selected' : ''}>✅ Resuelto</option>
+                                    <option value="rechazado" ${reporte.estado === 'rechazado' ? 'selected' : ''}>❌ Rechazado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded-3 p-3 bg-light mb-3">
+                            <h6 class="fw-semibold mb-3">
+                                <i class="bi bi-person-badge text-primary me-2"></i>
+                                Asignación
+                            </h6>
+                            <div class="mb-3">
+                                <label class="form-label">Responsable</label>
+                                <input type="text" class="form-control" name="responsable" value="${reporte.responsable || ''}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Comentarios Internos</label>
+                                <textarea class="form-control" name="comentarios" rows="3">${reporte.comentarios || ''}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            reporteActual = reporte;
+        }
+
+        function editarReporteDesdeModal() {
+            if (reporteActual) {
+                const modalVer = bootstrap.Modal.getInstance(document.getElementById('verReporteModal'));
+                if (modalVer) modalVer.hide();
+                editarReporte(reporteActual.idReporte);
+            }
+        }
+
+        // Función para eliminar reporte
+        function eliminarReporte(idReporte, titulo) {
+            // Guardar información del reporte a eliminar
+            window.reporteAEliminar = { id: idReporte, titulo: titulo };
+            
+            // Actualizar el modal con la información
+            document.getElementById('reporteAEliminarTitulo').textContent = titulo;
+            
+            // Resetear el checkbox
+            document.getElementById('confirmarEliminacion').checked = false;
+            document.getElementById('btnConfirmarEliminar').disabled = true;
+            
+            // Mostrar el modal
+            const modal = new bootstrap.Modal(document.getElementById('confirmarEliminarModal'));
+            modal.show();
+        }
+
+        // Función para confirmar eliminación
+        async function confirmarEliminacionReporte() {
+            if (!window.reporteAEliminar) {
+                mostrarToast('Error: No hay reporte seleccionado para eliminar', 'error');
+                return;
+            }
+
+            try {
+                mostrarLoading();
+                
+                const response = await fetch(`/admin/api/reportes/${window.reporteAEliminar.id}/eliminar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    mostrarToast(`Reporte "${window.reporteAEliminar.titulo}" eliminado exitosamente`, 'success');
+                    
+                    // Cerrar el modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('confirmarEliminarModal'));
+                    if (modal) modal.hide();
+                    
+                    // Limpiar la variable
+                    window.reporteAEliminar = null;
+                    
+                    // Recargar la página después de un breve delay
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    mostrarToast(`Error al eliminar el reporte: ${data.error || 'Error desconocido'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Error eliminando reporte:', error);
+                mostrarToast('Error de conexión al eliminar el reporte', 'error');
+            } finally {
+                ocultarLoading();
+            }
+        }
+
+        // Funciones de filtrado
+        function limpiarFiltros() {
+            document.getElementById('filtroEstado').value = '';
+            document.getElementById('filtroCategoria').value = '';
+            document.getElementById('buscarReporte').value = '';
+            filtrarReportes();
+            mostrarToast('Filtros limpiados', 'info');
+        }
+
+        function filtrarReportes() {
+            const filtroEstado = document.getElementById('filtroEstado').value.toLowerCase();
+            const filtroCategoria = document.getElementById('filtroCategoria').value.toLowerCase();
+            const busqueda = document.getElementById('buscarReporte').value.toLowerCase();
+            
+            const filas = document.querySelectorAll('#tablaReportes tbody tr');
+            let reportesVisibles = 0;
+            
+            filas.forEach(fila => {
+                if (fila.querySelector('td[colspan]')) return;
+                
+                const celdas = fila.children;
+                const estado = celdas[5]?.textContent?.toLowerCase() || '';
+                const categoria = celdas[2]?.textContent?.toLowerCase() || '';
+                const titulo = celdas[1]?.textContent?.toLowerCase() || '';
+                const ubicacion = celdas[4]?.textContent?.toLowerCase() || '';
+                
+                const coincideEstado = !filtroEstado || estado.includes(filtroEstado);
+                const coincideCategoria = !filtroCategoria || categoria.includes(filtroCategoria);
+                const coincideBusqueda = !busqueda || titulo.includes(busqueda) || ubicacion.includes(busqueda);
+                
+                if (coincideEstado && coincideCategoria && coincideBusqueda) {
+                    fila.style.display = '';
+                    reportesVisibles++;
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+            
+            // Mostrar mensaje si no hay resultados
+            const tabla = document.getElementById('tablaReportes');
+            let filaSinResultados = tabla.querySelector('.sin-resultados');
+            
+            if (reportesVisibles === 0 && (filtroEstado || filtroCategoria || busqueda)) {
+                if (!filaSinResultados) {
+                    filaSinResultados = document.createElement('tr');
+                    filaSinResultados.className = 'sin-resultados';
+                    filaSinResultados.innerHTML = `
+                        <td colspan="9" class="text-center py-5">
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                    <i class="bi bi-search fs-1 text-muted"></i>
+                                </div>
+                                <h6 class="text-muted mb-2">No se encontraron resultados</h6>
+                                <p class="text-muted mb-3">Intenta con otros criterios de búsqueda</p>
+                                <button type="button" class="btn btn-outline-secondary" onclick="limpiarFiltros()">
+                                    <i class="bi bi-eraser me-2"></i>
+                                    Limpiar Filtros
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tabla.querySelector('tbody').appendChild(filaSinResultados);
+                }
+                filaSinResultados.style.display = '';
+            } else if (filaSinResultados) {
+                filaSinResultados.style.display = 'none';
+            }
+        }
+
+        // Funciones placeholder
+        function exportarReportes() {
+            mostrarToast('Función de exportar en desarrollo. Se exportarán todos los reportes filtrados.', 'info');
+        }
+
+        function verMapaGeneral() {
+            mostrarToast('Función de mapa general en desarrollo. Se mostrará un mapa con todos los reportes.', 'info');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filtros en tiempo real
+            document.getElementById('filtroEstado')?.addEventListener('change', filtrarReportes);
+            document.getElementById('filtroCategoria')?.addEventListener('change', filtrarReportes);
+            document.getElementById('buscarReporte')?.addEventListener('input', filtrarReportes);
+            
+            // Checkbox para habilitar botón de eliminar
+            document.getElementById('confirmarEliminacion')?.addEventListener('change', function() {
+                document.getElementById('btnConfirmarEliminar').disabled = !this.checked;
+            });
+
+            // Event listener para botón de confirmar eliminación
+            document.getElementById('btnConfirmarEliminar')?.addEventListener('click', confirmarEliminacionReporte);
+            
+            // Event listeners para botones de eliminar reporte
+            const deleteButtons = document.querySelectorAll('.delete-reporte-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const reporteId = this.getAttribute('data-reporte-id');
+                    const reporteTitulo = this.getAttribute('data-reporte-titulo');
+                    eliminarReporte(reporteId, reporteTitulo);
+                });
+            });
+            
+            // Formulario nuevo reporte
+            document.getElementById('formNuevoReporte')?.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    mostrarLoading();
+                    const formData = new FormData(this);
+                    
+                    const response = await fetch('/admin/api/reportes/crear', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            titulo: formData.get('titulo'),
+                            descripcion: formData.get('descripcion'),
+                            categoria: formData.get('categoria'),
+                            ubicacion: formData.get('ubicacion'),
+                            latitud: formData.get('latitud'),
+                            longitud: formData.get('longitud'),
+                            prioridad: formData.get('prioridad'),
+                            idUsuario: formData.get('idUsuario'),
+                            responsable: formData.get('responsable'),
+                            comentarios: formData.get('comentarios')
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        mostrarToast('Reporte creado exitosamente', 'success');
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        mostrarToast('Error al crear el reporte: ' + data.error, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    mostrarToast('Error al crear el reporte', 'error');
+                } finally {
+                    ocultarLoading();
+                }
+            });
+
+            // Formulario editar reporte
+            document.getElementById('formEditarReporte')?.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    mostrarLoading();
+                    const formData = new FormData(this);
+                    const id = formData.get('id');
+                    
+                    const response = await fetch(`/admin/api/reportes/${id}/editar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            titulo: formData.get('titulo'),
+                            descripcion: formData.get('descripcion'),
+                            categoria: formData.get('categoria'),
+                            ubicacion: formData.get('ubicacion'),
+                            latitud: formData.get('latitud'),
+                            longitud: formData.get('longitud'),
+                            prioridad: formData.get('prioridad'),
+                            estado: formData.get('estado'),
+                            responsable: formData.get('responsable'),
+                            comentarios: formData.get('comentarios')
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        mostrarToast('Reporte actualizado exitosamente', 'success');
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('editarReporteModal'));
+                        if (modal) modal.hide();
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        mostrarToast('Error al actualizar el reporte: ' + data.error, 'error');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    mostrarToast('Error al actualizar el reporte', 'error');
+                } finally {
+                    ocultarLoading();
+                }
+            });
+        });
+    </script>
+    
+    <!-- Sistema de Temas -->
+    <script src="/js/theme-switcher.js"></script>
+    
+</body>
+</html>

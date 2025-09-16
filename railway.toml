@@ -1,0 +1,22 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+# Configuración para múltiples servicios
+[services.mobile-backend]
+source = "./mobile-backend"
+port = 3001
+
+[services.web-backend]
+source = "./web-backend"
+port = 3002
+
+[services.web-app]
+source = "./web-app"
+port = 3000

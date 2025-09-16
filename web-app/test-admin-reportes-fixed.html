@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Reportes - Corregido</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Test Admin Reportes - Problemas Corregidos</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5>✅ Problemas Resueltos</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <strong>Google Fonts removido</strong> - No más errores de CSP
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <strong>Fuentes del sistema</strong> - Mejor compatibilidad
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <strong>Modal de confirmación</strong> - Eliminación segura
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <strong>Loading overlay</strong> - Feedback visual
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <strong>Toast notifications</strong> - Mensajes claros
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5>🧪 Test de Funcionalidad</h5>
+                    </div>
+                    <div class="card-body">
+                        <button onclick="testEliminarReporte()" class="btn btn-danger me-2 mb-2">
+                            <i class="bi bi-trash me-2"></i>
+                            Test Eliminar Reporte
+                        </button>
+                        <button onclick="testMostrarToast()" class="btn btn-warning me-2 mb-2">
+                            <i class="bi bi-bell me-2"></i>
+                            Test Toast
+                        </button>
+                        <button onclick="testLoading()" class="btn btn-info me-2 mb-2">
+                            <i class="bi bi-hourglass me-2"></i>
+                            Test Loading
+                        </button>
+                        <button onclick="testModal()" class="btn btn-success me-2 mb-2">
+                            <i class="bi bi-window me-2"></i>
+                            Test Modal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5>🔗 Navegación a Admin</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="/admin/reportes" class="btn btn-primary me-2">
+                            <i class="bi bi-flag me-2"></i>
+                            Ir a Reportes Admin
+                        </a>
+                        <a href="/admin" class="btn btn-outline-secondary me-2">
+                            <i class="bi bi-speedometer2 me-2"></i>
+                            Dashboard Admin
+                        </a>
+                        <a href="/admin/usuarios" class="btn btn-outline-secondary me-2">
+                            <i class="bi bi-people me-2"></i>
+                            Usuarios Admin
+                        </a>
+                        <a href="/admin/comunidades" class="btn btn-outline-secondary me-2">
+                            <i class="bi bi-house-door me-2"></i>
+                            Comunidades Admin
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Confirmación de Eliminación -->
+        <div class="modal fade" id="confirmarEliminarModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title fw-semibold">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Confirmar Eliminación
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="alert alert-danger border-0 bg-danger bg-opacity-10">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-exclamation-triangle text-danger me-3 fs-4"></i>
+                                <div>
+                                    <strong class="text-danger">¡ADVERTENCIA!</strong>
+                                    <p class="mb-0 text-danger">Esta acción es irreversible y eliminará permanentemente todos los datos.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p class="fw-semibold mb-3">¿Estás seguro de que deseas eliminar el siguiente reporte?</p>
+                        
+                        <div class="bg-light p-3 rounded-3 mb-4">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-flag text-primary me-3"></i>
+                                <div>
+                                    <strong id="reporteAEliminarTitulo" class="text-dark">Reporte de Prueba</strong>
+                                    <div class="text-muted small">Se eliminará toda la información asociada</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="confirmarEliminacion" required>
+                            <label class="form-check-label fw-semibold" for="confirmarEliminacion">
+                                Confirmo que entiendo las consecuencias y deseo proceder
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x me-2"></i>
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn btn-danger" id="btnConfirmarEliminar" onclick="confirmarEliminacionTest()" disabled>
+                            <i class="bi bi-trash me-2"></i>
+                            Eliminar Permanentemente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay d-none">
+            <div class="text-center">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <h6 class="text-white">Procesando...</h6>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+    </div>
+
+    <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .toast-container .toast {
+            background: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Función para mostrar loading
+        function mostrarLoading() {
+            document.getElementById('loadingOverlay').classList.remove('d-none');
+        }
+
+        // Función para ocultar loading
+        function ocultarLoading() {
+            document.getElementById('loadingOverlay').classList.add('d-none');
+        }
+
+        // Función para mostrar toast
+        function mostrarToast(mensaje, tipo = 'info') {
+            const toastContainer = document.querySelector('.toast-container');
+            
+            const toast = document.createElement('div');
+            toast.className = `toast show`;
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <i class="bi bi-${tipo === 'success' ? 'check-circle text-success' : tipo === 'warning' ? 'exclamation-triangle text-warning' : tipo === 'error' ? 'x-circle text-danger' : 'info-circle text-info'} me-2"></i>
+                    <strong class="me-auto">${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">
+                    ${mensaje}
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Auto-ocultar después de 4 segundos
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 4000);
+        }
+
+        // Función para eliminar reporte (test)
+        function eliminarReporte(idReporte, titulo) {
+            // Guardar información del reporte a eliminar
+            window.reporteAEliminar = { id: idReporte, titulo: titulo };
+            
+            // Actualizar el modal con la información
+            document.getElementById('reporteAEliminarTitulo').textContent = titulo;
+            
+            // Resetear el checkbox
+            document.getElementById('confirmarEliminacion').checked = false;
+            document.getElementById('btnConfirmarEliminar').disabled = true;
+            
+            // Mostrar el modal
+            const modal = new bootstrap.Modal(document.getElementById('confirmarEliminarModal'));
+            modal.show();
+        }
+
+        // Función para confirmar eliminación (test)
+        async function confirmarEliminacionTest() {
+            if (!window.reporteAEliminar) {
+                mostrarToast('Error: No hay reporte seleccionado para eliminar', 'error');
+                return;
+            }
+
+            try {
+                mostrarLoading();
+                
+                // Simular proceso de eliminación
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                mostrarToast(`Reporte "${window.reporteAEliminar.titulo}" eliminado exitosamente (SIMULADO)`, 'success');
+                
+                // Cerrar el modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('confirmarEliminarModal'));
+                if (modal) modal.hide();
+                
+                // Limpiar la variable
+                window.reporteAEliminar = null;
+                
+            } catch (error) {
+                console.error('Error eliminando reporte:', error);
+                mostrarToast('Error de conexión al eliminar el reporte', 'error');
+            } finally {
+                ocultarLoading();
+            }
+        }
+
+        // Funciones de prueba
+        function testEliminarReporte() {
+            eliminarReporte(123, 'Reporte de Prueba para Eliminar');
+        }
+
+        function testMostrarToast() {
+            mostrarToast('Este es un mensaje de prueba del sistema de notificaciones', 'success');
+        }
+
+        function testLoading() {
+            mostrarLoading();
+            setTimeout(() => ocultarLoading(), 2000);
+        }
+
+        function testModal() {
+            eliminarReporte(999, 'Reporte de Prueba del Modal');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Test Admin Reportes Corregido inicializado');
+            
+            // Checkbox para habilitar botón de eliminar
+            document.getElementById('confirmarEliminacion')?.addEventListener('change', function() {
+                document.getElementById('btnConfirmarEliminar').disabled = !this.checked;
+            });
+        });
+    </script>
+</body>
+</html>

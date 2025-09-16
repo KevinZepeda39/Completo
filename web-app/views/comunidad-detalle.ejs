@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= comunidad.titulo %> - MiCiudadSV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --primary-light: #4d94ff;
+            --primary-dark: #004499;
+            --secondary-color: #f8f9fa;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-color: #343a40;
+            --light-color: #ffffff;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: #ffffff !important;
+            border-bottom: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.8rem 0;
+        }
+        
+        [data-theme="dark"] .navbar {
+            background-color: #121212 !important;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: #0066cc !important;
+            font-size: 1.4rem;
+        }
+        
+        [data-theme="dark"] .navbar-brand {
+            color: #4d94ff !important;
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            color: #343a40 !important;
+            padding: 0.5rem 1rem !important;
+        }
+        
+        [data-theme="dark"] .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: #0066cc !important;
+        }
+        
+        [data-theme="dark"] .navbar-nav .nav-link:hover {
+            color: #4d94ff !important;
+        }
+        
+        .navbar-nav .nav-link.active {
+            color: #0066cc !important;
+            font-weight: 600;
+        }
+        
+        [data-theme="dark"] .navbar-nav .nav-link.active {
+            color: #4d94ff !important;
+        }
+        
+        /* Header de la comunidad */
+        .community-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 0;
+        }
+        
+        .community-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+        
+        .community-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .community-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.9;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .community-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        /* Botones de acción */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-join {
+            background: var(--success-color);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-join:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+            color: white;
+        }
+        
+        .btn-creator {
+            background: linear-gradient(135deg, var(--warning-color), #ffa000);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: default;
+        }
+        
+        .btn-leave {
+            background: var(--danger-color);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-leave:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+            color: white;
+        }
+        
+        .btn-back {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+        
+        /* Contenido principal */
+        .main-content {
+            padding: 3rem 0;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+        
+        /* Lista de miembros */
+        .member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .member-item:hover {
+            background: #f8f9fa;
+            border-color: var(--primary-color);
+        }
+        
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .member-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .member-name {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .member-meta {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .admin-badge {
+            background: var(--warning-color);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .creator-badge {
+            background: linear-gradient(135deg, var(--warning-color), #ffa000);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* Comentarios */
+        .comment-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .comment-time {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .comment-content {
+            color: var(--dark-color);
+            line-height: 1.5;
+        }
+        
+        /* Formulario de comentarios */
+        .comment-form {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        /* Tags */
+        .tags-container {
+            margin-top: 1rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: rgba(0, 102, 204, 0.1);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        /* Alertas */
+        .alert {
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.05));
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        /* Estados vacíos */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #6c757d;
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .community-title {
+                font-size: 2rem;
+            }
+            
+            .community-meta {
+                gap: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-join,
+            .btn-leave,
+            .btn-creator,
+            .btn-back {
+                text-align: center;
+                width: 100%;
+            }
+            
+            .member-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .main-content {
+                padding: 2rem 0;
+            }
+            
+            .content-card {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Animaciones */
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        /* Estilos para avatares de comentarios */
+        .avatar-sm {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+        
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        
+        .comment-item {
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--light-color);
+            border: 1px solid #e3e6f0;
+            transition: all 0.3s ease;
+        }
+        
+        .comment-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-city me-2"></i>
+                MiCiudadSV
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reportes">
+                            <i class="fas fa-list me-1"></i> Reportes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/comunidades">
+                            <i class="fas fa-users me-1"></i> Comunidades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/comunidades/chat/global">
+                            <i class="fas fa-comments me-1"></i> Chat Global
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <!-- Botón de cambio de tema -->
+                    <li class="nav-item me-3">
+                        <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                            <i class="bi bi-moon-stars"></i>
+                        </button>
+                    </li>
+                    <% if (loggedIn && usuario) { %>
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <%= usuario.nombre %>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/dashboard">
+                                    <i class="bi bi-tachometer me-2"></i>Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/dashboard/perfil">
+                                    <i class="bi bi-person me-2"></i>Ver Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/reportes">
+                                    <i class="bi bi-file-text me-2"></i>Reportes
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="/auth/logout" method="POST" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger border-0 bg-transparent w-100 text-start">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/login">
+                            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/registro">
+                            <i class="fas fa-user-plus me-1"></i> Registrarse
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header de la Comunidad -->
+    <div class="community-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="community-info">
+                        <% 
+                        let categoryEmoji = '📋';
+                        let categoryName = comunidad.categoria || 'general';
+                        
+                        switch(categoryName) {
+                            case 'tecnologia': categoryEmoji = '💻'; break;
+                            case 'deportes': categoryEmoji = '⚽'; break;
+                            case 'cultura': categoryEmoji = '🎨'; break;
+                            case 'educacion': categoryEmoji = '📚'; break;
+                            case 'salud': categoryEmoji = '🏥'; break;
+                            default: categoryEmoji = '📋';
+                        }
+                        %>
+                        
+                        <div class="category-badge">
+                            <%= categoryEmoji %> <%= categoryName.charAt(0).toUpperCase() + categoryName.slice(1) %>
+                        </div>
+                        
+                        <h1 class="community-title"><%= comunidad.titulo %></h1>
+                        
+                        <% if (comunidad.estado === 'suspendida') { %>
+                            <div class="alert alert-warning d-inline-block mb-3" role="alert">
+                                <i class="fas fa-pause-circle me-2"></i>
+                                <strong>Comunidad Suspendida</strong> - No se permiten nuevos comentarios
+                            </div>
+                        <% } else if (comunidad.estado === 'eliminada') { %>
+                            <div class="alert alert-danger d-inline-block mb-3" role="alert">
+                                <i class="fas fa-times-circle me-2"></i>
+                                <strong>Comunidad Eliminada</strong> - No disponible
+                            </div>
+                        <% } %>
+                        
+                        <p class="community-description">
+                            <%= comunidad.descripcion %>
+                        </p>
+                        
+                        <div class="community-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-user"></i>
+                                <span>Creado por <%= comunidad.creadorNombre || 'Usuario Anónimo' %></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span><%= new Date(comunidad.fechaCreacion).toLocaleDateString('es-ES', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                }) %></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-users"></i>
+                                <span><%= comunidad.totalMiembros || 0 %> miembros</span>
+                            </div>
+                        </div>
+                        
+                        <% if (comunidad.tags) { %>
+                        <div class="tags-container">
+                            <% 
+                            const tags = comunidad.tags.split(',');
+                            tags.forEach(function(tag) { 
+                                if (tag.trim()) {
+                            %>
+                            <span class="tag">#<%= tag.trim() %></span>
+                            <% 
+                                }
+                            }); 
+                            %>
+                        </div>
+                        <% } %>
+                        
+                        <div class="action-buttons">
+                            <% if (loggedIn) { %>
+                                <% if (esCreador) { %>
+                                    <button class="btn btn-creator" disabled>
+                                        <i class="fas fa-crown me-2"></i>
+                                        Creador de la Comunidad
+                                    </button>
+                                <% } else if (!esMiembro) { %>
+                                    <form action="/comunidades/<%= comunidad.idComunidad %>/unirse" method="POST" style="display: inline;" id="unirseForm">
+                                        <button type="submit" class="btn btn-join">
+                                            <i class="fas fa-plus me-2"></i>
+                                            Unirse a la Comunidad
+                                        </button>
+                                    </form>
+                                <% } else { %>
+                                    <form action="/comunidades/<%= comunidad.idComunidad %>/salir" method="POST" style="display: inline;" id="salirComunidadForm">
+                                        <button type="submit" class="btn btn-leave">
+                                            <i class="fas fa-sign-out-alt me-2"></i>
+                                            Salirse de la Comunidad
+                                        </button>
+                                    </form>
+                                <% } %>
+                            <% } else { %>
+                                <a href="/auth/login?redirect=/comunidades/<%= comunidad.idComunidad %>" class="btn btn-join">
+                                    <i class="fas fa-sign-in-alt me-2"></i>
+                                    Inicia sesión para unirte
+                                </a>
+                            <% } %>
+                            
+                            <a href="/comunidades" class="btn-back">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Volver a Comunidades
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Alertas -->
+            <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                <%= mensaje %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <% } %>
+            
+            <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <%= error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <% } %>
+
+            <div class="row">
+                <!-- Columna principal - Comentarios -->
+                <div class="col-lg-8">
+                    <!-- Formulario para comentar (solo para miembros y creadores) -->
+                    <% if (loggedIn && (esMiembro || esCreador)) { %>
+                    <div class="content-card" id="comentarios">
+                        <h3 class="section-title">
+                            <i class="fas fa-comment-dots"></i>
+                            Agregar Comentario
+                            <% if (esCreador) { %>
+                                <span class="badge bg-warning ms-2">
+                                    <i class="fas fa-crown me-1"></i>
+                                    Creador
+                                </span>
+                            <% } else { %>
+                                <span class="badge bg-success ms-2">
+                                    <i class="fas fa-check me-1"></i>
+                                    Miembro
+                                </span>
+                            <% } %>
+                        </h3>
+                        
+                        <% if (comunidad.estado === 'suspendida') { %>
+                            <!-- Comunidad suspendida - No se pueden comentar -->
+                            <div class="alert alert-warning" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
+                                    <div>
+                                        <h5 class="alert-heading mb-2">
+                                            <i class="fas fa-pause-circle me-2"></i>
+                                            Comunidad Suspendida
+                                        </h5>
+                                        <p class="mb-0">
+                                            Esta comunidad ha sido suspendida por los administradores. 
+                                            No se pueden enviar nuevos comentarios hasta que se resuelva la situación.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else if (comunidad.estado === 'eliminada') { %>
+                            <!-- Comunidad eliminada -->
+                            <div class="alert alert-danger" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-times-circle fa-2x me-3 text-danger"></i>
+                                    <div>
+                                        <h5 class="alert-heading mb-2">
+                                            <i class="fas fa-trash me-2"></i>
+                                            Comunidad No Disponible
+                                        </h5>
+                                        <p class="mb-0">
+                                            Esta comunidad ha sido eliminada y no está disponible para comentarios.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <!-- Formulario de comentarios normal -->
+                            <form action="/comunidades/<%= comunidad.idComunidad %>/comentar" method="POST" class="comment-form" id="comentarioForm">
+                                <div class="mb-3">
+                                    <textarea name="comentario" class="form-control" rows="4" 
+                                              placeholder="¡Comparte tus ideas y participa en la conversación!" 
+                                              required minlength="5" maxlength="1000" id="comentarioTextarea"></textarea>
+                                    <div class="form-text">
+                                        <% if (esCreador) { %>
+                                            <i class="fas fa-crown text-warning me-1"></i>
+                                            Eres el creador de esta comunidad
+                                        <% } else { %>
+                                            <i class="fas fa-check-circle text-success me-1"></i>
+                                            Eres miembro de esta comunidad
+                                        <% } %>
+                                        <span class="float-end">
+                                            <span id="charCount">0</span>/1000 caracteres
+                                        </span>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="btnPublicar">
+                                    <i class="fas fa-paper-plane me-2"></i>
+                                    Publicar Comentario
+                                </button>
+                            </form>
+                        <% } %>
+                    </div>
+                    <% } else if (loggedIn && !esMiembro && !esCreador) { %>
+                    <div class="content-card" id="comentarios">
+                        <div class="text-center py-4">
+                            <i class="fas fa-users text-primary mb-3" style="font-size: 4rem;"></i>
+                            <h4>Únete para Participar</h4>
+                            <p class="text-muted mb-4">
+                                Esta comunidad tiene <strong><%= comunidad.totalMiembros || 0 %> miembros</strong> que comparten ideas y experiencias.
+                                <br>¡Únete ahora y comienza a participar!
+                            </p>
+                            <form action="/comunidades/<%= comunidad.idComunidad %>/unirse" method="POST" style="display: inline;" id="unirseForm2">
+                                <button type="submit" class="btn btn-join btn-lg">
+                                    <i class="fas fa-plus me-2"></i>
+                                    Unirse y Comenzar a Comentar
+                                </button>
+                            </form>
+                            <div class="mt-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Al unirte podrás comentar inmediatamente
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <% } else { %>
+                    <div class="content-card" id="comentarios">
+                        <div class="text-center py-4">
+                            <i class="fas fa-sign-in-alt text-muted mb-3" style="font-size: 4rem;"></i>
+                            <h4>Inicia Sesión para Participar</h4>
+                            <p class="text-muted mb-4">
+                                Esta comunidad tiene <strong><%= comunidad.totalMiembros || 0 %> miembros</strong> activos.
+                                <br>Crea una cuenta para unirte y participar en la conversación.
+                            </p>
+                            <a href="/auth/login?redirect=/comunidades/<%= comunidad.idComunidad %>" class="btn btn-primary btn-lg me-2">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Iniciar Sesión
+                            </a>
+                            <a href="/auth/registro?redirect=/comunidades/<%= comunidad.idComunidad %>" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>
+                                Registrarse
+                            </a>
+                        </div>
+                    </div>
+                    <% } %>
+
+                    <!-- Lista de Comentarios -->
+                    <div class="content-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-comments"></i>
+                            Comentarios (<%= comentarios.length %>)
+                        </h3>
+                        
+                        <!-- Contenedor de comentarios que se actualiza dinámicamente -->
+                        <div class="comments-list">
+                        <% if (comentarios && comentarios.length > 0) { %>
+                            <% comentarios.forEach(function(comentario) { %>
+                                <div class="comment-item mb-3">
+                                    <div class="d-flex">
+                                        <div class="avatar-sm me-3">
+                                            <div class="avatar-placeholder">
+                                                <%= comentario.autorNombre ? comentario.autorNombre.charAt(0).toUpperCase() : 'U' %>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <div class="comment-header d-flex justify-content-between align-items-start mb-2">
+                                                <div>
+                                                    <h6 class="mb-1">
+                                        <%= comentario.autorNombre || 'Usuario Anónimo' %>
+                                        <% if (comentario.autorId === comunidad.creadorId) { %>
+                                            <span class="badge bg-warning text-dark ms-2">
+                                                <i class="fas fa-crown me-1"></i>
+                                                Creador
+                                            </span>
+                                        <% } %>
+                                                    </h6>
+                                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>
+                                        <%= new Date(comentario.fechaComentario).toLocaleDateString('es-ES', {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }) %>
+                                                    </small>
+                                                </div>
+                                </div>
+                                <div class="comment-content">
+                                                <p class="mb-0"><%= comentario.comentario %></p>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <% }); %>
+                        <% } else { %>
+                                <div class="text-center text-muted py-4">
+                                    <i class="fas fa-comments fa-3x mb-3"></i>
+                                <h4>No hay comentarios aún</h4>
+                                <p>
+                                    <% if (loggedIn && (esMiembro || esCreador)) { %>
+                                        ¡Sé el primero en comentar en esta comunidad!
+                                    <% } else if (loggedIn) { %>
+                                        Únete a la comunidad para ser el primero en comentar
+                                    <% } else { %>
+                                        Inicia sesión y únete para comentar
+                                    <% } %>
+                                </p>
+                            </div>
+                        <% } %>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar - Información y Miembros -->
+                <div class="col-lg-4">
+                    <!-- Información de la Comunidad -->
+                    <div class="content-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Información
+                        </h3>
+                        
+                        <div class="mb-3">
+                            <strong>Estado de Membresía:</strong>
+                            <% if (loggedIn) { %>
+                                <% if (esCreador) { %>
+                                    <span class="badge bg-warning ms-2">
+                                        <i class="fas fa-crown me-1"></i>
+                                        Creador (Administrador)
+                                    </span>
+                                <% } else if (esMiembro) { %>
+                                    <span class="badge bg-success ms-2">
+                                        <i class="fas fa-check me-1"></i>
+                                        Miembro
+                                        <% if (rolEnComunidad === 'administrador') { %>
+                                            (Administrador)
+                                        <% } %>
+                                    </span>
+                                <% } else { %>
+                                    <span class="badge bg-secondary ms-2">
+                                        <i class="fas fa-user-plus me-1"></i>
+                                        No miembro
+                                    </span>
+                                <% } %>
+                            <% } else { %>
+                                <span class="badge bg-warning ms-2">
+                                    <i class="fas fa-sign-in-alt me-1"></i>
+                                    Inicia sesión
+                                </span>
+                            <% } %>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Total de miembros:</strong>
+                            <span class="ms-2"><%= comunidad.totalMiembros || 0 %></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Creado:</strong>
+                            <span class="ms-2">
+                                <%= new Date(comunidad.fechaCreacion).toLocaleDateString('es-ES', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                }) %>
+                            </span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <strong>Categoría:</strong>
+                            <span class="ms-2 text-capitalize"><%= comunidad.categoria || 'General' %></span>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Miembros -->
+                    <div class="content-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-users"></i>
+                            Miembros (<%= miembros.length %>)
+                        </h3>
+                        
+                        <% if (miembros && miembros.length > 0) { %>
+                            <% miembros.slice(0, 10).forEach(function(miembro) { %>
+                            <div class="member-item">
+                                <div class="member-info">
+                                    <div class="member-avatar">
+                                        <%= miembro.nombre ? miembro.nombre.charAt(0).toUpperCase() : 'U' %>
+                                    </div>
+                                    <div class="member-details">
+                                        <div class="member-name">
+                                            <%= miembro.nombre || 'Usuario Anónimo' %>
+                                            <% if (miembro.id === comunidad.creadorId) { %>
+                                                <i class="fas fa-crown text-warning ms-1" title="Creador"></i>
+                                            <% } %>
+                                        </div>
+                                        <div class="member-meta">
+                                            Miembro desde <%= new Date(miembro.fechaUnion).toLocaleDateString('es-ES', {
+                                                year: 'numeric',
+                                                month: 'short'
+                                            }) %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% if (miembro.id === comunidad.creadorId) { %>
+                                    <div class="creator-badge">
+                                        <i class="fas fa-crown me-1"></i>
+                                        Creador
+                                    </div>
+                                <% } else if (miembro.rolEnComunidad === 'administrador') { %>
+                                    <div class="admin-badge">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        Admin
+                                    </div>
+                                <% } %>
+                            </div>
+                            <% }); %>
+                            
+                            <% if (miembros.length > 10) { %>
+                            <div class="text-center mt-3">
+                                <small class="text-muted">
+                                    Y <%= miembros.length - 10 %> miembros más...
+                                </small>
+                            </div>
+                            <% } %>
+                        <% } else { %>
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-user-friends"></i>
+                                </div>
+                                <p>No hay miembros aún</p>
+                                <% if (loggedIn && !esMiembro && !esCreador) { %>
+                                    <form action="/comunidades/<%= comunidad.idComunidad %>/unirse" method="POST">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-plus me-1"></i>
+                                            Ser el primero
+                                        </button>
+                                    </form>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Acciones Rápidas -->
+                    <div class="content-card">
+                        <h3 class="section-title">
+                            <i class="fas fa-bolt"></i>
+                            Acciones Rápidas
+                        </h3>
+                        
+                        <div class="d-grid gap-2">
+                            <a href="/comunidades" class="btn btn-outline-primary">
+                                <i class="fas fa-users me-2"></i>
+                                Explorar Comunidades
+                            </a>
+                            
+                            <% if (loggedIn) { %>
+                                <a href="/comunidades/crear" class="btn btn-outline-success">
+                                    <i class="fas fa-plus me-2"></i>
+                                    Crear Comunidad
+                                </a>
+                                
+                                <a href="/comunidades/chat/global" class="btn btn-outline-info">
+                                    <i class="fas fa-comments me-2"></i>
+                                    Chat Global
+                                </a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-dismiss alertas
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+            
+            // Contador de caracteres para comentarios
+            const textarea = document.getElementById('comentarioTextarea');
+            const charCount = document.getElementById('charCount');
+            
+            if (textarea && charCount) {
+                textarea.addEventListener('input', function() {
+                    const count = this.value.length;
+                    charCount.textContent = count;
+                    
+                    // Cambiar color según el límite
+                    if (count > 900) {
+                        charCount.style.color = '#dc3545'; // Rojo
+                    } else if (count > 800) {
+                        charCount.style.color = '#ffc107'; // Amarillo
+                    } else {
+                        charCount.style.color = '#6c757d'; // Normal
+                    }
+                });
+            }
+            
+            // Manejo del formulario de salir de la comunidad
+            const salirForm = document.getElementById('salirComunidadForm');
+            if (salirForm) {
+                salirForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                    
+                    if (!confirm('¿Estás seguro de que quieres salirte de esta comunidad?\n\nPerderás acceso a todos los comentarios y tendrás que volver a unirte para participar.')) {
+                        return;
+                    }
+                    
+                    const btn = this.querySelector('button');
+                    const originalText = btn.innerHTML;
+                    
+                    try {
+                        // Mostrar estado de carga
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saliendo...';
+                        btn.disabled = true;
+                        
+                        // Enviar petición AJAX
+                        const response = await fetch(`/comunidades/<%= comunidad.idComunidad %>/salir`, {
+                            method: 'POST',
+                            credentials: 'same-origin'
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            // Mostrar mensaje de éxito
+                            showAlert('success', result.message || 'Has salido exitosamente de la comunidad');
+                            
+                            // Redirigir a la página de comunidades después de 2 segundos
+                            setTimeout(() => {
+                                window.location.href = '/comunidades';
+                            }, 2000);
+                            
+                        } else {
+                            // Mostrar error
+                            showAlert('danger', result.error || 'Error al salir de la comunidad');
+                            btn.innerHTML = originalText;
+                            btn.disabled = false;
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showAlert('danger', 'Error de conexión. Inténtalo de nuevo.');
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }
+                });
+            }
+            
+            // Manejo del formulario de unirse a la comunidad
+            const unirseForm = document.getElementById('unirseForm');
+            if (unirseForm) {
+                unirseForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                        const btn = this.querySelector('button');
+                    const originalText = btn.innerHTML;
+                    
+                    try {
+                        // Mostrar estado de carga
+                        btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uniéndose...';
+                        btn.disabled = true;
+                        
+                        // Enviar petición AJAX
+                        const response = await fetch(`/comunidades/<%= comunidad.idComunidad %>/unirse`, {
+                            method: 'POST',
+                            credentials: 'same-origin'
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            // Mostrar mensaje de éxito
+                            showAlert('success', result.message || 'Te has unido exitosamente a la comunidad');
+                            
+                            // Recargar la página después de 2 segundos para actualizar el estado
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000);
+                            
+                        } else {
+                            // Mostrar error
+                            showAlert('danger', result.error || 'Error al unirse a la comunidad');
+                            btn.innerHTML = originalText;
+                            btn.disabled = false;
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showAlert('danger', 'Error de conexión. Inténtalo de nuevo.');
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }
+                });
+            }
+            
+            // Función para mostrar alertas
+            function showAlert(type, message) {
+                // Remover alertas existentes
+                const existingAlerts = document.querySelectorAll('.alert');
+                existingAlerts.forEach(alert => alert.remove());
+                
+                // Crear nueva alerta
+                const alertHTML = `
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+                
+                // Insertar en la parte superior del contenido
+                const container = document.querySelector('.comments-section') || document.querySelector('.container');
+                if (container) {
+                    container.insertAdjacentHTML('afterbegin', alertHTML);
+                    
+                    // Scroll to alert
+                    const newAlert = container.querySelector('.alert');
+                    if (newAlert) {
+                        newAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+                
+                // Auto-dismiss después de 5 segundos
+                setTimeout(() => {
+                    const alerts = document.querySelectorAll('.alert');
+                    alerts.forEach(alert => {
+                        const bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    });
+                }, 5000);
+            }
+            
+            // Función para recargar comentarios
+            function cargarComentarios() {
+                fetch(`/comunidades/<%= comunidad.idComunidad %>/api/comentarios`, {
+                    credentials: 'same-origin'
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.comentarios) {
+                            actualizarListaComentarios(data.comentarios);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error cargando comentarios:', error);
+                    });
+            }
+            
+            // Función para actualizar la lista de comentarios
+            function actualizarListaComentarios(comentarios) {
+                const comentariosContainer = document.querySelector('.comments-list');
+                if (!comentariosContainer) return;
+                
+                // Limpiar comentarios existentes
+                comentariosContainer.innerHTML = '';
+                
+                if (comentarios.length === 0) {
+                    comentariosContainer.innerHTML = `
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-comments fa-3x mb-3"></i>
+                            <p>¡Sé el primero en comentar!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Agregar cada comentario
+                comentarios.forEach(comentario => {
+                    // Verificar si es el creador de la comunidad
+                    const esCreadorComunidad = comentario.autorId && comentario.autorId === <%= comunidad.creadorId %>;
+                    const badgeCreador = esCreadorComunidad ? 
+                        `<span class="badge bg-warning text-dark ms-2">
+                            <i class="fas fa-crown me-1"></i>
+                            Creador
+                        </span>` : '';
+                    
+                    const comentarioHTML = `
+                        <div class="comment-item mb-3">
+                            <div class="d-flex">
+                                <div class="avatar-sm me-3">
+                                    <div class="avatar-placeholder">
+                                        ${comentario.autorNombre ? comentario.autorNombre.charAt(0).toUpperCase() : 'U'}
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="comment-header d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <h6 class="mb-1">
+                                                ${comentario.autorNombre || 'Usuario'}
+                                                ${badgeCreador}
+                                            </h6>
+                                            <small class="text-muted">
+                                                <i class="fas fa-clock me-1"></i>
+                                                ${new Date(comentario.fechaComentario).toLocaleString()}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p class="mb-0">${comentario.comentario}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    comentariosContainer.insertAdjacentHTML('beforeend', comentarioHTML);
+                });
+            }
+
+            // Manejo del formulario de comentarios con AJAX
+            const comentarioForm = document.getElementById('comentarioForm');
+            if (comentarioForm) {
+                comentarioForm.addEventListener('submit', async function(e) {
+                    e.preventDefault(); // Prevenir envío normal del formulario
+                    
+                    const btn = document.getElementById('btnPublicar');
+                    const textarea = document.getElementById('comentarioTextarea');
+                    const originalBtnText = btn.innerHTML;
+                    
+                    // Validación
+                    if (textarea.value.trim().length < 5) {
+                        alert('El comentario debe tener al menos 5 caracteres');
+                        return;
+                    }
+                    
+                    if (textarea.value.trim().length > 1000) {
+                        alert('El comentario no puede tener más de 1000 caracteres');
+                        return;
+                    }
+                    
+                    try {
+                        // Mostrar estado de carga
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Publicando...';
+                    btn.disabled = true;
+                        
+                        // Enviar comentario via AJAX
+                        const comentarioTexto = textarea.value.trim();
+                        console.log('📝 Enviando comentario:', comentarioTexto);
+                        
+                        const response = await fetch(`/comunidades/<%= comunidad.idComunidad %>/comentar`, {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `comentario=${encodeURIComponent(comentarioTexto)}`
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        }
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            // Limpiar textarea
+                            textarea.value = '';
+                            
+                            // Mostrar mensaje de éxito
+                            showAlert('success', result.message || 'Comentario publicado exitosamente');
+                            
+                            // Recargar comentarios inmediatamente
+                            cargarComentarios();
+                            
+                            // Actualizar contador de comentarios si existe
+                            const contadorElement = document.querySelector('.section-title');
+                            if (contadorElement) {
+                                const comentariosContainer = document.querySelector('.comments-list');
+                                if (comentariosContainer) {
+                                    const numComentarios = comentariosContainer.children.length;
+                                    contadorElement.innerHTML = `<i class="fas fa-comments"></i> Comentarios (${numComentarios})`;
+                                }
+                            }
+                            
+                        } else {
+                            // Mostrar error
+                            showAlert('danger', result.error || 'Error al publicar el comentario');
+                        }
+                        
+                    } catch (error) {
+                        console.error('Error enviando comentario:', error);
+                        showAlert('danger', 'Error de conexión al enviar comentario. Verifica tu conexión e inténtalo de nuevo.');
+                    } finally {
+                        // Restaurar botón
+                        btn.innerHTML = originalBtnText;
+                        btn.disabled = false;
+                    }
+                });
+            }
+            
+            // Auto-scroll si hay hash #comentarios en la URL
+            if (window.location.hash === '#comentarios') {
+                setTimeout(() => {
+                    const element = document.getElementById('comentarios');
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 300);
+            }
+            
+            // Log para debugging
+            console.log('🏘️ Información de la comunidad:');
+            console.log('- ID:', <%= comunidad.idComunidad %>);
+            console.log('- Título:', '<%= comunidad.titulo %>');
+            console.log('- Es creador:', <%= esCreador %>);
+            console.log('- Es miembro:', <%= esMiembro %>);
+            console.log('- Es administrador:', '<%= rolEnComunidad %>' === 'administrador');
+            console.log('- Total miembros:', <%= comunidad.totalMiembros || 0 %>);
+            console.log('- Total comentarios:', <%= comentarios.length %>);
+        });
+    </script>
+    
+       <!-- Sistema de Temas -->
+   <script src="/js/theme-switcher.js"></script>
+   
+</body>
+</html>

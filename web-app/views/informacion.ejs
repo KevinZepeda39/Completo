@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiCiudadSV - Información</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    <style>
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            color: #212529;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        
+        .navbar {
+            padding: 15px 0;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .navbar {
+            background-color: #121212;
+            box-shadow: 0 1px 3px rgba(255,255,255,0.1);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-logo {
+            height: 40px;
+            width: 40px;
+            background: #4e67f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        
+        [data-theme="dark"] .navbar-logo {
+            background: #6c7ffd;
+        }
+        
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 20px;
+            margin-left: 10px;
+            color: #212529;
+        }
+        
+        [data-theme="dark"] .navbar-brand span {
+            color: #ffffff;
+        }
+
+        .nav-link {
+            color: #212529 !important;
+            font-weight: 500;
+            padding: 8px 16px !important;
+        }
+        
+        [data-theme="dark"] .nav-link {
+            color: #ffffff !important;
+        }
+
+        .nav-link.active {
+            color: #4e67f7 !important;
+            font-weight: 600;
+        }
+        
+        [data-theme="dark"] .nav-link.active {
+            color: #6c7ffd !important;
+        }
+        
+        .auth-buttons {
+            gap: 0.5rem;
+        }
+
+        .dropdown-menu {
+            min-width: 200px;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0;
+            background-color: #ffffff;
+        }
+        
+        [data-theme="dark"] .dropdown-menu {
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: #121212;
+        }
+
+        .dropdown-header {
+           padding: 0.5rem 1rem;
+           margin-bottom: 0;
+           color: #212529;
+       }
+       
+       [data-theme="dark"] .dropdown-header {
+           color: #ffffff;
+       }
+
+       .dropdown-item {
+           padding: 0.5rem 1rem;
+           clear: both;
+           font-weight: 400;
+           color: #212529;
+           text-align: inherit;
+           white-space: nowrap;
+           background-color: transparent;
+           border: 0;
+           display: flex;
+           align-items: center;
+           transition: all 0.2s ease-in-out;
+       }
+       
+       [data-theme="dark"] .dropdown-item {
+           color: #ffffff;
+       }
+
+       .dropdown-item:hover, .dropdown-item:focus {
+           color: #212529;
+           background-color: #f8f9fa;
+       }
+       
+       [data-theme="dark"] .dropdown-item:hover, 
+       [data-theme="dark"] .dropdown-item:focus {
+           color: #ffffff;
+           background-color: #1e1e1e;
+       }
+
+       .dropdown-item.text-danger:hover {
+           color: #fff;
+           background-color: #dc3545;
+       }
+
+       .dropdown-divider {
+           height: 0;
+           margin: 0.5rem 0;
+           overflow: hidden;
+           border-top: 1px solid var(--border-color);
+       }
+
+       .btn-outline-primary {
+           color: var(--primary);
+           border-color: var(--primary);
+       }
+
+       .btn-outline-primary:hover {
+           color: #fff;
+           background-color: var(--primary);
+           border-color: var(--primary);
+       }
+       
+       .btn-primary {
+           background-color: var(--primary);
+           border-color: var(--primary);
+       }
+
+       .btn-primary:hover {
+           background-color: var(--primary);
+           border-color: var(--primary);
+           opacity: 0.9;
+       }
+       
+       /* Botón de modo oscuro */
+       .theme-toggle {
+           background: none;
+           border: 1px solid var(--border-color);
+           color: var(--text-dark);
+           padding: 8px 12px;
+           border-radius: 8px;
+           transition: all 0.3s ease;
+           margin-right: 10px;
+       }
+
+       .theme-toggle:hover {
+           background-color: var(--bg-section);
+           transform: scale(1.05);
+       }
+
+       /* Secciones principales */
+       .section {
+           padding: 60px 0;
+       }
+
+       .section-title {
+           font-size: 2.5rem;
+           font-weight: 700;
+           text-align: center;
+           margin-bottom: 3rem;
+           color: #212529;
+       }
+       
+       [data-theme="dark"] .section-title {
+           color: #ffffff;
+       }
+
+       .section-subtitle {
+           font-size: 2rem;
+           font-weight: 600;
+           margin-bottom: 1.5rem;
+           color: #212529;
+       }
+       
+       [data-theme="dark"] .section-subtitle {
+           color: #ffffff;
+       }
+
+       .section-text {
+           font-size: 1.1rem;
+           color: #6c757d;
+           line-height: 1.6;
+       }
+       
+       [data-theme="dark"] .section-text {
+           color: #adb5bd;
+       }
+
+       .bg-light {
+           background-color: #f8f9fa !important;
+       }
+       
+       [data-theme="dark"] .bg-light {
+           background-color: #1e1e1e !important;
+       }
+
+       /* Tarjetas de características */
+       .feature-card {
+           background: #ffffff;
+           border: 1px solid rgba(0,0,0,0.1);
+           border-radius: 15px;
+           padding: 30px;
+           text-align: center;
+           transition: all 0.3s ease;
+           height: 100%;
+           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+       }
+       
+       [data-theme="dark"] .feature-card {
+           background: #121212;
+           border: 1px solid rgba(255,255,255,0.1);
+       }
+
+       .feature-card:hover {
+           transform: translateY(-5px);
+           box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+       }
+
+       .feature-icon {
+           width: 80px;
+           height: 80px;
+           border-radius: 50%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           margin: 0 auto 20px;
+           font-size: 2rem;
+           color: white;
+       }
+
+       .icon-report {
+           background: linear-gradient(135deg, #4e67f7, #6c7ffd);
+       }
+       
+       [data-theme="dark"] .icon-report {
+           background: linear-gradient(135deg, #6c7ffd, #8b9fff);
+       }
+
+       .icon-edit {
+           background: linear-gradient(135deg, #28a745, #51cf66);
+       }
+       
+       [data-theme="dark"] .icon-edit {
+           background: linear-gradient(135deg, #51cf66, #69db7c);
+       }
+
+       .icon-observe {
+           background: linear-gradient(135deg, #17a2b8, #74c0fc);
+       }
+       
+       [data-theme="dark"] .icon-observe {
+           background: linear-gradient(135deg, #74c0fc, #96daff);
+       }
+
+       .feature-title {
+           font-size: 1.5rem;
+           font-weight: 600;
+           color: #212529;
+           margin-bottom: 15px;
+       }
+       
+       [data-theme="dark"] .feature-title {
+           color: #ffffff;
+       }
+
+       .feature-text {
+           color: #6c757d;
+           margin-bottom: 20px;
+           line-height: 1.6;
+       }
+       
+       [data-theme="dark"] .feature-text {
+           color: #adb5bd;
+       }
+
+       .feature-link {
+           color: #4e67f7;
+           text-decoration: none;
+           font-weight: 600;
+           transition: all 0.3s ease;
+       }
+       
+       [data-theme="dark"] .feature-link {
+           color: #6c7ffd;
+       }
+
+       .feature-link:hover {
+           color: #4e67f7;
+           text-decoration: underline;
+       }
+       
+       [data-theme="dark"] .feature-link:hover {
+           color: #6c7ffd;
+       }
+
+       /* Mapa preview */
+       .map-preview {
+           position: relative;
+           background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+           border-radius: 15px;
+           height: 300px;
+           overflow: hidden;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+
+       [data-theme="dark"] .map-preview {
+           background: linear-gradient(135deg, #263238 0%, #37474f 100%);
+       }
+
+       .map-dot {
+           position: absolute;
+           width: 15px;
+           height: 15px;
+           border-radius: 50%;
+           animation: pulse 2s infinite;
+       }
+
+       .map-dot.red { background: #ff6a6a; top: 20%; left: 30%; }
+       .map-dot.blue { background: #4e67f7; top: 40%; right: 25%; }
+       .map-dot.yellow { background: #ffc107; bottom: 30%; left: 20%; }
+       .map-dot.purple { background: #9c27b0; top: 60%; left: 60%; }
+       .map-dot.green { background: #28a745; bottom: 20%; right: 30%; }
+
+       .map-label {
+           font-size: 1.2rem;
+           color: #6c757d;
+           font-weight: 600;
+       }
+       
+       [data-theme="dark"] .map-label {
+           color: #adb5bd;
+       }
+
+       .map-controls {
+           position: absolute;
+           top: 15px;
+           right: 15px;
+       }
+
+       .map-control-btn {
+           width: 35px;
+           height: 35px;
+           border: none;
+           background: #ffffff;
+           color: #212529;
+           border-radius: 5px;
+           margin-left: 5px;
+           cursor: pointer;
+           font-weight: bold;
+           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+       }
+       
+       [data-theme="dark"] .map-control-btn {
+           background: #121212;
+           color: #ffffff;
+       }
+
+       @keyframes pulse {
+           0% { transform: scale(1); opacity: 1; }
+           50% { transform: scale(1.2); opacity: 0.7; }
+           100% { transform: scale(1); opacity: 1; }
+       }
+
+       /* Tarjetas de estadísticas */
+       .stats-card {
+           background: #ffffff;
+           border: 1px solid rgba(0,0,0,0.1);
+           border-radius: 15px;
+           padding: 30px;
+           text-align: center;
+           transition: all 0.3s ease;
+           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+       }
+       
+       [data-theme="dark"] .stats-card {
+           background: #121212;
+           border: 1px solid rgba(255,255,255,0.1);
+       }
+
+       .stats-card:hover {
+           transform: translateY(-3px);
+           box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+       }
+
+       .stats-card.blue { border-left: 4px solid #4e67f7; }
+       .stats-card.green { border-left: 4px solid #28a745; }
+       .stats-card.purple { border-left: 4px solid #9c27b0; }
+       .stats-card.yellow { border-left: 4px solid #ffc107; }
+
+       .stats-number {
+           font-size: 2.5rem;
+           font-weight: 700;
+           margin-bottom: 10px;
+       }
+
+       .stats-card.blue .stats-number { color: #4e67f7; }
+       .stats-card.green .stats-number { color: #28a745; }
+       .stats-card.purple .stats-number { color: #9c27b0; }
+       .stats-card.yellow .stats-number { color: #ffc107; }
+
+       .stats-label {
+           color: #6c757d;
+           font-weight: 600;
+           font-size: 0.9rem;
+       }
+       
+       [data-theme="dark"] .stats-label {
+           color: #adb5bd;
+       }
+
+       /* Tarjetas de reportes */
+       .report-card {
+           background: #ffffff;
+           border: 1px solid rgba(0,0,0,0.1);
+           border-radius: 12px;
+           padding: 20px;
+           margin-bottom: 15px;
+           transition: all 0.3s ease;
+           position: relative;
+           overflow: hidden;
+       }
+       
+       [data-theme="dark"] .report-card {
+           background: #121212;
+           border: 1px solid rgba(255,255,255,0.1);
+       }
+
+       .report-card:hover {
+           transform: translateX(5px);
+           box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+       }
+
+       [data-theme="dark"] .report-card {
+           background: #1e1e1e;
+           border-color: rgba(255, 255, 255, 0.1);
+       }
+
+       [data-theme="dark"] .report-card:hover {
+           box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+       }
+
+       [data-theme="dark"] .report-title {
+           color: #ffffff;
+       }
+
+       [data-theme="dark"] .report-meta {
+           color: #adb5bd;
+       }
+
+       [data-theme="dark"] .text-center.py-5 .bi-inbox {
+           color: #adb5bd !important;
+       }
+
+       [data-theme="dark"] .text-center.py-5 .text-muted {
+           color: #adb5bd !important;
+       }
+
+       .report-card.blue { border-left: 4px solid var(--primary); }
+       .report-card.green { border-left: 4px solid var(--success); }
+       .report-card.red { border-left: 4px solid var(--danger); }
+
+       .report-title {
+           font-size: 1.1rem;
+           font-weight: 600;
+           color: var(--text-dark);
+           margin-bottom: 8px;
+       }
+
+       .report-meta {
+           font-size: 0.9rem;
+           color: var(--text-light);
+           margin-bottom: 10px;
+       }
+
+       .report-status {
+           position: absolute;
+           top: 15px;
+           right: 15px;
+           padding: 4px 12px;
+           border-radius: 20px;
+           font-size: 0.8rem;
+           font-weight: 600;
+       }
+
+       .status-pending {
+           background: rgba(255, 193, 7, 0.2);
+           color: #ffc107;
+       }
+
+       .status-resolved {
+           background: rgba(40, 167, 69, 0.2);
+           color: #28a745;
+       }
+
+       .status-urgent {
+           background: rgba(220, 53, 69, 0.2);
+           color: #ff6a6a;
+       }
+
+       .status-progress {
+           background: rgba(255, 193, 7, 0.2);
+           color: #ffc107;
+       }
+
+       .status-review {
+           background: rgba(23, 162, 184, 0.2);
+           color: #17a2b8;
+       }
+
+       /* Footer */
+       .footer {
+           background-color: #f8f9fa;
+           color: #212529;
+           padding: 40px 0 20px;
+           margin-top: 50px;
+           border-top: 1px solid rgba(0,0,0,0.1);
+       }
+       
+       [data-theme="dark"] .footer {
+           background-color: #1e1e1e;
+           color: #ffffff;
+           border-top: 1px solid rgba(255,255,255,0.1);
+       }
+
+       .footer-logo {
+           display: flex;
+           align-items: center;
+           margin-bottom: 15px;
+       }
+
+       .footer-icon {
+           width: 40px;
+           height: 40px;
+           background: #4e67f7;
+           border-radius: 50%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           color: white;
+           font-weight: 700;
+           margin-right: 10px;
+       }
+       
+       [data-theme="dark"] .footer-icon {
+           background: #6c7ffd;
+       }
+
+       .footer-brand {
+           font-size: 1.5rem;
+           font-weight: 700;
+           color: #212529;
+       }
+       
+       [data-theme="dark"] .footer-brand {
+           color: #ffffff;
+       }
+
+       .footer-text {
+           color: #6c757d;
+           margin-bottom: 20px;
+       }
+       
+       [data-theme="dark"] .footer-text {
+           color: #adb5bd;
+       }
+
+       .footer-title {
+           font-size: 1.1rem;
+           font-weight: 600;
+           color: #212529;
+           margin-bottom: 15px;
+       }
+       
+       [data-theme="dark"] .footer-title {
+           color: #ffffff;
+       }
+
+       .footer-links {
+           list-style: none;
+           padding: 0;
+       }
+
+       .footer-links li {
+           margin-bottom: 8px;
+       }
+
+       .footer-links a {
+           color: #6c757d;
+           text-decoration: none;
+           transition: all 0.3s ease;
+       }
+       
+       [data-theme="dark"] .footer-links a {
+           color: #adb5bd;
+       }
+
+       .footer-links a:hover {
+           color: #4e67f7;
+       }
+       
+       [data-theme="dark"] .footer-links a:hover {
+           color: #6c7ffd;
+       }
+
+       .newsletter-form {
+           display: flex;
+           margin-top: 15px;
+       }
+
+       .newsletter-input {
+           flex: 1;
+           padding: 10px 15px;
+           border: 1px solid rgba(0,0,0,0.1);
+           border-radius: 8px 0 0 8px;
+           background-color: #ffffff;
+           color: #212529;
+       }
+       
+       [data-theme="dark"] .newsletter-input {
+           border: 1px solid rgba(255,255,255,0.1);
+           background-color: #121212;
+           color: #ffffff;
+       }
+
+       .newsletter-btn {
+           padding: 10px 20px;
+           background: #4e67f7;
+           color: white;
+           border: none;
+           border-radius: 0 8px 8px 0;
+           font-weight: 600;
+           transition: all 0.3s ease;
+       }
+       
+       [data-theme="dark"] .newsletter-btn {
+           background: #6c7ffd;
+       }
+
+       .newsletter-btn:hover {
+           background: #4e67f7;
+           opacity: 0.9;
+       }
+       
+       [data-theme="dark"] .newsletter-btn:hover {
+           background: #6c7ffd;
+           opacity: 0.9;
+       }
+
+       .footer-copyright {
+           border-top: 1px solid rgba(0,0,0,0.1);
+           padding-top: 20px;
+           text-align: center;
+           color: #6c757d;
+       }
+       
+       [data-theme="dark"] .footer-copyright {
+           border-top: 1px solid rgba(255,255,255,0.1);
+           color: #adb5bd;
+       }
+
+       /* Responsive */
+       @media (max-width: 768px) {
+           .section-title {
+               font-size: 2rem;
+           }
+           
+           .section-subtitle {
+               font-size: 1.5rem;
+           }
+           
+           .feature-card {
+               margin-bottom: 30px;
+           }
+           
+           .map-preview {
+               height: 250px;
+           }
+           
+           .stats-card {
+               margin-bottom: 20px;
+           }
+       }
+       
+       /* Estilos para el selector de idioma - Temporalmente deshabilitado */
+       /*
+       .language-switcher {
+           position: fixed !important;
+           top: 100px !important;
+           right: 20px !important;
+           z-index: 9998 !important;
+           background: var(--bg-light, #ffffff) !important;
+           border: 1px solid var(--border-color, #dee2e6) !important;
+           border-radius: 8px !important;
+           padding: 15px !important;
+           box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+           min-width: 140px !important;
+           transition: all 0.3s ease !important;
+       }
+       
+       [data-theme="dark"] .language-switcher {
+           background: #1e1e1e !important;
+           border-color: rgba(255,255,255,0.1) !important;
+           color: #ffffff !important;
+       }
+       
+       .language-title {
+           text-align: center !important;
+           margin-bottom: 15px !important;
+           color: var(--text-dark, #212529) !important;
+           font-weight: 600 !important;
+           font-size: 0.9rem !important;
+       }
+       
+       [data-theme="dark"] .language-title {
+           color: #ffffff !important;
+       }
+       
+       .language-switcher button {
+           transition: all 0.3s ease !important;
+           font-size: 0.8rem !important;
+           padding: 8px 12px !important;
+       }
+       
+       .language-switcher button:hover {
+           transform: translateY(-1px) !important;
+           box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+       }
+       
+       [data-theme="dark"] .language-switcher button:hover {
+           box-shadow: 0 2px 8px rgba(255,255,255,0.1) !important;
+       }
+       
+       #translation-status {
+           text-align: center !important;
+           margin-top: 10px !important;
+           font-size: 0.75rem !important;
+           color: var(--text-light, #6c757d) !important;
+           min-height: 16px !important;
+       }
+       */
+   </style>
+</head>
+<body>
+   <nav class="navbar navbar-expand-lg navbar-light">
+       <div class="container">
+           <a class="navbar-brand" href="/">
+               <div class="navbar-logo">Sv</div>
+               <span>MiCiudadSV</span>
+           </a>
+           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+           </button>
+           <div class="collapse navbar-collapse" id="navbarNav">
+               <ul class="navbar-nav mx-auto">
+                   <li class="nav-item">
+                       <a class="nav-link" href="/" >Inicio</a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link active" href="/informacion" >Información</a>
+                   </li>
+                   <% if (loggedIn) { %>
+                       <li class="nav-item">
+                           <a class="nav-link" href="/dashboard" >Dashboard</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="/reportes" >Reportes</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="/comunidades" >Comunidades</a>
+                       </li>
+                   <% } else { %>
+                       <li class="nav-item">
+                           <a class="nav-link" href="#ayuda" >Ayuda</a>
+                       </li>
+                   <% } %>
+               </ul>
+               
+               <div class="auth-buttons d-flex align-items-center">
+                   <!-- Botón de cambio de tema -->
+                   <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                       <i class="bi bi-moon-stars"></i>
+                   </button>
+
+                   <% if (loggedIn) { %>
+                       <div class="notification-badge" style="position: relative; background-color: var(--danger); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 15px;">2</div>
+                       <!-- Dropdown para usuario logueado -->
+                       <div class="dropdown">
+                           <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                               <i class="bi bi-person-circle me-2"></i>
+                               <%= usuario.nombre %>
+                           </button>
+                           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                               <li class="dropdown-header">
+                                   <div class="d-flex align-items-center">
+                                       <i class="bi bi-person-circle fs-4 me-2"></i>
+                                       <div>
+                                           <strong><%= usuario.nombre %></strong>
+                                           <div class="text-muted small" >Usuario registrado</div>
+                                       </div>
+                                   </div>
+                               </li>
+                               <li><hr class="dropdown-divider"></li>
+                               <li><a class="dropdown-item" href="/dashboard">
+                                   <i class="bi bi-speedometer2 me-2"></i><span >Dashboard</span>
+                               </a></li>
+                               <li><a class="dropdown-item" href="/dashboard/perfil">
+                                   <i class="bi bi-person me-2"></i><span >Ver Perfil</span>
+                               </a></li>
+                               <li><a class="dropdown-item" href="/reportes">
+                                   <i class="bi bi-file-text me-2"></i><span >Reportes</span>
+                               </a></li>
+                               <li><a class="dropdown-item" href="/comunidades">
+                                   <i class="bi bi-people me-2"></i><span >Comunidades</span>
+                               </a></li>
+                               <li><hr class="dropdown-divider"></li>
+                               <li>
+                                   <form method="POST" action="/auth/logout" class="d-inline w-100">
+                                       <button type="submit" class="dropdown-item text-danger w-100 border-0 bg-transparent">
+                                           <i class="bi bi-box-arrow-right me-2"></i><span >Cerrar Sesión</span>
+                                       </button>
+                                   </form>
+                               </li>
+                           </ul>
+                       </div>
+                   <% } else { %>
+                       <!-- Botones para usuario no logueado -->
+                       <a href="/auth/login" class="btn btn-outline-primary me-2" >Iniciar Sesión</a>
+                       <a href="/auth/registro" class="btn btn-primary" >Registrarse</a>
+                   <% } %>
+               </div>
+           </div>
+       </div>
+   </nav>
+
+   <!-- Sección de contribución -->
+   <section class="section">
+       <div class="container">
+           <h2 class="section-title" >¿Cómo puedes contribuir?</h2>
+           <div class="row">
+               <div class="col-md-4 mb-4">
+                   <div class="feature-card">
+                       <div class="feature-icon icon-report">
+                           <i class="bi bi-pin-map-fill"></i>
+                       </div>
+                       <h3 class="feature-title" >Ingresar Reporte</h3>
+                       <p class="feature-text" >
+                           Informa sobre situaciones de riesgo, problemas de infraestructura o incidentes que requieran atención inmediata. Tu aporte puede salvar vidas.
+                       </p>
+                                                  <% if (loggedIn) { %>
+                               <a href="/reportar" class="feature-link" >
+                                   Crear un reporte →
+                               </a>
+                           <% } else { %>
+                               <a href="/auth/registro" class="feature-link" >
+                                   Regístrate para reportar →
+                               </a>
+                           <% } %>
+                   </div>
+               </div>
+               <div class="col-md-4 mb-4">
+                   <div class="feature-card">
+                       <div class="feature-icon icon-edit">
+                           <i class="bi bi-pencil-square"></i>
+                       </div>
+                       <h3 class="feature-title" >Editar tu reporte</h3>
+                       <p class="feature-text" >
+                           Puedes ingresar más información a un reporte y actualizar su estado para mantener a la comunidad informada sobre su evolución.
+                       </p>
+                                                  <% if (loggedIn) { %>
+                               <a href="/reportes" class="feature-link" >
+                                   Mis reportes →
+                               </a>
+                           <% } else { %>
+                               <a href="/auth/login" class="feature-link" >
+                                   Inicia sesión para ver tus reportes →
+                               </a>
+                           <% } %>
+                   </div>
+               </div>
+               <div class="col-md-4 mb-4">
+                   <div class="feature-card">
+                       <div class="feature-icon icon-observe">
+                           <i class="bi bi-eye-fill"></i>
+                       </div>
+                       <h3 class="feature-title" >Observar</h3>
+                       <p class="feature-text" >
+                           Ver la información publicada por otras personas e informarte sobre problemas cercanos a tu ubicación para estar preparado.
+                       </p>
+                       <a href="/comunidades" class="feature-link" >
+                           Explorar comunidades →
+                       </a>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
+
+   <!-- Sección de mapa -->
+   <section class="section bg-light">
+       <div class="container">
+           <div class="row align-items-center">
+               <div class="col-lg-5 mb-4 mb-lg-0">
+                   <h2 class="section-subtitle" >Mapa de Incidentes en Tiempo Real</h2>
+                   <p class="section-text" >
+                       Visualiza incidentes reportados por la comunidad en tiempo real. Filtra por tipo de reporte, nivel de urgencia o zona para mantenerte informado.
+                   </p>
+                   <a href="/comunidades" class="btn btn-primary" >Ver comunidades</a>
+               </div>
+               <div class="col-lg-7">
+                   <div class="map-preview">
+                       <div class="map-dot red"></div>
+                       <div class="map-dot blue"></div>
+                       <div class="map-dot yellow"></div>
+                       <div class="map-dot purple"></div>
+                       <div class="map-dot green"></div>
+                       <div class="map-label" >Vista previa del mapa</div>
+                       <div class="map-controls">
+                           <button class="map-control-btn">+</button>
+                           <button class="map-control-btn">−</button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
+
+   <!-- Sección de estadísticas -->
+   <section class="section">
+       <div class="container">
+           <h2 class="section-title" >Impacto Comunitario</h2>
+           <div class="row">
+               <div class="col-md-3 col-sm-6 mb-4">
+                   <div class="stats-card blue">
+                       <div class="stats-number"><%= estadisticas.reportes %></div>
+                       <div class="stats-label" >Total Reportes</div>
+                   </div>
+               </div>
+               <div class="col-md-3 col-sm-6 mb-4">
+                   <div class="stats-card green">
+                       <div class="stats-number">0</div>
+                       <div class="stats-label" >Reportes Resueltos</div>
+                   </div>
+               </div>
+               <div class="col-md-3 col-sm-6 mb-4">
+                   <div class="stats-card purple">
+                       <div class="stats-number"><%= estadisticas.usuarios %></div>
+                       <div class="stats-label" >Usuarios Activos</div>
+                   </div>
+               </div>
+               <div class="col-md-3 col-sm-6 mb-4">
+                   <div class="stats-card yellow">
+                       <div class="stats-number"><%= estadisticas.comunidades %></div>
+                       <div class="stats-label" >Comunidades Activas</div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
+
+   <!-- Sección de reportes recientes -->
+   <section class="section bg-light">
+       <div class="container">
+           <h2 class="section-subtitle" >Reportes Recientes</h2>
+           <div class="row">
+               <div class="col-lg-12">
+                   <% if (reportesRecientes && reportesRecientes.length > 0) { %>
+                       <% reportesRecientes.forEach((reporte, index) => { %>
+                           <%
+                               // Determinar el color y estado del reporte
+                               let cardColor = 'blue'; // Por defecto
+                               let statusClass = 'status-pending';
+                               let statusText = reporte.estado || 'Pendiente';
+                               
+                               if (reporte.estado === 'Completado') {
+                                   statusClass = 'status-resolved';
+                                   statusText = 'Completado';
+                                   cardColor = 'green';
+                               } else if (reporte.estado === 'Rechazado') {
+                                   statusClass = 'status-urgent';
+                                   statusText = 'Rechazado';
+                                   cardColor = 'red';
+                               } else if (reporte.estado === 'En progreso') {
+                                   statusClass = 'status-progress';
+                                   statusText = 'En progreso';
+                                   cardColor = 'yellow';
+                               } else if (reporte.estado === 'En revisión') {
+                                   statusClass = 'status-review';
+                                   statusText = 'En revisión';
+                                   cardColor = 'blue';
+                               }
+                               
+                               // Calcular tiempo transcurrido
+                               const fechaCreacion = new Date(reporte.fechaCreacion);
+                               const ahora = new Date();
+                               const diffMs = ahora - fechaCreacion;
+                               const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+                               const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+                               const diffMinutes = Math.floor(diffMs / (1000 * 60));
+                               
+                               let tiempoTranscurrido;
+                               if (diffDays > 0) {
+                                   tiempoTranscurrido = `Hace ${diffDays} día${diffDays > 1 ? 's' : ''}`;
+                               } else if (diffHours > 0) {
+                                   tiempoTranscurrido = `Hace ${diffHours} hora${diffHours > 1 ? 's' : ''}`;
+                               } else if (diffMinutes > 0) {
+                                   tiempoTranscurrido = `Hace ${diffMinutes} minuto${diffMinutes > 1 ? 's' : ''}`;
+                               } else {
+                                   tiempoTranscurrido = "Hace unos segundos";
+                               }
+                           %>
+                           <div class="report-card <%= cardColor %>">
+                               <h3 class="report-title" ><%= reporte.titulo %></h3>
+                               <div class="report-meta" >
+                                   <%= tiempoTranscurrido %> • Por <%= reporte.nombreCreador || 'Usuario anónimo' %>
+                               </div>
+                               <span class="report-status <%= statusClass %>" ><%= statusText %></span>
+                           </div>
+                       <% }); %>
+                   <% } else { %>
+                       <div class="text-center py-5">
+                           <i class="bi bi-inbox" style="font-size: 4rem; color: #6c757d; margin-bottom: 20px;"></i>
+                           <p class="text-muted" >No hay reportes recientes</p>
+                           <% if (loggedIn) { %>
+                               <a href="/reportar" class="btn btn-primary" >Crear el primer reporte</a>
+                           <% } else { %>
+                               <a href="/auth/registro" class="btn btn-primary" >Regístrate para crear reportes</a>
+                           <% } %>
+                       </div>
+                   <% } %>
+                   
+                   <% if (reportesRecientes && reportesRecientes.length > 0) { %>
+                       <div class="text-center mt-4">
+                           <a href="/reportes" class="btn btn-outline-primary" >Ver todos los reportes</a>
+                       </div>
+                   <% } %>
+               </div>
+           </div>
+       </div>
+   </section>
+
+   <!-- Footer -->
+   <footer class="footer">
+       <div class="container">
+           <div class="row mb-4">
+               <div class="col-lg-4 mb-4 mb-lg-0">
+                   <div class="footer-logo">
+                       <div class="footer-icon">Sv</div>
+                       <span class="footer-brand">MiCiudadSV</span>
+                   </div>
+                   <p class="footer-text" >Plataforma ciudadana para reportes comunitarios y prevención de riesgos.</p>
+               </div>
+               <div class="col-lg-2 col-md-4 col-6 mb-4 mb-md-0">
+                   <h4 class="footer-title" >Enlaces</h4>
+                   <ul class="footer-links">
+                       <li><a href="/" >Inicio</a></li>
+                       <li><a href="/informacion" >Información</a></li>
+                       <li><a href="#mapa" >Mapa</a></li>
+                       <li><a href="#reportes" >Reportes</a></li>
+                   </ul>
+               </div>
+               <div class="col-lg-2 col-md-4 col-6 mb-4 mb-md-0">
+                   <h4 class="footer-title" >Recursos</h4>
+                   <ul class="footer-links">
+                       <li><a href="#blog" >Blog</a></li>
+                       <li><a href="#faq" >Preguntas frecuentes</a></li>
+                       <li><a href="#tutoriales" >Tutoriales</a></li>
+                       <li><a href="#contacto" >Contacto</a></li>
+                   </ul>
+               </div>
+               <div class="col-lg-4 col-md-4">
+                   <h4 class="footer-title" >Conecta con nosotros</h4>
+                   <p >Suscríbete para recibir alertas y actualizaciones.</p>
+                   <div class="newsletter-form">
+                       <input type="email" class="newsletter-input" placeholder="Tu correo electrónico" >
+                       <button type="submit" class="newsletter-btn" >Enviar</button>
+                   </div>
+               </div>
+           </div>
+           <div class="footer-copyright">
+              <p >&copy; 2025 MiCiudadSV. Todos los derechos reservados.</p>
+           </div>
+       </div>
+   </footer>
+
+   <!-- Bootstrap JS -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+   <script>
+       // Cargar tema guardado
+       document.addEventListener('DOMContentLoaded', function() {
+
+           // Animación de entrada para las tarjetas
+           const cards = document.querySelectorAll('.feature-card, .stats-card, .report-card');
+           const observer = new IntersectionObserver((entries) => {
+               entries.forEach((entry, index) => {
+                   if (entry.isIntersecting) {
+                       setTimeout(() => {
+                           entry.target.style.opacity = '1';
+                           entry.target.style.transform = 'translateY(0)';
+                       }, index * 100);
+                   }
+               });
+           });
+
+           cards.forEach(card => {
+               card.style.opacity = '0';
+               card.style.transform = 'translateY(30px)';
+               card.style.transition = 'all 0.6s ease';
+               observer.observe(card);
+           });
+
+           // Smooth scroll para enlaces anchor
+           document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+               anchor.addEventListener('click', function (e) {
+                   e.preventDefault();
+                   const target = document.querySelector(this.getAttribute('href'));
+                   if (target) {
+                       target.scrollIntoView({
+                           behavior: 'smooth'
+                       });
+                   }
+               });
+           });
+
+           // Animación de los puntos del mapa
+           const mapDots = document.querySelectorAll('.map-dot');
+           setInterval(() => {
+               mapDots.forEach((dot, index) => {
+                   setTimeout(() => {
+                       dot.style.transform = 'scale(1.5)';
+                       setTimeout(() => {
+                           dot.style.transform = 'scale(1)';
+                       }, 200);
+                   }, index * 300);
+               });
+           }, 3000);
+
+           // Newsletter form
+           const newsletterForm = document.querySelector('.newsletter-form');
+           if (newsletterForm) {
+               newsletterForm.addEventListener('submit', function(e) {
+                   e.preventDefault();
+                   const input = this.querySelector('.newsletter-input');
+                   const btn = this.querySelector('.newsletter-btn');
+                   
+                   if (input.value.trim()) {
+                       btn.innerHTML = '✓ Enviado';
+                       btn.style.background = 'var(--success)';
+                       input.value = '';
+                       
+                       setTimeout(() => {
+                           btn.innerHTML = 'Enviar';
+                           btn.style.background = 'var(--primary)';
+                       }, 2000);
+                   }
+               });
+           }
+       });
+
+       <% if (loggedIn) { %>
+           // Actualizar estadísticas para usuarios logueados
+           setInterval(() => {
+               fetch('/api/estadisticas')
+                   .then(response => response.json())
+                   .then(data => {
+                       // Actualizar números de estadísticas
+                       const reportesNum = document.querySelector('.stats-card.blue .stats-number');
+                       const usuariosNum = document.querySelector('.stats-card.purple .stats-number');
+                       const comunidadesNum = document.querySelector('.stats-card.yellow .stats-number');
+                       
+                       if (reportesNum) reportesNum.textContent = data.reportes || 0;
+                       if (usuariosNum) usuariosNum.textContent = data.usuarios || 0;
+                       if (comunidadesNum) comunidadesNum.textContent = data.comunidades || 0;
+                   })
+                   .catch(error => console.log('Error actualizando estadísticas:', error));
+           }, 30000); // Cada 30 segundos
+       <% } %>
+
+       // Función para mostrar detalles de reporte (placeholder)
+       document.querySelectorAll('.report-card').forEach(card => {
+           card.addEventListener('click', function() {
+               // Aquí puedes agregar lógica para mostrar detalles del reporte
+               console.log('Mostrando detalles del reporte');
+           });
+       });
+   </script>
+   
+   <!-- Sistema de Temas -->
+   <script src="/js/theme-switcher.js"></script>
+   
+
+   <!-- Sistema de Traducción Manual - Temporalmente deshabilitado -->
+   <!-- 
+   <div class="language-switcher">
+       <div class="language-title">
+           <i class="bi bi-translate me-1"></i>Idioma
+       </div>
+       <button id="switch-to-english" class="btn btn-primary btn-sm w-100 mb-2">
+           <i class="bi bi-arrow-right me-1"></i>Inglés
+       </button>
+       <button id="switch-to-spanish" class="btn btn-outline-secondary btn-sm w-100" style="display: none;">
+           <i class="bi bi-arrow-clockwise me-1"></i>Español
+       </button>
+       <div id="translation-status"></div>
+   </div>
+   -->
+</body>
+</html>

@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .stats-card-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .stats-card-warning {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+        
+        .stats-card-info {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        .stats-card-danger {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+        }
+        
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: #ecf0f1;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 5px 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .main-content {
+            background: #f8f9fa;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .main-content {
+            background: #0a0a0a;
+        }
+        
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .welcome-card {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        .activity-item {
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            background: white;
+            margin-bottom: 10px;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .activity-item {
+            background: #1e1e1e;
+            border-left-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        .activity-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+        
+        [data-theme="dark"] .activity-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .quick-action-btn {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .chart-container {
+            background: #1e1e1e;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Texto y elementos en modo oscuro */
+        [data-theme="dark"] .text-dark {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .card {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .card-body {
+            background: #1e1e1e;
+        }
+        
+        [data-theme="dark"] .table {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .table td,
+        [data-theme="dark"] .table th {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .btn-outline-secondary {
+            color: #adb5bd;
+            border-color: #404040;
+        }
+        
+        [data-theme="dark"] .btn-outline-secondary:hover {
+            background-color: #404040;
+            border-color: #adb5bd;
+            color: #ffffff;
+        }
+        
+        /* Elementos adicionales en modo oscuro */
+        [data-theme="dark"] .card-header {
+            background: #2d2d2d;
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .card-title {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .border-bottom {
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        [data-theme="dark"] .border-top {
+            border-top-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        [data-theme="dark"] .hr {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .list-unstyled li {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .list-unstyled strong {
+            color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .badge {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .badge.bg-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-success {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+        }
+        
+        [data-theme="dark"] .footer {
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .footer small {
+            color: #adb5bd;
+        }
+        
+        /* Elementos adicionales en modo oscuro */
+        [data-theme="dark"] .stats-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .stats-card-success {
+            background: linear-gradient(135deg, #0f5132 0%, #146c43 100%);
+        }
+        
+        [data-theme="dark"] .stats-card-warning {
+            background: linear-gradient(135deg, #92400e 0%, #a16207 100%);
+        }
+        
+        [data-theme="dark"] .stats-card-info {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 100%);
+        }
+        
+        [data-theme="dark"] .stats-card-danger {
+            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+        }
+        
+        [data-theme="dark"] .sidebar {
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        [data-theme="dark"] .btn-outline-primary {
+            color: #4d94ff;
+            border-color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .btn-outline-primary:hover {
+            background-color: #4d94ff;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-success {
+            color: #10b981;
+            border-color: #10b981;
+        }
+        
+        [data-theme="dark"] .btn-outline-success:hover {
+            background-color: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-info {
+            color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        [data-theme="dark"] .btn-outline-info:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-warning {
+            color: #f59e0b;
+            border-color: #f59e0b;
+        }
+        
+        [data-theme="dark"] .btn-outline-warning:hover {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-danger {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        [data-theme="dark"] .btn-outline-danger:hover {
+            background-color: #ef4444;
+            border-color: #ef4444;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-primary {
+            background: linear-gradient(135deg, #4d94ff 0%, #3b82f6 100%);
+            border-color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+        }
+        
+        [data-theme="dark"] .btn-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+            border-color: #3b82f6;
+        }
+        
+        [data-theme="dark"] .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-color: #f59e0b;
+        }
+        
+        [data-theme="dark"] .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-color: #ef4444;
+        }
+        
+        [data-theme="dark"] .alert {
+            background-color: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .alert-success {
+            background-color: #0f5132;
+            border-color: #10b981;
+            color: #d1fae5;
+        }
+        
+        [data-theme="dark"] .alert-warning {
+            background-color: #92400e;
+            border-color: #f59e0b;
+            color: #fef3c7;
+        }
+        
+        [data-theme="dark"] .alert-danger {
+            background-color: #7f1d1d;
+            border-color: #ef4444;
+            color: #fee2e2;
+        }
+        
+        [data-theme="dark"] .alert-info {
+            background-color: #0c4a6e;
+            border-color: #3b82f6;
+            color: #dbeafe;
+        }
+        
+        [data-theme="dark"] .spinner-border.text-primary {
+            color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .bg-light {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .text-light {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-white-50 {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+        
+        [data-theme="dark"] .opacity-75 {
+            opacity: 0.75 !important;
+        }
+        
+        [data-theme="dark"] .opacity-50 {
+            opacity: 0.5 !important;
+        }
+        
+        /* Estilos adicionales para elementos que podrían estar en blanco */
+        [data-theme="dark"] .h2 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .h4 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .h5 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .card-title {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .card-text {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-xs {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .font-weight-bold {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-uppercase {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .h4.mb-0 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .font-weight-bold.text-uppercase {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .h4.mb-0.font-weight-bold {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .small.opacity-75 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .fa-2x.opacity-75 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .fa-3x.text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-muted.mt-2 {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-muted.mb-3 {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-muted.mb-2 {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-muted.mb-0 {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-muted.d-block {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-muted.small {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-success {
+            color: #10b981 !important;
+        }
+        
+        [data-theme="dark"] .text-center.text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-center.text-muted small {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-center.text-muted .text-primary {
+            color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .border-top {
+            border-top-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        [data-theme="dark"] .border-bottom {
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        [data-theme="dark"] .btn-toolbar {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .btn-group {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .btn-group .btn {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .btn-group .btn.btn-outline-secondary {
+            color: #adb5bd !important;
+            border-color: #404040 !important;
+        }
+        
+        [data-theme="dark"] .btn-group .btn.btn-outline-secondary:hover {
+            background-color: #404040 !important;
+            border-color: #adb5bd !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .btn-group .btn.btn-outline-primary {
+            color: #4d94ff !important;
+            border-color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .btn-group .btn.btn-outline-primary:hover {
+            background-color: #4d94ff !important;
+            border-color: #4d94ff !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .btn-group .btn.btn-outline-primary:focus {
+            background-color: #4d94ff !important;
+            border-color: #4d94ff !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 0.2rem rgba(77, 148, 255, 0.25) !important;
+        }
+
+        /* Estilos para el botón de cambio de tema */
+        .theme-toggle-btn {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] .theme-toggle-btn {
+            background-color: #2d2d2d;
+            border-color: #4d94ff;
+            color: #4d94ff;
+        }
+
+        [data-theme="dark"] .theme-toggle-btn:hover {
+            background-color: #4d94ff;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(77, 148, 255, 0.3);
+        }
+
+        /* Mejoras adicionales para el modo oscuro */
+        [data-theme="dark"] .bg-white {
+            background-color: #1e1e1e !important;
+        }
+
+        [data-theme="dark"] .text-dark {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .border-light {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        [data-theme="dark"] .bg-light {
+            background-color: #2d2d2d !important;
+        }
+
+        [data-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+
+        /* Indicador visual de tema activo */
+        .theme-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 9999;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .theme-indicator:hover {
+            opacity: 1;
+        }
+
+        [data-theme="dark"] .theme-indicator {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <div class="text-center mb-4">
+                        <div class="mb-3">
+                            <i class="fas fa-shield-alt fa-3x text-white"></i>
+                        </div>
+                        <h4 class="text-white mb-1">Admin Panel</h4>
+                        <small class="text-light opacity-75">MiCiudadSV</small>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin" id="nav-dashboard">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/usuarios" id="nav-usuarios">
+                                <i class="fas fa-users me-2"></i>
+                                Usuarios
+                                <span class="notification-badge" id="badge-usuarios">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/reportes" id="nav-reportes">
+                                <i class="fas fa-flag me-2"></i>
+                                Reportes
+                                <span class="notification-badge" id="badge-reportes">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/comunidades" id="nav-comunidades">
+                                <i class="fas fa-home me-2"></i>
+                                Comunidades
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/logs" id="nav-logs">
+                                <i class="fas fa-file-alt me-2"></i>
+                                Logs del Sistema
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/configuracion" id="nav-config">
+                                <i class="fas fa-cog me-2"></i>
+                                Configuración
+                            </a>
+                        </li>
+                        <li class="nav-item mt-3">
+                            <hr class="text-light">
+                            <a class="nav-link" href="/" target="_blank">
+                                <i class="fas fa-external-link-alt me-2"></i>
+                                Ver Sitio Web
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/auth/logout" onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Dashboard Administrativo
+                    </h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="actualizarDatos()">
+                                <i class="fas fa-sync-alt"></i>
+                                Actualizar
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-calendar me-1"></i>
+                                <%= new Date().toLocaleDateString('es-SV') %>
+                            </button>
+                        </div>
+                        <!-- Botón de cambio de tema -->
+                        <div class="ms-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary theme-toggle-btn" id="theme-toggle" title="Cambiar tema" onclick="toggleTheme()">
+                                <i class="bi bi-moon-stars"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Indicador de tema activo -->
+                <div class="theme-indicator" id="theme-indicator">
+                    <i class="bi bi-sun me-1"></i>
+                    <span id="theme-text">Tema Claro</span>
+                </div>
+
+                <!-- Bienvenida -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card welcome-card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h4 class="card-title mb-2">
+                                            <i class="fas fa-user-shield me-2"></i>
+                                            ¡Bienvenido, <%= usuario.nombre %>!
+                                        </h4>
+                                        <p class="card-text mb-0">
+                                            Panel de administración de MiCiudadSV - Gestiona todo el sistema desde aquí
+                                            <% if (usuario.esAdminHardcoded) { %>
+                                                <span class="badge bg-warning ms-2">
+                                                    <i class="fas fa-crown"></i>
+                                                    Super Admin
+                                                </span>
+                                            <% } %>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <div class="text-white-50">
+                                            <small>Último acceso: <span id="ultimoAcceso"><%= new Date().toLocaleString('es-SV') %></span></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estadísticas Principales -->
+                <div class="row mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stats-card" onclick="window.location.href='/admin/usuarios'">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                            Total Usuarios
+                                        </div>
+                                        <div class="h4 mb-0 font-weight-bold" id="totalUsuarios">
+                                            <%= estadisticas.totalUsuarios.toLocaleString() %>
+                                        </div>
+                                        <small class="opacity-75">Activos en el sistema</small>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-users fa-2x opacity-75"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stats-card stats-card-success" onclick="window.location.href='/admin/reportes'">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                            Total Reportes
+                                        </div>
+                                        <div class="h4 mb-0 font-weight-bold" id="totalReportes">
+                                            <%= estadisticas.totalReportes.toLocaleString() %>
+                                        </div>
+                                        <small class="opacity-75">Reportes ciudadanos</small>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-flag fa-2x opacity-75"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stats-card stats-card-warning" onclick="window.location.href='/admin/reportes?estado=pendiente'">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                            Reportes Pendientes
+                                        </div>
+                                        <div class="h4 mb-0 font-weight-bold" id="reportesPendientes">
+                                            <%= estadisticas.reportesPendientes.toLocaleString() %>
+                                        </div>
+                                        <small class="opacity-75">Requieren atención</small>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-exclamation-triangle fa-2x opacity-75"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card stats-card stats-card-info" onclick="window.location.href='/admin/comunidades'">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                            Comunidades
+                                        </div>
+                                        <div class="h4 mb-0 font-weight-bold" id="totalComunidades">
+                                            <%= estadisticas.totalComunidades.toLocaleString() %>
+                                        </div>
+                                        <small class="opacity-75">Comunidades activas</small>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-home fa-2x opacity-75"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos y Estadísticas -->
+                <div class="row mb-4">
+                    <div class="col-md-8 mb-4">
+                        <div class="chart-container">
+                            <h5 class="mb-3">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Reportes por Mes (Últimos 6 meses)
+                            </h5>
+                            <canvas id="chartReportes" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="chart-container">
+                            <h5 class="mb-3">
+                                <i class="fas fa-chart-pie me-2"></i>
+                                Estados de Reportes
+                            </h5>
+                            <canvas id="chartEstados" width="300" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acciones Rápidas -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-bolt me-2"></i>
+                                    Acciones Rápidas
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3 mb-3">
+                                        <button class="btn btn-outline-primary w-100 quick-action-btn" onclick="window.location.href='/admin/usuarios'">
+                                            <i class="fas fa-users fa-2x mb-2 d-block"></i>
+                                            <strong>Gestionar Usuarios</strong>
+                                            <small class="d-block text-muted">Ver, editar y administrar usuarios</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <button class="btn btn-outline-success w-100 quick-action-btn" onclick="window.location.href='/admin/reportes'">
+                                            <i class="fas fa-flag fa-2x mb-2 d-block"></i>
+                                            <strong>Ver Reportes</strong>
+                                            <small class="d-block text-muted">Gestionar reportes ciudadanos</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <button class="btn btn-outline-info w-100 quick-action-btn" onclick="window.location.href='/admin/comunidades'">
+                                            <i class="fas fa-home fa-2x mb-2 d-block"></i>
+                                            <strong>Comunidades</strong>
+                                            <small class="d-block text-muted">Administrar comunidades</small>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <button class="btn btn-outline-warning w-100 quick-action-btn" onclick="window.location.href='/admin/logs'">
+                                            <i class="fas fa-file-alt fa-2x mb-2 d-block"></i>
+                                            <strong>Ver Logs</strong>
+                                            <small class="d-block text-muted">Revisar actividad del sistema</small>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actividad Reciente y Estado del Sistema -->
+                <div class="row mb-4">
+                    <div class="col-md-8 mb-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-history me-2"></i>
+                                    Actividad Reciente
+                                </h5>
+                                <button class="btn btn-sm btn-outline-primary" onclick="cargarActividadReciente()">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div id="actividadReciente">
+                                    <!-- La actividad se cargará dinámicamente -->
+                                    <div class="text-center py-3">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Cargando...</span>
+                                        </div>
+                                        <p class="text-muted mt-2">Cargando actividad reciente...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-server me-2"></i>
+                                    Estado del Sistema
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-3">
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <strong>Base de Datos</strong>
+                                        <small class="d-block text-muted">Conectada y funcionando</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-3">
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <strong>Servidor Web</strong>
+                                        <small class="d-block text-muted">Operativo</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-3">
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <strong>Servicios API</strong>
+                                        <small class="d-block text-muted">Todos activos</small>
+                                    </div>
+                                </div>
+
+                                <hr>
+                                
+                                <div class="text-center">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="verificarEstadoSistema()">
+                                        <i class="fas fa-sync-alt"></i>
+                                        Verificar Estado
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información del Sistema -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Información del Sistema
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2">
+                                        <strong>Plataforma:</strong> MiCiudadSV
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Versión:</strong> 1.0.0
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Admin:</strong> 
+                                        <%= usuario.nombre %> <%= usuario.apellido %>
+                                        <% if (usuario.esAdminHardcoded) { %>
+                                            <span class="badge bg-warning">Super Admin</span>
+                                        <% } %>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>Sesión:</strong> 
+                                        <span class="text-success">Activa</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="mt-5 py-4 border-top">
+                    <div class="text-center text-muted">
+                        <small>
+                            © 2025 MiCiudadSV - Panel de Administración
+                            <br>
+                            Desarrollado con ❤️ para El Salvador
+                        </small>
+                    </div>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+        <!-- Los toasts se insertarán aquí dinámicamente -->
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let chartReportes, chartEstados;
+
+        // Inicializar dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            inicializarGraficos();
+            cargarActividadReciente();
+            actualizarNotificaciones();
+            
+            // Actualizar cada 30 segundos
+            setInterval(() => {
+                actualizarDatos();
+            }, 30000);
+        });
+
+        // Función para inicializar gráficos
+        function inicializarGraficos() {
+            // Gráfico de reportes por mes
+            const ctxReportes = document.getElementById('chartReportes').getContext('2d');
+            chartReportes = new Chart(ctxReportes, {
+                type: 'line',
+                data: {
+                    labels: ['Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre', 'Enero'],
+                    datasets: [{
+                        label: 'Reportes',
+                        data: [12, 19, 15, 25, 22, 30],
+                        borderColor: 'rgb(102, 126, 234)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de estados de reportes
+            const ctxEstados = document.getElementById('chartEstados').getContext('2d');
+            chartEstados = new Chart(ctxEstados, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pendientes', 'En Progreso', 'Resueltos', 'Rechazados'],
+                    datasets: [{
+                        data: [<%= estadisticas.reportesPendientes %>, 15, 25, 5],
+                        backgroundColor: [
+                            '#ffc107',
+                            '#17a2b8', 
+                            '#28a745',
+                            '#dc3545'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para cargar actividad reciente
+        async function cargarActividadReciente() {
+            try {
+                const response = await fetch('/admin/api/actividad-reciente');
+                const data = await response.json();
+                
+                const container = document.getElementById('actividadReciente');
+                
+                if (data.success && data.actividad.length > 0) {
+                    let html = '';
+                    data.actividad.forEach(item => {
+                        const tiempo = new Date(item.fecha).toLocaleString('es-SV');
+                        const icono = getIconoActividad(item.tipo);
+                        const color = getColorActividad(item.tipo);
+                        
+                        html += `
+                            <div class="activity-item" style="border-left-color: ${color}">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex">
+                                        <div class="me-3">
+                                            <i class="${icono}" style="color: ${color}"></i>
+                                        </div>
+                                        <div>
+                                            <strong>${item.titulo}</strong>
+                                            <p class="mb-1 text-muted">${item.descripcion}</p>
+                                            <small class="text-muted">
+                                                <i class="fas fa-user me-1"></i>${item.usuario}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">${tiempo}</small>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `
+                        <div class="text-center py-3">
+                            <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No hay actividad reciente</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error cargando actividad:', error);
+                document.getElementById('actividadReciente').innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error al cargar la actividad reciente
+                    </div>
+                `;
+            }
+        }
+
+        // Función para actualizar notificaciones
+        async function actualizarNotificaciones() {
+            try {
+                const response = await fetch('/admin/api/notificaciones');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('badge-usuarios').textContent = data.usuariosNuevos || 0;
+                    document.getElementById('badge-reportes').textContent = data.reportesPendientes || 0;
+                    
+                    // Ocultar badges si son 0
+                    if (!data.usuariosNuevos) {
+                        document.getElementById('badge-usuarios').style.display = 'none';
+                    }
+                    if (!data.reportesPendientes) {
+                        document.getElementById('badge-reportes').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.error('Error actualizando notificaciones:', error);
+            }
+        }
+
+        // Función para actualizar datos del dashboard
+        async function actualizarDatos() {
+            try {
+                const response = await fetch('/admin/api/estadisticas');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('totalUsuarios').textContent = data.estadisticas.totalUsuarios.toLocaleString();
+                    document.getElementById('totalReportes').textContent = data.estadisticas.totalReportes.toLocaleString();
+                    document.getElementById('reportesPendientes').textContent = data.estadisticas.reportesPendientes.toLocaleString();
+                    document.getElementById('totalComunidades').textContent = data.estadisticas.totalComunidades.toLocaleString();
+                    
+                    // Actualizar gráficos si hay nuevos datos
+                    if (data.graficos) {
+                        actualizarGraficos(data.graficos);
+                    }
+                    
+                    mostrarToast('Datos actualizados correctamente', 'success');
+                }
+            } catch (error) {
+                console.error('Error actualizando datos:', error);
+                mostrarToast('Error al actualizar los datos', 'error');
+            }
+        }
+
+        // Función para actualizar gráficos
+        function actualizarGraficos(datos) {
+            if (datos.reportesPorMes && chartReportes) {
+                chartReportes.data.datasets[0].data = datos.reportesPorMes;
+                chartReportes.update();
+            }
+            
+            if (datos.estadosReportes && chartEstados) {
+                chartEstados.data.datasets[0].data = datos.estadosReportes;
+                chartEstados.update();
+            }
+        }
+
+        // Función para verificar estado del sistema
+        async function verificarEstadoSistema() {
+            const boton = event.target;
+            const iconoOriginal = boton.innerHTML;
+            
+            boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+            boton.disabled = true;
+            
+            try {
+                const response = await fetch('/admin/api/estado-sistema');
+                const data = await response.json();
+                
+                if (data.success) {
+                    mostrarToast('Sistema funcionando correctamente', 'success');
+                } else {
+                    mostrarToast('Se detectaron algunos problemas en el sistema', 'warning');
+                }
+            } catch (error) {
+                console.error('Error verificando sistema:', error);
+                mostrarToast('Error al verificar el estado del sistema', 'error');
+            } finally {
+                setTimeout(() => {
+                    boton.innerHTML = iconoOriginal;
+                    boton.disabled = false;
+                }, 1000);
+            }
+        }
+
+        // Función para obtener icono de actividad
+        function getIconoActividad(tipo) {
+            switch (tipo) {
+                case 'login': return 'fas fa-sign-in-alt';
+                case 'logout': return 'fas fa-sign-out-alt';
+                case 'reporte': return 'fas fa-flag';
+                case 'usuario': return 'fas fa-user-plus';
+                case 'comunidad': return 'fas fa-home';
+                case 'admin': return 'fas fa-user-shield';
+                case 'error': return 'fas fa-exclamation-triangle';
+                default: return 'fas fa-info-circle';
+            }
+        }
+
+        // Función para obtener color de actividad
+        function getColorActividad(tipo) {
+            switch (tipo) {
+                case 'login': return '#28a745';
+                case 'logout': return '#6c757d';
+                case 'reporte': return '#ffc107';
+                case 'usuario': return '#17a2b8';
+                case 'comunidad': return '#667eea';
+                case 'admin': return '#764ba2';
+                case 'error': return '#dc3545';
+                default: return '#667eea';
+            }
+        }
+
+        // Función para mostrar toast
+        function mostrarToast(mensaje, tipo = 'info') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const tipoClass = {
+                'success': 'bg-success',
+                'error': 'bg-danger', 
+                'warning': 'bg-warning',
+                'info': 'bg-info'
+            }[tipo] || 'bg-info';
+            
+            const icono = {
+                'success': 'fas fa-check-circle',
+                'error': 'fas fa-exclamation-triangle',
+                'warning': 'fas fa-exclamation-circle',
+                'info': 'fas fa-info-circle'
+            }[tipo] || 'fas fa-info-circle';
+            
+            const toastHtml = `
+                <div id="${toastId}" class="toast align-items-center text-white ${tipoClass} border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="${icono} me-2"></i>
+                            ${mensaje}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            
+            // Eliminar el toast después de que se oculte
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
+        }
+
+        // Función para navegar a secciones con parámetros
+        function navegarA(seccion, parametros = {}) {
+            let url = `/admin/${seccion}`;
+            
+            if (Object.keys(parametros).length > 0) {
+                const params = new URLSearchParams(parametros);
+                url += `?${params.toString()}`;
+            }
+            
+            window.location.href = url;
+        }
+
+        // Atajos de teclado
+        document.addEventListener('keydown', function(e) {
+            // Alt + D para Dashboard
+            if (e.altKey && e.key === 'd') {
+                e.preventDefault();
+                window.location.href = '/admin';
+            }
+            
+            // Alt + U para Usuarios
+            if (e.altKey && e.key === 'u') {
+                e.preventDefault();
+                window.location.href = '/admin/usuarios';
+            }
+            
+            // Alt + R para Reportes
+            if (e.altKey && e.key === 'r') {
+                e.preventDefault();
+                window.location.href = '/admin/reportes';
+            }
+            
+            // Alt + C para Comunidades
+            if (e.altKey && e.key === 'c') {
+                e.preventDefault();
+                window.location.href = '/admin/comunidades';
+            }
+            
+            // Alt + L para Logs
+            if (e.altKey && e.key === 'l') {
+                e.preventDefault();
+                window.location.href = '/admin/logs';
+            }
+            
+            // F5 para actualizar datos
+            if (e.key === 'F5') {
+                e.preventDefault();
+                actualizarDatos();
+            }
+        });
+
+        // Función para agregar tooltips a los atajos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Agregar tooltips informativos
+            const tooltips = [
+                { id: 'nav-dashboard', text: 'Presiona Alt+D' },
+                { id: 'nav-usuarios', text: 'Presiona Alt+U' },
+                { id: 'nav-reportes', text: 'Presiona Alt+R' },
+                { id: 'nav-comunidades', text: 'Presiona Alt+C' },
+                { id: 'nav-logs', text: 'Presiona Alt+L' }
+            ];
+            
+            tooltips.forEach(tooltip => {
+                const element = document.getElementById(tooltip.id);
+                if (element) {
+                    element.setAttribute('data-bs-toggle', 'tooltip');
+                    element.setAttribute('data-bs-placement', 'right');
+                    element.setAttribute('title', tooltip.text);
+                }
+            });
+            
+            // Inicializar tooltips de Bootstrap
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+        // Función para manejar la navegación responsiva
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        // Detectar actividad del usuario para mantener sesión activa
+        let inactivityTimer;
+        let warningShown = false;
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            warningShown = false;
+            
+            // Advertir después de 25 minutos de inactividad
+            inactivityTimer = setTimeout(() => {
+                if (!warningShown) {
+                    warningShown = true;
+                    if (confirm('Tu sesión expirará en 5 minutos por inactividad. ¿Deseas continuar?')) {
+                        resetInactivityTimer();
+                        // Ping al servidor para mantener sesión activa
+                        fetch('/admin/api/ping', { method: 'POST' });
+                    }
+                }
+            }, 25 * 60 * 1000); // 25 minutos
+        }
+
+        // Eventos para detectar actividad
+        ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+            document.addEventListener(event, resetInactivityTimer, true);
+        });
+
+        // Inicializar timer de inactividad
+        resetInactivityTimer();
+
+        // Mostrar mensaje de bienvenida solo la primera vez
+        if (!sessionStorage.getItem('welcomeShown')) {
+            setTimeout(() => {
+                mostrarToast('¡Bienvenido al panel de administración!', 'info');
+                sessionStorage.setItem('welcomeShown', 'true');
+            }, 1000);
+        }
+
+        // Función para exportar datos del dashboard
+        function exportarDashboard() {
+            window.open('/admin/api/exportar-dashboard', '_blank');
+        }
+
+        // Función para cambiar tema
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Aplicar tema
+            if (newTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                document.body.classList.remove('dark-theme');
+                localStorage.setItem('theme', 'light');
+            }
+            
+            // Actualizar icono del botón
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                const icon = themeToggle.querySelector('i');
+                if (icon) {
+                    icon.className = newTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars';
+                }
+            }
+            
+            // Actualizar texto del indicador
+            const themeIndicator = document.getElementById('theme-indicator');
+            const themeText = document.getElementById('theme-text');
+            if (themeIndicator && themeText) {
+                themeText.textContent = newTheme === 'dark' ? 'Tema Oscuro' : 'Tema Claro';
+                themeIndicator.innerHTML = newTheme === 'dark' ? '<i class="bi bi-moon-stars me-1"></i> Tema Oscuro' : '<i class="bi bi-sun me-1"></i> Tema Claro';
+            }
+            
+            // Mostrar notificación
+            const themeName = newTheme === 'dark' ? 'Oscuro' : 'Claro';
+            const icon = newTheme === 'dark' ? '🌙' : '☀️';
+            if (typeof mostrarToast === 'function') {
+                mostrarToast(`${icon} Tema cambiado a ${themeName}`, 'success');
+            }
+            
+            console.log(`🎨 Tema cambiado a: ${newTheme}`);
+        }
+
+        // Función para cargar tema guardado
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                if (savedTheme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    document.body.classList.add('dark-theme');
+                    
+                    // Actualizar icono del botón
+                    const themeToggle = document.getElementById('theme-toggle');
+                    if (themeToggle) {
+                        const icon = themeToggle.querySelector('i');
+                        if (icon) {
+                            icon.className = 'bi bi-sun';
+                        }
+                    }
+
+                    // Actualizar texto del indicador
+                    const themeIndicator = document.getElementById('theme-indicator');
+                    const themeText = document.getElementById('theme-text');
+                    if (themeIndicator && themeText) {
+                        themeText.textContent = 'Tema Oscuro';
+                        themeIndicator.innerHTML = '<i class="bi bi-moon-stars me-1"></i> Tema Oscuro';
+                    }
+                }
+            }
+        }
+
+        // Cargar tema al inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedTheme();
+        });
+
+        // Función para configurar actualizaciones automáticas
+        let autoUpdateInterval;
+        function toggleAutoUpdate() {
+            const button = document.getElementById('autoUpdateBtn');
+            
+            if (autoUpdateInterval) {
+                clearInterval(autoUpdateInterval);
+                autoUpdateInterval = null;
+                button.innerHTML = '<i class="fas fa-play"></i> Auto-actualizar';
+                button.classList.remove('btn-success');
+                button.classList.add('btn-outline-secondary');
+                mostrarToast('Auto-actualización desactivada', 'info');
+            } else {
+                autoUpdateInterval = setInterval(actualizarDatos, 10000); // Cada 10 segundos
+                button.innerHTML = '<i class="fas fa-pause"></i> Detener auto-actualización';
+                button.classList.remove('btn-outline-secondary');
+                button.classList.add('btn-success');
+                mostrarToast('Auto-actualización activada (cada 10 segundos)', 'success');
+            }
+        }
+
+        // Log de actividades para debugging
+        console.log('🔧 Dashboard administrativo inicializado');
+        console.log('⌨️  Atajos disponibles:');
+        console.log('   Alt+D: Dashboard');
+        console.log('   Alt+U: Usuarios');
+        console.log('   Alt+R: Reportes');
+        console.log('   Alt+C: Comunidades');
+        console.log('   Alt+L: Logs');
+        console.log('   F5: Actualizar datos');
+    </script>
+    
+    <!-- Sistema de Temas -->
+    <script src="/js/theme-switcher.js"></script>
+</body>
+</html>

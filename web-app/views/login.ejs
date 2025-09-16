@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiCiudadSV - Iniciar Sesión</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #ffc107;
+            --secondary-color: #6c757d;
+            --dark-bg: #1a1a1a;
+            --darker-bg: #0d0d0d;
+            --text-light: #ffffff;
+            --text-muted: #b0b0b0;
+            --accent-yellow: #ffc107;
+            --accent-blue: #007bff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+        
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Lado izquierdo - Información */
+        .info-side {
+            flex: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            position: relative;
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .custom-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--accent-yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--dark-bg);
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+        }
+        
+        .logo-section h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+        
+        .logo-section p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 400px;
+        }
+        
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--accent-yellow);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+        
+        .feature-card p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        
+        /* Lado derecho - Formulario */
+        .form-side {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            border-radius: 20px 0 0 20px;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-header i {
+            font-size: 3rem;
+            color: var(--accent-yellow);
+            margin-bottom: 15px;
+        }
+        
+        .form-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark-bg);
+        }
+        
+        .form-header p {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+        
+        .form-floating {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            color: var(--dark-bg);
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            background: white;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+            color: var(--dark-bg);
+        }
+        
+        .form-control::placeholder {
+            color: var(--secondary-color);
+        }
+        
+        .form-floating label {
+            color: var(--secondary-color);
+            padding: 15px 20px;
+        }
+        
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            color: var(--accent-yellow);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .password-toggle:hover {
+            color: var(--accent-yellow);
+        }
+        
+        .form-check {
+            margin-bottom: 20px;
+        }
+        
+        .form-check-input {
+            background-color: white;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--accent-yellow);
+            border-color: var(--accent-yellow);
+        }
+        
+        .form-check-label {
+            color: var(--secondary-color);
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 15px;
+            border: none;
+            background: var(--accent-yellow);
+            color: var(--dark-bg);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 193, 7, 0.3);
+        }
+        
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+        .forgot-password a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .register-link a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        /* Controles superiores */
+        .top-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        /* Alertas */
+        .alert {
+            border-radius: 15px;
+            border: none;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .info-side {
+                min-height: 40vh;
+                padding: 30px 20px;
+            }
+            
+            .form-side {
+                padding: 30px 20px;
+            }
+            
+            .logo-section h1 {
+                font-size: 2rem;
+            }
+            
+            .custom-logo {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+            
+            .top-controls {
+                top: 15px;
+                right: 15px;
+                gap: 8px;
+            }
+            
+            .control-btn {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Controles superiores -->
+    <div class="top-controls">
+        <button class="control-btn" id="themeToggle" title="Cambiar tema">
+            <i class="fas fa-cog"></i>
+        </button>
+        <button class="control-btn" id="languageToggle" title="Cambiar idioma">
+            <span>EN</span>
+        </button>
+    </div>
+
+    <div class="main-container">
+        <!-- Lado izquierdo - Información -->
+        <div class="info-side">
+            <div class="logo-section">
+                <div class="custom-logo">
+                    M
+                </div>
+                <h1>MiCiudadSV</h1>
+                <p>Tu plataforma ciudadana digital</p>
+            </div>
+
+            <div class="feature-card">
+                <i class="fas fa-sign-in-alt"></i>
+                <h4>Acceso Seguro</h4>
+                <p>Inicia sesión de forma segura y accede a todas las funcionalidades de la plataforma</p>
+            </div>
+        </div>
+
+        <!-- Lado derecho - Formulario -->
+        <div class="form-side">
+            <div class="form-container">
+                <div class="form-header">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <h2>Iniciar Sesión</h2>
+                    <p>Accede a tu cuenta y mantente conectado con tu comunidad</p>
+                </div>
+
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <%= error %>
+                    </div>
+                <% } %>
+
+                <% if (typeof success !== 'undefined' && success) { %>
+                    <div class="alert alert-success" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <%= success %>
+                    </div>
+                <% } %>
+
+                <form method="POST" action="/auth/login" id="loginForm" novalidate>
+                    <div class="form-floating">
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="correo"
+                            name="correo"
+                            placeholder="nombre@ejemplo.com"
+                            required
+                            autocomplete="email"
+                        >
+                        <label for="correo">
+                            <i class="fas fa-envelope me-2"></i>
+                            Correo electrónico
+                        </label>
+                    </div>
+
+                    <div class="form-floating position-relative">
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="contraseña"
+                            name="contraseña"
+                            placeholder="Contraseña"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <label for="contraseña">
+                            <i class="fas fa-lock me-2"></i>
+                            Contraseña
+                        </label>
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+
+                    <div class="forgot-password">
+                        <a href="/auth/recuperar-password">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="recordar" name="recordar">
+                        <label class="form-check-label" for="recordar">
+                            Recordarme en este dispositivo
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-login">
+                        <i class="fas fa-sign-in-alt me-2"></i>
+                        Iniciar Sesión
+                    </button>
+                </form>
+
+                <div class="register-link">
+                    <p class="text-muted">
+                        ¿No tienes una cuenta?
+                        <a href="/auth/registro">Regístrate aquí</a>
+                    </p>
+                </div>
+
+                <div class="copyright">
+                    © 2025 MiCiudadSV. Todos los derechos reservados.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('contraseña');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+        
+        // Form validation and loading state
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Iniciando sesión...';
+            submitBtn.disabled = true;
+            
+            // Basic validation
+            const email = document.getElementById('correo').value;
+            const password = document.getElementById('contraseña').value;
+            
+            if (!email || !password) {
+                e.preventDefault();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Show error
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger';
+                alertDiv.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Por favor, completa todos los campos.';
+                
+                const form = document.getElementById('loginForm');
+                form.insertBefore(alertDiv, form.firstChild);
+                
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 3000);
+                
+                return false;
+            }
+        });
+        
+        // Animate form elements on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const formElements = document.querySelectorAll('.form-floating, .btn-login');
+            
+            formElements.forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'all 0.5s ease';
+                
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 100 + 300);
+            });
+        });
+        
+        // Auto-focus first input
+        document.getElementById('correo').focus();
+        
+        // Enter key handling
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const focusedElement = document.activeElement;
+                if (focusedElement.id === 'correo') {
+                    document.getElementById('contraseña').focus();
+                } else if (focusedElement.id === 'contraseña') {
+                    document.getElementById('loginForm').submit();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

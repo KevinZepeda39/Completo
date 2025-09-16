@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - MiCiudadSV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --danger-color: #e74c3c;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .error-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 600px;
+            margin: auto;
+        }
+        
+        .error-icon {
+            font-size: 5rem;
+            color: var(--danger-color);
+            margin-bottom: 30px;
+        }
+        
+        .error-code {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .error-message {
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+        }
+        
+        .btn-home {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #5dade2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-container">
+            <div class="error-icon">
+                <% if (typeof error !== 'undefined' && error && error.status === 404) { %>
+                    <i class="fas fa-search"></i>
+                <% } else { %>
+                    <i class="fas fa-exclamation-triangle"></i>
+                <% } %>
+            </div>
+            
+            <div class="error-code">
+                <%= (typeof error !== 'undefined' && error && error.status) ? error.status : '500' %>
+            </div>
+            
+            <div class="error-message">
+                <%= mensaje || 'Ha ocurrido un error inesperado' %>
+            </div>
+            
+            <% if (typeof error !== 'undefined' && error && error.status === 404) { %>
+                <p class="text-muted">
+                    La página que buscas no existe o ha sido movida.
+                </p>
+            <% } else { %>
+                <p class="text-muted">
+                    Por favor, intenta de nuevo más tarde o contacta al administrador si el problema persiste.
+                </p>
+            <% } %>
+            
+            <div class="mt-4">
+                <a href="/" class="btn-home">
+                    <i class="fas fa-home me-2"></i>
+                    Volver al Inicio
+                </a>
+                
+                <button class="btn btn-outline-secondary ms-3" onclick="history.back()">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Regresar
+                </button>
+            </div>
+            
+            <div class="mt-4 pt-4 border-top">
+                <small class="text-muted">
+                    <i class="fas fa-clock me-1"></i>
+                    <%= new Date().toLocaleString('es-ES') %>
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Sistema de Temas -->
+    <script src="/js/theme-switcher.js"></script>
+    
+</body>
+</html>

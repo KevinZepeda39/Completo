@@ -1,0 +1,360 @@
+/* Sistema de Temas - Variables CSS */
+:root {
+    /* Tema Claro (por defecto) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --bg-card: #ffffff;
+    --bg-sidebar: #1f2937;
+    --bg-sidebar-hover: #374151;
+    --bg-navbar: #ffffff;
+    --bg-footer: #f8fafc;
+    
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --text-inverse: #ffffff;
+    --text-link: #4f46e5;
+    --text-link-hover: #4338ca;
+    
+    --border-primary: #e5e7eb;
+    --border-secondary: #d1d5db;
+    --border-accent: #cbd5e1;
+    --border-input: #d1d5db;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    
+    --accent-primary: #4f46e5;
+    --accent-primary-hover: #4338ca;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+    --accent-info: #3b82f6;
+    
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+    --toast-bg: #ffffff;
+    --modal-bg: #ffffff;
+    --dropdown-bg: #ffffff;
+}
+
+/* Tema Oscuro */
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-card: #1e293b;
+    --bg-sidebar: #0f172a;
+    --bg-sidebar-hover: #1e293b;
+    --bg-navbar: #1e293b;
+    --bg-footer: #0f172a;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-inverse: #0f172a;
+    --text-link: #60a5fa;
+    --text-link-hover: #93c5fd;
+    
+    --border-primary: #334155;
+    --border-secondary: #475569;
+    --border-accent: #64748b;
+    --border-input: #475569;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    
+    --accent-primary: #6366f1;
+    --accent-primary-hover: #4f46e5;
+    --accent-success: #22c55e;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+    --accent-info: #60a5fa;
+    
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --toast-bg: #1e293b;
+    --modal-bg: #1e293b;
+    --dropdown-bg: #1e293b;
+}
+
+/* Transiciones suaves para cambio de tema */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Aplicar variables a elementos comunes */
+body {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Navbar */
+.navbar, .navbar-expand-lg {
+    background-color: var(--bg-navbar) !important;
+    border-bottom: 1px solid var(--border-primary) !important;
+}
+
+.navbar-brand, .navbar-nav .nav-link {
+    color: var(--text-primary) !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--accent-primary) !important;
+}
+
+/* Cards y contenedores */
+.card, .modal-content, .toast, .dropdown-menu {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-primary) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* Formularios */
+.form-control, .form-select, .form-textarea, input, select, textarea {
+    background-color: var(--bg-primary) !important;
+    border-color: var(--border-input) !important;
+    color: var(--text-primary) !important;
+}
+
+.form-control:focus, .form-select:focus, input:focus, select:focus, textarea:focus {
+    background-color: var(--bg-primary) !important;
+    border-color: var(--accent-primary) !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+}
+
+/* Botones */
+.btn {
+    border-color: var(--border-primary) !important;
+}
+
+.btn-outline-primary {
+    color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--accent-primary) !important;
+    color: var(--text-inverse) !important;
+}
+
+/* Textos */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.text-primary {
+    color: var(--accent-primary) !important;
+}
+
+/* Enlaces */
+a {
+    color: var(--text-link) !important;
+}
+
+a:hover {
+    color: var(--text-link-hover) !important;
+}
+
+/* Sidebar */
+.sidebar, .bg-dark {
+    background-color: var(--bg-sidebar) !important;
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: var(--bg-sidebar-hover) !important;
+    color: var(--text-inverse) !important;
+}
+
+/* Modal */
+.modal-header, .modal-footer {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-primary) !important;
+}
+
+.modal-body {
+    background-color: var(--bg-card) !important;
+}
+
+/* Toast */
+.toast {
+    background-color: var(--toast-bg) !important;
+    border-color: var(--border-primary) !important;
+}
+
+/* Loading overlay */
+.loading-overlay {
+    background-color: var(--overlay-bg) !important;
+}
+
+/* Badges */
+.badge {
+    background-color: var(--accent-primary) !important;
+    color: var(--text-inverse) !important;
+}
+
+/* Tablas */
+.table {
+    color: var(--text-primary) !important;
+}
+
+.table th {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-primary) !important;
+}
+
+.table td {
+    border-color: var(--border-primary) !important;
+}
+
+/* Alertas */
+.alert {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    background-color: var(--dropdown-bg) !important;
+    border-color: var(--border-primary) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.dropdown-item {
+    color: var(--text-primary) !important;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Paginación */
+.page-link {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+.page-link:hover {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+.page-item.active .page-link {
+    background-color: var(--accent-primary) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+/* Tooltip */
+.tooltip-inner {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: var(--bg-card) !important;
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: var(--bg-card) !important;
+}
+
+.tooltip.bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: var(--bg-card) !important;
+}
+
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: var(--bg-card) !important;
+}
+
+/* Footer */
+footer, .footer {
+    background-color: var(--bg-footer) !important;
+    color: var(--text-primary) !important;
+    border-top: 1px solid var(--border-primary) !important;
+}
+
+/* Jumbotron y hero sections */
+.jumbotron, .hero, .hero-section {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Listas */
+.list-group-item {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Input groups */
+.input-group-text {
+    background-color: var(--bg-secondary) !important;
+    border-color: var(--border-input) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Progress bars */
+.progress {
+    background-color: var(--bg-secondary) !important;
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    background-color: var(--bg-secondary) !important;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--text-muted) !important;
+}
+
+/* Code blocks */
+code, pre {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-primary) !important;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid var(--accent-primary) !important;
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Horizontal rules */
+hr {
+    border-color: var(--border-primary) !important;
+}
+
+/* Estilos específicos para la página de prueba */
+.test-card {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-primary) !important;
+}
+
+/* Debug: mostrar que el CSS se está cargando */
+body::before {
+    content: "✅ CSS de temas cargado correctamente";
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: #10b981;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 9999;
+    opacity: 0.8;
+}

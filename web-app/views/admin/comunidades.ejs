@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --dark-bg: #1e293b;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #334155 100%);
+            box-shadow: var(--shadow-lg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link {
+            color: #cbd5e1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 4px 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .sidebar .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .sidebar .nav-link i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: var(--light-bg);
+            width: calc(100% - 280px);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .main-content {
+            background: #0a0a0a;
+        }
+
+        /* Header */
+        .page-header {
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .page-header {
+            background: #1e1e1e;
+        }
+        
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: var(--primary-color); }
+        .stat-icon.success { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: var(--success-color); }
+        .stat-icon.warning { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: var(--warning-color); }
+        .stat-icon.info { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: var(--info-color); }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .table {
+            margin: 0;
+            width: 100%;
+        }
+
+        .table th {
+            background: #f8fafc;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 1rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+            word-wrap: break-word;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8fafc;
+            transform: scale(1.01);
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            min-width: fit-content;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge.bg-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%) !important;
+        }
+
+        .badge.bg-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%) !important;
+        }
+
+        .badge.bg-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%) !important;
+        }
+
+        .badge.bg-info {
+            background: linear-gradient(135deg, var(--info-color) 0%, #0ea5e9 100%) !important;
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                width: 100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-responsive {
+                font-size: 0.875rem;
+            }
+            
+            .page-header {
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 0.5rem;
+            }
+            
+            .page-header {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Spinner animation */
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Pagination */
+        .pagination {
+            margin: 0;
+        }
+        
+        .page-link {
+            border: none;
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            margin: 0 0.25rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .page-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .page-item.active .page-link {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            overflow: hidden;
+        }
+
+        .toast-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toast-body {
+            padding: 16px;
+        }
+
+        .toast.success .toast-header {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: var(--success-color);
+        }
+
+        .toast.error .toast-header {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: var(--danger-color);
+        }
+
+        .toast.info .toast-header {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: var(--info-color);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            max-width: 100%;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            border-radius: 16px 16px 0 0;
+            border: none;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+        
+        /* Elementos adicionales en modo oscuro */
+        [data-theme="dark"] .stats-grid {
+            background: transparent;
+        }
+        
+        [data-theme="dark"] .stat-card {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .stat-number {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .stat-label {
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .table-container {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .table-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        [data-theme="dark"] .form-control,
+        [data-theme="dark"] .form-select {
+            background-color: #2d2d2d;
+            border-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .form-control:focus,
+        [data-theme="dark"] .form-select:focus {
+            background-color: #2d2d2d;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .form-label {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-secondary {
+            color: #adb5bd;
+            border-color: #404040;
+        }
+        
+        [data-theme="dark"] .btn-outline-secondary:hover {
+            background-color: #404040;
+            border-color: #adb5bd;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-secondary {
+            background: #404040;
+            border-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-secondary:hover {
+            background: #2d2d2d;
+            border-color: #2d2d2d;
+        }
+        
+        [data-theme="dark"] .page-title {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .page-subtitle {
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .text-dark {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-primary {
+            color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .pagination .page-link {
+            background-color: #2d2d2d;
+            color: #4d94ff;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .pagination .page-link:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .pagination .page-item.active .page-link {
+            background-color: #4d94ff;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        /* Elementos adicionales en modo oscuro */
+        [data-theme="dark"] .btn-outline-primary {
+            color: #4d94ff;
+            border-color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .btn-outline-primary:hover {
+            background-color: #4d94ff;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-success {
+            color: #10b981;
+            border-color: #10b981;
+        }
+        
+        [data-theme="dark"] .btn-outline-success:hover {
+            background-color: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-warning {
+            color: #f59e0b;
+            border-color: #f59e0b;
+        }
+        
+        [data-theme="dark"] .btn-outline-warning:hover {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-danger {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        [data-theme="dark"] .btn-outline-danger:hover {
+            background-color: #ef4444;
+            border-color: #ef4444;
+            color: #ffffff;
+        }
+
+        /* Estilos específicos para botón de eliminar */
+        .btn-eliminar-comunidad {
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+            border-width: 2px;
+        }
+
+        .btn-eliminar-comunidad:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4);
+            background-color: #dc2626 !important;
+            border-color: #dc2626 !important;
+            color: white !important;
+        }
+
+        .btn-eliminar-comunidad:active {
+            transform: translateY(0);
+        }
+
+        .btn-eliminar-comunidad:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        [data-theme="dark"] .btn-outline-info {
+            color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        [data-theme="dark"] .btn-outline-info:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-primary {
+            background: linear-gradient(135deg, #4d94ff 0%, #3b82f6 100%);
+            border-color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+        }
+        
+        [data-theme="dark"] .btn-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+            border-color: #3b82f6;
+        }
+        
+        [data-theme="dark"] .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-color: #f59e0b;
+        }
+        
+        [data-theme="dark"] .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-color: #ef4444;
+        }
+        
+        [data-theme="dark"] .alert {
+            background-color: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .alert-success {
+            background-color: #0f5132;
+            border-color: #10b981;
+            color: #d1fae5;
+        }
+        
+        [data-theme="dark"] .alert-warning {
+            background-color: #92400e;
+            border-color: #f59e0b;
+            color: #fef3c7;
+        }
+        
+        [data-theme="dark"] .alert-danger {
+            background-color: #7f1d1d;
+            border-color: #ef4444;
+            color: #fee2e2;
+        }
+        
+        [data-theme="dark"] .alert-info {
+            background-color: #0c4a6e;
+            border-color: #3b82f6;
+            color: #dbeafe;
+        }
+        
+        [data-theme="dark"] .bg-light {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .text-light {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .opacity-75 {
+            opacity: 0.75 !important;
+        }
+        
+        [data-theme="dark"] .opacity-50 {
+            opacity: 0.5 !important;
+        }
+        
+        [data-theme="dark"] .dropdown-menu {
+            background-color: #2d2d2d;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .dropdown-item {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .dropdown-item:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .modal-content {
+            background-color: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .modal-header {
+            background-color: #2d2d2d;
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .modal-footer {
+            background-color: #2d2d2d;
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .modal-title {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-close {
+            filter: invert(1);
+        }
+        
+        [data-theme="dark"] .hr {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .text-danger {
+            color: #ef4444 !important;
+        }
+        
+        [data-theme="dark"] .text-success {
+            color: #10b981 !important;
+        }
+        
+        [data-theme="dark"] .text-warning {
+            color: #f59e0b !important;
+        }
+        
+        [data-theme="dark"] .text-info {
+            color: #3b82f6 !important;
+        }
+        
+        [data-theme="dark"] .fw-semibold {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .fw-bold {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .small {
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .rounded-circle {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .fa-2x {
+            color: #adb5bd;
+        }
+        
+        /* Estilos adicionales para elementos que podrían estar en blanco */
+        [data-theme="dark"] .table tbody tr:hover {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .table tbody tr {
+            background-color: #1e1e1e;
+        }
+        
+        [data-theme="dark"] .table tbody tr:nth-child(even) {
+            background-color: #252525;
+        }
+        
+        [data-theme="dark"] .badge.bg-info {
+            background-color: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-success {
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-warning {
+            background-color: #f59e0b !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-danger {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-truncate {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-center {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .py-5 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .bg-light.rounded-circle {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .bg-light.rounded-circle .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .bg-light.rounded-circle .fa-2x {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .h6 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .p {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .d-flex.flex-column.align-items-center {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .d-flex.flex-column.align-items-center .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .d-flex.flex-column.align-items-center .h6 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .d-flex.flex-column.align-items-center .p {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .d-flex.flex-column.align-items-center .btn {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .d-flex.flex-column.align-items-center .btn.btn-primary {
+            background-color: #4d94ff !important;
+            border-color: #4d94ff !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .d-flex.flex-column.align-items-center .btn.btn-primary:hover {
+            background-color: #3b82f6 !important;
+            border-color: #3b82f6 !important;
+        }
+        
+        [data-theme="dark"] .d-flex.flex-column.align-items-center .btn.btn-primary:focus {
+            background-color: #3b82f6 !important;
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 0.2rem rgba(77, 148, 255, 0.25) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="sidebar" style="width: 280px;">
+            <div class="p-4">
+                <div class="text-center mb-4">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check text-white" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="text-white fw-bold">Admin Panel</h4>
+                    <small class="text-light opacity-75">MiCiudadSV</small>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">
+                            <i class="bi bi-speedometer2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin/comunidades">
+                            <i class="bi bi-house-door"></i>
+                            Comunidades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/reportes">
+                            <i class="bi bi-file-earmark-text"></i>
+                            Reportes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/usuarios">
+                            <i class="bi bi-people"></i>
+                            Usuarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/logs">
+                            <i class="bi bi-journal-text"></i>
+                            Logs
+                        </a>
+                    </li>
+                    <li class="nav-item mt-4">
+                        <hr class="text-light opacity-25">
+                        <a class="nav-link" href="/">
+                            <i class="bi bi-house"></i>
+                            Ir al Sitio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="page-header fade-in">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="bi bi-house-door me-3"></i>
+                            Gestión de Comunidades
+                        </h1>
+                        <p class="page-subtitle">
+                            Administra y supervisa todas las comunidades del sistema
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Botón de cambio de tema -->
+                        <button type="button" class="btn btn-outline-secondary theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                            <i class="bi bi-moon-stars"></i>
+                        </button>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-secondary">
+                                <i class="bi bi-download me-2"></i>
+                                Exportar
+                            </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevaComunidadModal">
+                                <i class="bi bi-plus me-2"></i>
+                                Nueva Comunidad
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid fade-in">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="bi bi-house-door"></i>
+                    </div>
+                    <div class="stat-number"><%= (estadisticas && estadisticas.total) || 0 %></div>
+                    <div class="stat-label">Total Comunidades</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+                    <div class="stat-number"><%= (estadisticas && estadisticas.activas) || 0 %></div>
+                    <div class="stat-label">Activas</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="bi bi-pause-circle"></i>
+                    </div>
+                    <div class="stat-number"><%= (estadisticas && estadisticas.suspendidas) || 0 %></div>
+                    <div class="stat-label">Suspendidas</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon info">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
+                    <div class="stat-number"><%= (estadisticas && estadisticas.eliminadas) || 0 %></div>
+                    <div class="stat-label">Eliminadas</div>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="table-container fade-in">
+                <div class="table-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="table-title mb-0">
+                            <i class="bi bi-funnel me-2"></i>
+                            Filtros de Búsqueda
+                        </h5>
+                    </div>
+                </div>
+                
+                <div class="p-4">
+                    <form method="GET" action="/admin/comunidades">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="buscar" class="form-label">
+                                    <i class="bi bi-search me-1"></i>
+                                    Buscar
+                                </label>
+                                <input type="text" class="form-control" id="buscar" name="buscar" 
+                                       value="<%= (filtros && filtros.buscar) || '' %>" 
+                                       placeholder="Título, descripción o creador...">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="estado" class="form-label">
+                                    <i class="bi bi-flag me-1"></i>
+                                    Estado
+                                </label>
+                                <select class="form-select" id="estado" name="estado">
+                                    <option value="todas" <%= (!filtros || !filtros.estado || filtros.estado === 'todas') ? 'selected' : '' %>>Todas</option>
+                                    <option value="activa" <%= (filtros && filtros.estado === 'activa') ? 'selected' : '' %>>Activas</option>
+                                    <option value="suspendida" <%= (filtros && filtros.estado === 'suspendida') ? 'selected' : '' %>>Suspendidas</option>
+                                    <option value="eliminada" <%= (filtros && filtros.estado === 'eliminada') ? 'selected' : '' %>>Eliminadas</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="categoria" class="form-label">
+                                    <i class="bi bi-tags me-1"></i>
+                                    Categoría
+                                </label>
+                                <select class="form-select" id="categoria" name="categoria">
+                                    <option value="todas" <%= (!filtros || !filtros.categoria || filtros.categoria === 'todas') ? 'selected' : '' %>>Todas</option>
+                                    <option value="infraestructura" <%= (filtros && filtros.categoria === 'infraestructura') ? 'selected' : '' %>>Infraestructura</option>
+                                    <option value="seguridad" <%= (filtros && filtros.categoria === 'seguridad') ? 'selected' : '' %>>Seguridad</option>
+                                    <option value="emergencia" <%= (filtros && filtros.categoria === 'emergencia') ? 'selected' : '' %>>Emergencia</option>
+                                    <option value="salud" <%= (filtros && filtros.categoria === 'salud') ? 'selected' : '' %>>Salud</option>
+                                    <option value="general" <%= (filtros && filtros.categoria === 'general') ? 'selected' : '' %>>General</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end mb-3">
+                                <div class="d-grid gap-2 w-100">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-search me-1"></i>
+                                        Buscar
+                                    </button>
+                                    <a href="/admin/comunidades" class="btn btn-secondary">
+                                        <i class="bi bi-x me-1"></i>
+                                        Limpiar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tabla de Comunidades -->
+            <div class="table-container fade-in">
+                <div class="table-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="table-title mb-0">
+                            <i class="bi bi-table me-2"></i>
+                            Lista de Comunidades (<%= (paginacion && paginacion.totalComunidades) || 0 %>)
+                        </h5>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-light btn-sm" onclick="refreshTable()">
+                                <i class="bi bi-arrow-clockwise"></i>
+                                Refrescar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Comunidad</th>
+                                <th>Creador</th>
+                                <th>Estado</th>
+                                <th>Miembros</th>
+                                <th>Comentarios</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (typeof comunidades !== 'undefined' && comunidades && comunidades.length > 0) { %>
+                                <% comunidades.forEach(function(comunidad) { %>
+                                    <tr class="comunidad-row">
+                                        <td>
+                                            <div class="fw-bold text-primary">#<%= comunidad.id %></div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <div class="fw-semibold text-dark mb-1"><%= comunidad.titulo %></div>
+                                                <div class="text-muted small mb-2" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                    <%= comunidad.descripcion %>
+                                                </div>
+                                                <span class="badge bg-info">
+                                                    <i class="bi bi-tag me-1"></i>
+                                                    <%= comunidad.categoria.charAt(0).toUpperCase() + comunidad.categoria.slice(1) %>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <div class="fw-semibold"><%= comunidad.creadorNombre %></div>
+                                                <small class="text-muted">ID: <%= comunidad.creadorId %></small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <% if (comunidad.estado === 'activa') { %>
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle me-1"></i>Activa
+                                                </span>
+                                            <% } else if (comunidad.estado === 'suspendida') { %>
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-pause-circle me-1"></i>Suspendida
+                                                </span>
+                                            <% } else if (comunidad.estado === 'eliminada') { %>
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-x-circle me-1"></i>Eliminada
+                                                </span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-people text-info me-2"></i>
+                                                <span class="fw-semibold"><%= comunidad.totalMiembros %></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-chat-dots text-success me-2"></i>
+                                                <span class="fw-semibold"><%= comunidad.totalComentarios %></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <% 
+                                                const fechaCreacion = new Date(comunidad.fechaCreacion);
+                                                %>
+                                                <div class="fw-semibold">
+                                                    <%= fechaCreacion.toLocaleDateString('es-SV', { day: '2-digit', month: '2-digit', year: 'numeric' }) %>
+                                                </div>
+                                                <small class="text-muted">
+                                                    <%= fechaCreacion.toLocaleTimeString('es-SV', { hour: '2-digit', minute: '2-digit' }) %>
+                                                </small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-2">
+                                                <button type="button" class="btn btn-outline-primary btn-sm btn-ver-comunidad" 
+                                                        data-id="<%= comunidad.id %>"
+                                                        title="Ver detalles">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                
+                                                <% if (comunidad.estado === 'activa') { %>
+                                                    <button type="button" class="btn btn-outline-warning btn-sm btn-cambiar-estado" 
+                                                            data-id="<%= comunidad.id %>" 
+                                                            data-estado="suspendida" 
+                                                            data-titulo="<%= comunidad.titulo %>"
+                                                            title="Suspender">
+                                                        <i class="bi bi-pause"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar-comunidad" 
+                                                            data-id="<%= comunidad.id %>" 
+                                                            data-titulo="<%= comunidad.titulo %>"
+                                                            title="Eliminar comunidad permanentemente de la base de datos"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                <% } else if (comunidad.estado === 'suspendida') { %>
+                                                    <button type="button" class="btn btn-outline-success btn-sm btn-cambiar-estado" 
+                                                            data-id="<%= comunidad.id %>" 
+                                                            data-estado="activa" 
+                                                            data-titulo="<%= comunidad.titulo %>"
+                                                            title="Activar">
+                                                        <i class="bi bi-play"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm btn-eliminar-comunidad" 
+                                                            data-id="<%= comunidad.id %>" 
+                                                            data-titulo="<%= comunidad.titulo %>"
+                                                            title="Eliminar comunidad permanentemente de la base de datos"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                <% } else if (comunidad.estado === 'eliminada') { %>
+                                                    <button type="button" class="btn btn-outline-success btn-sm btn-cambiar-estado" 
+                                                            data-id="<%= comunidad.id %>" 
+                                                            data-estado="activa" 
+                                                            data-titulo="<%= comunidad.titulo %>"
+                                                            title="Restaurar">
+                                                        <i class="bi bi-arrow-clockwise"></i>
+                                                    </button>
+                                                <% } %>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="8" class="text-center py-5">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                                                <i class="bi bi-house-door fa-2x text-muted"></i>
+                                            </div>
+                                            <h6 class="text-muted mb-2">No hay comunidades disponibles</h6>
+                                            <p class="text-muted mb-3">Comienza creando la primera comunidad del sistema</p>
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevaComunidadModal">
+                                                <i class="bi bi-plus me-2"></i>
+                                                Crear Primera Comunidad
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Paginación -->
+            <% if (paginacion && paginacion.totalPages > 1) { %>
+                <div class="table-container fade-in mt-4">
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted">
+                                Mostrando <%= (paginacion.currentPage - 1) * 15 + 1 %> - <%= Math.min(paginacion.currentPage * 15, paginacion.totalComunidades) %> de <%= paginacion.totalComunidades %> comunidades
+                            </div>
+                            <nav aria-label="Paginación de comunidades">
+                                <ul class="pagination mb-0">
+                                    <% if (paginacion.hasPrev) { %>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=<%= paginacion.prevPage %>&estado=<%= (filtros && filtros.estado) || '' %>&categoria=<%= (filtros && filtros.categoria) || '' %>&buscar=<%= (filtros && filtros.buscar) || '' %>">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    <% } %>
+                                    
+                                    <% 
+                                    let startPage = Math.max(1, paginacion.currentPage - 2);
+                                    let endPage = Math.min(paginacion.totalPages, paginacion.currentPage + 2);
+                                    
+                                    for (let i = startPage; i <= endPage; i++) { 
+                                    %>
+                                        <li class="page-item <%= i === paginacion.currentPage ? 'active' : '' %>">
+                                            <a class="page-link" href="?page=<%= i %>&estado=<%= (filtros && filtros.estado) || '' %>&categoria=<%= (filtros && filtros.categoria) || '' %>&buscar=<%= (filtros && filtros.buscar) || '' %>">
+                                                <%= i %>
+                                            </a>
+                                        </li>
+                                    <% } %>
+                                    
+                                    <% if (paginacion.hasNext) { %>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=<%= paginacion.nextPage %>&estado=<%= (filtros && filtros.estado) || '' %>&categoria=<%= (filtros && filtros.categoria) || '' %>&buscar=<%= (filtros && filtros.buscar) || '' %>">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    <% } %>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cambiar Estado -->
+    <div class="modal fade" id="modalCambiarEstado" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Confirmar Cambio de Estado
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p id="modalMessage" class="mb-3"></p>
+                    
+                    <div class="mb-3">
+                        <label for="razonCambio" class="form-label fw-semibold">
+                            <i class="bi bi-chat text-primary me-2"></i>
+                            Razón del cambio (opcional):
+                        </label>
+                        <textarea class="form-control" id="razonCambio" rows="3" placeholder="Describe la razón de este cambio..."></textarea>
+                    </div>
+                    
+                    <div class="alert alert-warning d-none" id="alertaEliminacion">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>¡Atención!</strong> Esta acción afectará a todos los miembros de la comunidad.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-2"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmarCambio">
+                        <i class="bi bi-check me-2"></i>
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Eliminar Comunidad -->
+    <div class="modal fade" id="modalEliminarComunidad" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Confirmar Eliminación Permanente
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>¡ATENCIÓN!</strong> Esta acción es irreversible.
+                    </div>
+                    
+                    <p id="mensajeEliminacion" class="mb-3"></p>
+                    
+                    <div class="mb-3">
+                        <label for="razonEliminacion" class="form-label fw-semibold">
+                            <i class="bi bi-chat text-danger me-2"></i>
+                            Razón de la eliminación (opcional):
+                        </label>
+                        <textarea class="form-control" id="razonEliminacion" rows="3" placeholder="Describe la razón de esta eliminación..."></textarea>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="bi bi-info-circle me-2"></i>
+                        <strong>Información:</strong> Se eliminarán también todos los comentarios, miembros y reportes relacionados.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x me-2"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger" id="btnConfirmarEliminacion">
+                        <i class="bi bi-trash me-2"></i>
+                        Eliminar Permanentemente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nueva Comunidad -->
+    <div class="modal fade" id="nuevaComunidadModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-semibold">
+                        <i class="bi bi-plus me-2"></i>
+                        Crear Nueva Comunidad
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formNuevaComunidad">
+                    <div class="modal-body p-4">
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="tituloComunidad" class="form-label fw-semibold">
+                                    <i class="bi bi-type-h1 text-primary me-2"></i>
+                                    Título de la Comunidad *
+                                </label>
+                                <input type="text" class="form-control" id="tituloComunidad" name="titulo" required placeholder="Ingresa el título de la comunidad...">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="descripcionComunidad" class="form-label fw-semibold">
+                                    <i class="bi bi-text-paragraph text-primary me-2"></i>
+                                    Descripción *
+                                </label>
+                                <textarea class="form-control" id="descripcionComunidad" name="descripcion" rows="3" required placeholder="Describe el propósito de la comunidad..."></textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="categoriaComunidad" class="form-label fw-semibold">
+                                    <i class="bi bi-tags text-primary me-2"></i>
+                                    Categoría *
+                                </label>
+                                <select class="form-select" id="categoriaComunidad" name="categoria" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="infraestructura">🏗️ Infraestructura</option>
+                                    <option value="seguridad">🛡️ Seguridad</option>
+                                    <option value="emergencia">🚨 Emergencia</option>
+                                    <option value="salud">🏥 Salud</option>
+                                    <option value="general">📋 General</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="tagsComunidad" class="form-label fw-semibold">
+                                    <i class="bi bi-tag text-primary me-2"></i>
+                                    Tags (opcional)
+                                </label>
+                                <input type="text" class="form-control" id="tagsComunidad" name="tags" placeholder="Separados por comas...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x me-2"></i>
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check2 me-2"></i>
+                            Crear Comunidad
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let comunidadActual = null;
+        let estadoActual = null;
+
+        // Inicializar eventos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Eventos para botones de cambiar estado
+            const botonesCambiarEstado = document.querySelectorAll('.btn-cambiar-estado');
+            if (botonesCambiarEstado && botonesCambiarEstado.length > 0) {
+                botonesCambiarEstado.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const comunidadId = this.dataset.id;
+                        const nuevoEstado = this.dataset.estado;
+                        const titulo = this.dataset.titulo;
+                        
+                        if (comunidadId && nuevoEstado && titulo) {
+                            cambiarEstado(comunidadId, nuevoEstado, titulo);
+                        } else {
+                            console.error('Error: Datos del botón incompletos');
+                            showAlert('danger', 'Error: Datos incompletos para cambiar estado');
+                        }
+                    });
+                });
+            }
+
+            // Eventos para botones de ver comunidad
+            const botonesVerComunidad = document.querySelectorAll('.btn-ver-comunidad');
+            if (botonesVerComunidad && botonesVerComunidad.length > 0) {
+                botonesVerComunidad.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const comunidadId = this.dataset.id;
+                        if (comunidadId) {
+                            verComunidad(comunidadId);
+                        } else {
+                            console.error('Error: ID de comunidad no encontrado');
+                            showAlert('danger', 'Error: ID de comunidad no válido');
+                        }
+                    });
+                });
+            }
+
+            // Eventos para botones de eliminar comunidad
+            const botonesEliminarComunidad = document.querySelectorAll('.btn-eliminar-comunidad');
+            console.log('🔍 Botones de eliminar encontrados:', botonesEliminarComunidad.length);
+            
+            if (botonesEliminarComunidad && botonesEliminarComunidad.length > 0) {
+                botonesEliminarComunidad.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const comunidadId = this.dataset.id;
+                        const titulo = this.dataset.titulo;
+                        
+                        console.log('🔍 Botón de eliminar clickeado:', { comunidadId, titulo });
+                        
+                        if (comunidadId && titulo) {
+                            eliminarComunidad(comunidadId, titulo);
+                        } else {
+                            console.error('Error: Datos del botón de eliminar incompletos');
+                            showAlert('danger', 'Error: Datos incompletos para eliminar comunidad');
+                        }
+                    });
+                });
+            }
+
+            // Evento para formulario nueva comunidad
+            const formNuevaComunidad = document.getElementById('formNuevaComunidad');
+            if (formNuevaComunidad) {
+                formNuevaComunidad.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    crearNuevaComunidad();
+                });
+            }
+
+            // Evento para botón de confirmar cambio de estado
+            const btnConfirmarCambio = document.getElementById('btnConfirmarCambio');
+            if (btnConfirmarCambio) {
+                btnConfirmarCambio.addEventListener('click', async function() {
+                    if (!comunidadActual || !estadoActual) return;
+                    
+                    const razonElement = document.getElementById('razonCambio');
+                    const modalElement = document.getElementById('modalCambiarEstado');
+                    
+                    if (!razonElement || !modalElement) {
+                        console.error('Error: Elementos del modal no encontrados');
+                        showAlert('danger', 'Error: No se puede procesar la solicitud');
+                        return;
+                    }
+                    
+                    const razon = razonElement.value;
+                    const btn = this;
+                    const originalHTML = btn.innerHTML;
+                    
+                    try {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="bi bi-arrow-clockwise spin me-2"></i>Procesando...';
+                        
+                        const response = await fetch(`/admin/comunidades/${comunidadActual}/estado`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                nuevoEstado: estadoActual,
+                                razon: razon
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                            if (modalInstance) {
+                                modalInstance.hide();
+                            }
+                            
+                            // Mensaje personalizado según el estado
+                            let mensajeExito = data.mensaje || 'Estado cambiado exitosamente';
+                            if (estadoActual === 'eliminada') {
+                                mensajeExito = `✅ Comunidad "${comunidadActual}" eliminada exitosamente. Se puede restaurar más tarde.`;
+                            }
+                            
+                            showAlert('success', mensajeExito);
+                            setTimeout(() => window.location.reload(), 1500);
+                        } else {
+                            showAlert('danger', data.error || 'Error al cambiar el estado');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showAlert('danger', 'Error de conexión al cambiar el estado');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = originalHTML;
+                    }
+                });
+            }
+
+            // Evento para botón de confirmar eliminación
+            const btnConfirmarEliminacion = document.getElementById('btnConfirmarEliminacion');
+            console.log('🔍 Buscando botón btnConfirmarEliminacion:', btnConfirmarEliminacion);
+            
+            if (btnConfirmarEliminacion) {
+                console.log('✅ Botón btnConfirmarEliminacion encontrado, agregando event listener');
+                btnConfirmarEliminacion.addEventListener('click', async function() {
+                    console.log('🔍 Botón de confirmar eliminación clickeado');
+                    console.log('🔍 Variables:', { comunidadAEliminar, tituloAEliminar });
+                    
+                    if (!comunidadAEliminar || !tituloAEliminar) {
+                        console.error('❌ Variables de eliminación no definidas');
+                        showAlert('danger', 'Error: Datos de eliminación no válidos');
+                        return;
+                    }
+                    
+                    const razonElement = document.getElementById('razonEliminacion');
+                    const modalElement = document.getElementById('modalEliminarComunidad');
+                    
+                    console.log('🔍 Elementos del modal:', { razonElement, modalElement });
+                    
+                    if (!razonElement || !modalElement) {
+                        console.error('Error: Elementos del modal no encontrados');
+                        showAlert('danger', 'Error: No se puede procesar la solicitud');
+                        return;
+                    }
+                    
+                    const razon = razonElement.value;
+                    const btn = this;
+                    const originalHTML = btn.innerHTML;
+                    
+                    console.log('🔍 Iniciando eliminación con razón:', razon);
+                    
+                    try {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="bi bi-arrow-clockwise spin me-2"></i>Eliminando...';
+                        
+                        console.log('🔍 Enviando request DELETE a:', `/admin/comunidades/${comunidadAEliminar}`);
+                        
+                        const response = await fetch(`/admin/comunidades/${comunidadAEliminar}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                razon: razon
+                            })
+                        });
+                        
+                        console.log('🔍 Response recibida:', response);
+                        
+                        const data = await response.json();
+                        console.log('🔍 Data recibida:', data);
+                        
+                        if (data.success) {
+                            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                            if (modalInstance) {
+                                modalInstance.hide();
+                            }
+                            
+                            showAlert('success', `✅ Comunidad "${tituloAEliminar}" eliminada permanentemente de la base de datos`);
+                            setTimeout(() => window.location.reload(), 2000);
+                        } else {
+                            showAlert('danger', `❌ Error al eliminar la comunidad: ${data.error}`);
+                        }
+                    } catch (error) {
+                        console.error('❌ Error eliminando comunidad:', error);
+                        showAlert('danger', '❌ Error de conexión al eliminar la comunidad');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = originalHTML;
+                    }
+                });
+            } else {
+                console.error('❌ Botón btnConfirmarEliminacion NO encontrado');
+            }
+        });
+
+        // Función para cambiar estado de comunidad
+        function cambiarEstado(comunidadId, nuevoEstado, titulo) {
+            console.log('🔄 Cambiando estado:', { comunidadId, nuevoEstado, titulo });
+            comunidadActual = comunidadId;
+            estadoActual = nuevoEstado;
+            
+            const modal = document.getElementById('modalCambiarEstado');
+            const modalMessage = document.getElementById('modalMessage');
+            const alertaEliminacion = document.getElementById('alertaEliminacion');
+            
+            // Verificar que los elementos existan antes de usarlos
+            if (!modal || !modalMessage) {
+                console.error('Error: Elementos del modal no encontrados');
+                showAlert('danger', 'Error: No se puede abrir el modal de confirmación');
+                return;
+            }
+            
+            let mensaje = '';
+            switch(nuevoEstado) {
+                case 'activa':
+                    mensaje = `¿Estás seguro de que quieres <strong>ACTIVAR</strong> la comunidad "${titulo}"?<br><br>Al activar:<br>• Los usuarios podrán comentar nuevamente<br>• La comunidad volverá a estar completamente funcional`;
+                    if (alertaEliminacion) {
+                        alertaEliminacion.classList.add('d-none');
+                    }
+                    break;
+                case 'suspendida':
+                    mensaje = `¿Estás seguro de que quieres <strong>SUSPENDER</strong> la comunidad "${titulo}"?<br><br>Al suspender:<br>• Los usuarios no podrán comentar<br>• La comunidad seguirá visible pero inactiva<br>• Los miembros permanecerán unidos`;
+                    if (alertaEliminacion) {
+                        alertaEliminacion.classList.add('d-none');
+                    }
+                    break;
+                case 'eliminada':
+                    mensaje = `¿Estás seguro de que quieres <strong>ELIMINAR</strong> la comunidad "${titulo}"?<br><br><span class="text-danger">¡ATENCIÓN!</span> Esta acción:<br>• Ocultará la comunidad del público<br>• Los usuarios no podrán acceder<br>• Se puede restaurar más tarde<br><br><strong>Esta acción es reversible</strong>`;
+                    if (alertaEliminacion) {
+                        alertaEliminacion.classList.remove('d-none');
+                    }
+                    break;
+            }
+            
+            modalMessage.innerHTML = mensaje;
+            new bootstrap.Modal(modal).show();
+        }
+
+
+
+        // Ver detalles de comunidad
+        function verComunidad(id) {
+            window.open(`/admin/comunidades/${id}`, '_blank');
+        }
+
+        // Variables para eliminación
+        let comunidadAEliminar = null;
+        let tituloAEliminar = '';
+
+        // Eliminar comunidad completamente de la base de datos
+        function eliminarComunidad(comunidadId, titulo) {
+            console.log('🔍 Función eliminarComunidad llamada con:', { comunidadId, titulo });
+            
+            comunidadAEliminar = comunidadId;
+            tituloAEliminar = titulo;
+            
+            // Verificar que el modal existe
+            const modal = document.getElementById('modalEliminarComunidad');
+            if (!modal) {
+                console.error('❌ Modal modalEliminarComunidad no encontrado');
+                showAlert('danger', 'Error: Modal de confirmación no encontrado');
+                return;
+            }
+            
+            // Verificar que el mensaje existe
+            const mensajeElement = document.getElementById('mensajeEliminacion');
+            if (!mensajeElement) {
+                console.error('❌ Elemento mensajeEliminacion no encontrado');
+                showAlert('danger', 'Error: Elemento de mensaje no encontrado');
+                return;
+            }
+            
+            // Configurar mensaje del modal
+            mensajeElement.innerHTML = `
+                ¿Estás seguro de que quieres <strong>ELIMINAR PERMANENTEMENTE</strong> la comunidad "${titulo}"?<br><br>
+                Esta acción:<br>
+                • Eliminará la comunidad de la base de datos<br>
+                • Eliminará todos los comentarios<br>
+                • Eliminará todos los miembros<br>
+                • Eliminará todos los reportes relacionados<br>
+                • <strong class="text-danger">NO SE PUEDE DESHACER</strong>
+            `;
+            
+            // Limpiar razón anterior
+            const razonElement = document.getElementById('razonEliminacion');
+            if (razonElement) {
+                razonElement.value = '';
+            }
+            
+            console.log('✅ Modal configurado, mostrando...');
+            
+            // Mostrar modal
+            try {
+                const modalInstance = new bootstrap.Modal(modal);
+                modalInstance.show();
+                console.log('✅ Modal mostrado exitosamente');
+            } catch (error) {
+                console.error('❌ Error mostrando modal:', error);
+                showAlert('danger', 'Error al mostrar modal de confirmación');
+            }
+        }
+
+        // Crear nueva comunidad
+        async function crearNuevaComunidad() {
+            const form = document.getElementById('formNuevaComunidad');
+            const modalElement = document.getElementById('nuevaComunidadModal');
+            
+            if (!form || !modalElement) {
+                console.error('Error: Formulario o modal no encontrados');
+                showAlert('danger', 'Error: No se puede procesar la solicitud');
+                return;
+            }
+            
+            const formData = new FormData(form);
+            const btn = form.querySelector('button[type="submit"]');
+            
+            if (!btn) {
+                console.error('Error: Botón de envío no encontrado');
+                showAlert('danger', 'Error: No se puede procesar la solicitud');
+                return;
+            }
+            
+            const originalHTML = btn.innerHTML;
+            
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="bi bi-arrow-clockwise spin me-2"></i>Creando...';
+                
+                const response = await fetch('/admin/api/comunidades/crear', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                    form.reset();
+                    showAlert('success', 'Comunidad creada exitosamente');
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    showAlert('danger', data.error || 'Error al crear la comunidad');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('danger', 'Error de conexión al crear la comunidad');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            }
+        }
+
+        // Refrescar tabla
+        function refreshTable() {
+            window.location.reload();
+        }
+
+        // Función de utilidad para verificar elementos DOM
+        function safeGetElement(id) {
+            const element = document.getElementById(id);
+            if (!element) {
+                console.warn(`Elemento con ID '${id}' no encontrado`);
+            }
+            return element;
+        }
+
+        // Mostrar alertas
+        function showAlert(type, message) {
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const icon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle';
+            
+            const alertHTML = `
+                <div class="alert ${alertClass} alert-dismissible fade show position-fixed" 
+                     style="top: 20px; right: 20px; z-index: 9999; min-width: 300px;" role="alert">
+                    <i class="bi ${icon} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            // Verificar que document.body exista antes de insertar
+            if (document.body) {
+                document.body.insertAdjacentHTML('beforeend', alertHTML);
+                
+                // Auto dismiss después de 5 segundos
+                setTimeout(() => {
+                    const alert = document.querySelector('.alert');
+                    if (alert) {
+                        try {
+                            const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                            if (bsAlert && typeof bsAlert.close === 'function') {
+                                bsAlert.close();
+                            }
+                        } catch (error) {
+                            console.warn('Error al cerrar alerta:', error);
+                            // Fallback: remover manualmente
+                            if (alert.parentNode) {
+                                alert.parentNode.removeChild(alert);
+                            }
+                        }
+                    }
+                }, 5000);
+            } else {
+                console.error('document.body no está disponible');
+            }
+        }
+
+        // Limpiar modal al cerrarse
+        const modalCambiarEstado = document.getElementById('modalCambiarEstado');
+        const razonCambioElement = document.getElementById('razonCambio');
+        
+        if (modalCambiarEstado && razonCambioElement) {
+            modalCambiarEstado.addEventListener('hidden.bs.modal', function() {
+                razonCambioElement.value = '';
+                comunidadActual = null;
+                estadoActual = null;
+            });
+        }
+
+        // Limpiar modal de eliminación al cerrarse
+        const modalEliminarComunidad = document.getElementById('modalEliminarComunidad');
+        const razonEliminacionElement = document.getElementById('razonEliminacion');
+        
+        if (modalEliminarComunidad && razonEliminacionElement) {
+            modalEliminarComunidad.addEventListener('hidden.bs.modal', function() {
+                razonEliminacionElement.value = '';
+                comunidadAEliminar = null;
+                tituloAEliminar = '';
+            });
+        }
+
+        // Actualizar estadísticas cada 30 segundos
+        setInterval(async function() {
+            try {
+                const response = await fetch('/admin/api/comunidades/estadisticas');
+                const data = await response.json();
+                
+                if (data.success && data.estadisticas && data.estadisticas.generales) {
+                    const stats = data.estadisticas.generales;
+                    const statsCards = document.querySelectorAll('.stats-number');
+                    
+                    // Verificar que existan las tarjetas de estadísticas
+                    if (statsCards && statsCards.length >= 4) {
+                        // Verificar que cada elemento exista antes de modificar
+                        if (statsCards[0]) statsCards[0].textContent = stats.totalComunidades || 0;
+                        if (statsCards[1]) statsCards[1].textContent = stats.activas || 0;
+                        if (statsCards[2]) statsCards[2].textContent = stats.suspendidas || 0;
+                        if (statsCards[3]) statsCards[3].textContent = stats.eliminadas || 0;
+                    }
+                }
+            } catch (error) {
+                console.log('Error actualizando estadísticas:', error);
+            }
+        }, 30000);
+
+        // Manejo global de errores para prevenir crashes
+        window.addEventListener('error', function(event) {
+            console.error('Error global capturado:', event.error);
+            showAlert('danger', 'Ha ocurrido un error inesperado. Por favor, recarga la página.');
+        });
+
+        // Manejo de errores no capturados en promesas
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Promesa rechazada no manejada:', event.reason);
+            showAlert('danger', 'Error en operación asíncrona. Por favor, inténtalo de nuevo.');
+        });
+    </script>
+    
+    <!-- Sistema de Temas -->
+    <script src="/js/theme-switcher.js"></script>
+
+
+</body>
+</html>

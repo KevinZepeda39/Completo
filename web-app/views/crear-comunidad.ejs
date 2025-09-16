@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nueva Comunidad - MiCiudadSV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --primary-light: #4d94ff;
+            --primary-dark: #004499;
+            --secondary-color: #f8f9fa;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --dark-color: #343a40;
+            --light-color: #ffffff;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] body {
+            background-color: #0a0a0a;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background-color: #ffffff !important;
+            border-bottom: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.8rem 0;
+        }
+        
+        [data-theme="dark"] .navbar {
+            background-color: #121212 !important;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: #0066cc !important;
+            font-size: 1.4rem;
+        }
+        
+        [data-theme="dark"] .navbar-brand {
+            color: #4d94ff !important;
+        }
+        
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            color: #343a40 !important;
+            padding: 0.5rem 1rem !important;
+        }
+        
+        [data-theme="dark"] .navbar-nav .nav-link {
+            color: #ffffff !important;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: #0066cc !important;
+        }
+        
+        [data-theme="dark"] .navbar-nav .nav-link:hover {
+            color: #4d94ff !important;
+        }
+        
+        .navbar-nav .nav-link.active {
+            color: #0066cc !important;
+            font-weight: 600;
+        }
+        
+        [data-theme="dark"] .navbar-nav .nav-link.active {
+            color: #4d94ff !important;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+        }
+        
+        [data-theme="dark"] .page-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+        
+        /* Formulario */
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .form-container {
+            background: #1e1e1e;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(0, 102, 204, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .section-title {
+            color: #ffffff;
+            border-bottom: 2px solid rgba(77, 148, 255, 0.2);
+        }
+        
+        .section-title i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .section-title i {
+            color: #4d94ff;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .form-label {
+            color: #ffffff;
+        }
+        
+        .form-label i {
+            color: var(--primary-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .form-label i {
+            color: #4d94ff;
+        }
+        
+        .form-control,
+        .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            color: #212529;
+        }
+        
+        [data-theme="dark"] .form-control,
+        [data-theme="dark"] .form-select {
+            background-color: #2d2d2d;
+            border-color: #404040;
+            color: #ffffff;
+        }
+        
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+        }
+        
+        [data-theme="dark"] .form-control:focus,
+        [data-theme="dark"] .form-select:focus {
+            border-color: #4d94ff;
+            box-shadow: 0 0 0 0.2rem rgba(77, 148, 255, 0.25);
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-text {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .form-text {
+            color: #adb5bd;
+        }
+        
+        .character-counter {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-align: right;
+            margin-top: 0.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .character-counter {
+            color: #adb5bd;
+        }
+        
+        /* Tags input */
+        .tags-container {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.5rem;
+            min-height: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: text;
+            background-color: #ffffff;
+        }
+        
+        [data-theme="dark"] .tags-container {
+            background-color: #2d2d2d;
+            border-color: #404040;
+        }
+        
+        .tags-container:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+        }
+        
+        [data-theme="dark"] .tags-container:focus-within {
+            border-color: #4d94ff;
+            box-shadow: 0 0 0 0.2rem rgba(77, 148, 255, 0.25);
+        }
+        
+        .tag-item {
+            background: rgba(0, 102, 204, 0.1);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .tag-item {
+            background: rgba(77, 148, 255, 0.2);
+            color: #4d94ff;
+        }
+        
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+        
+        .tag-remove:hover {
+            opacity: 1;
+        }
+        
+        .tag-input {
+            border: none;
+            outline: none;
+            padding: 0.3rem;
+            flex: 1;
+            min-width: 100px;
+            background: transparent;
+            color: inherit;
+        }
+        
+        [data-theme="dark"] .tag-input {
+            color: #ffffff;
+        }
+        
+        /* Categorías */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .category-option {
+            position: relative;
+        }
+        
+        .category-option input[type="radio"] {
+            display: none;
+        }
+        
+        .category-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        [data-theme="dark"] .category-card {
+            background: #2d2d2d;
+            border-color: #404040;
+        }
+        
+        .category-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+        }
+        
+        [data-theme="dark"] .category-card:hover {
+            border-color: #4d94ff;
+            box-shadow: 0 4px 12px rgba(77, 148, 255, 0.15);
+        }
+        
+        .category-option input[type="radio"]:checked + .category-card {
+            border-color: var(--primary-color);
+            background: rgba(0, 102, 204, 0.05);
+        }
+        
+        [data-theme="dark"] .category-option input[type="radio"]:checked + .category-card {
+            border-color: #4d94ff;
+            background: rgba(77, 148, 255, 0.1);
+        }
+        
+        .category-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .category-name {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .category-name {
+            color: #ffffff;
+        }
+        
+        .category-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .category-description {
+            color: #adb5bd;
+        }
+        
+        /* Botones */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        /* Alertas */
+        .alert {
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.05));
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        [data-theme="dark"] .alert-success {
+            background: linear-gradient(135deg, rgba(81, 207, 102, 0.2), rgba(81, 207, 102, 0.1));
+            color: #51cf66;
+            border-left: 4px solid #51cf66;
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        [data-theme="dark"] .alert-danger {
+            background: linear-gradient(135deg, rgba(255, 106, 106, 0.2), rgba(255, 106, 106, 0.1));
+            color: #ff6a6a;
+            border-left: 4px solid #ff6a6a;
+        }
+        
+        /* Vista previa */
+        .preview-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            border: 2px dashed #dee2e6;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .preview-section {
+            background: #1a1a1a;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+        }
+        
+        .preview-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .preview-title {
+            color: #ffffff;
+        }
+        
+        .preview-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .preview-card {
+            background: #2d2d2d;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Sección de consejos */
+        .consejos-card {
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .consejos-card {
+            background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        [data-theme="dark"] .consejos-card .card-body {
+            background: transparent !important;
+        }
+        
+        [data-theme="dark"] .consejos-card .fw-bold {
+            color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .consejos-card .text-success {
+            color: #51cf66 !important;
+        }
+        
+        [data-theme="dark"] .consejos-card .small {
+            color: #adb5bd !important;
+        }
+        
+        /* Botón volver */
+        .btn-volver {
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .btn-volver {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .btn-volver:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+        }
+        
+        /* Texto de vista previa */
+        .text-muted {
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-city me-2"></i>
+                MiCiudadSV
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reportes">
+                            <i class="fas fa-list me-1"></i> Reportes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/comunidades">
+                            <i class="fas fa-users me-1"></i> Comunidades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/comunidades/chat/global">
+                            <i class="fas fa-comments me-1"></i> Chat Global
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <!-- Botón de cambio de tema -->
+                    <li class="nav-item me-3">
+                        <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                            <i class="bi bi-moon-stars"></i>
+                        </button>
+                    </li>
+                    <% if (loggedIn && usuario) { %>
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <%= usuario.nombre %>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="/dashboard">
+                                    <i class="bi bi-tachometer me-2"></i>Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/dashboard/perfil">
+                                    <i class="bi bi-person me-2"></i>Ver Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/reportes">
+                                    <i class="bi bi-file-text me-2"></i>Reportes
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="/auth/logout" method="POST" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger border-0 bg-transparent w-100 text-start">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="page-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1>
+                        <i class="fas fa-plus-circle me-3"></i>
+                        Crear Nueva Comunidad
+                    </h1>
+                    <p>Conecta con personas que comparten tus intereses y crea un espacio para conversaciones que importan</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <a href="/comunidades" class="btn btn-outline-light btn-volver">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Volver a Comunidades
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Alertas -->
+        <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <% } %>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Formulario -->
+                <div class="form-container">
+                    <form action="/comunidades/crear" method="POST" id="comunidadForm">
+                        <!-- Información Básica -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Información Básica
+                            </h3>
+                            
+                            <div class="mb-3">
+                                <label for="titulo" class="form-label">
+                                    <i class="fas fa-heading"></i>
+                                    Nombre de la Comunidad
+                                </label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="titulo" 
+                                       name="titulo" 
+                                       placeholder="Ej: Vecinos de Colonia San Benito"
+                                       required 
+                                       maxlength="100"
+                                       value="<%= typeof formData !== 'undefined' ? formData.titulo || '' : '' %>">
+                                <div class="form-text">
+                                    <i class="fas fa-lightbulb me-1"></i>
+                                    Elige un nombre claro y descriptivo que identifique tu comunidad
+                                </div>
+                                <div class="character-counter" id="titulo-counter">0/100</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="descripcion" class="form-label">
+                                    <i class="fas fa-align-left"></i>
+                                    Descripción
+                                </label>
+                                <textarea class="form-control" 
+                                          id="descripcion" 
+                                          name="descripcion" 
+                                          rows="4" 
+                                          placeholder="Describe el propósito y actividades de tu comunidad..."
+                                          required 
+                                          maxlength="500"><%= typeof formData !== 'undefined' ? formData.descripcion || '' : '' %></textarea>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Explica qué temas se tratarán y qué pueden esperar los miembros
+                                </div>
+                                <div class="character-counter" id="descripcion-counter">0/500</div>
+                            </div>
+                        </div>
+
+                        <!-- Categoría -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-tags"></i>
+                                Categoría
+                            </h3>
+                            
+                            <div class="category-grid">
+                                <label class="category-option">
+                                    <input type="radio" name="categoria" value="tecnologia" 
+                                           <%= typeof formData !== 'undefined' && formData.categoria === 'tecnologia' ? 'checked' : '' %>>
+                                    <div class="category-card">
+                                        <span class="category-icon">💻</span>
+                                        <div class="category-name">Tecnología</div>
+                                        <div class="category-description">Programación, gadgets, innovación</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="category-option">
+                                    <input type="radio" name="categoria" value="deportes"
+                                           <%= typeof formData !== 'undefined' && formData.categoria === 'deportes' ? 'checked' : '' %>>
+                                    <div class="category-card">
+                                        <span class="category-icon">⚽</span>
+                                        <div class="category-name">Deportes</div>
+                                        <div class="category-description">Fútbol, ejercicio, competencias</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="category-option">
+                                    <input type="radio" name="categoria" value="cultura"
+                                           <%= typeof formData !== 'undefined' && formData.categoria === 'cultura' ? 'checked' : '' %>>
+                                    <div class="category-card">
+                                        <span class="category-icon">🎨</span>
+                                        <div class="category-name">Cultura</div>
+                                        <div class="category-description">Arte, música, tradiciones</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="category-option">
+                                    <input type="radio" name="categoria" value="educacion"
+                                           <%= typeof formData !== 'undefined' && formData.categoria === 'educacion' ? 'checked' : '' %>>
+                                    <div class="category-card">
+                                        <span class="category-icon">📚</span>
+                                        <div class="category-name">Educación</div>
+                                        <div class="category-description">Aprendizaje, cursos, tutorías</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="category-option">
+                                    <input type="radio" name="categoria" value="salud"
+                                           <%= typeof formData !== 'undefined' && formData.categoria === 'salud' ? 'checked' : '' %>>
+                                    <div class="category-card">
+                                        <span class="category-icon">🏥</span>
+                                        <div class="category-name">Salud</div>
+                                        <div class="category-description">Bienestar, medicina, prevención</div>
+                                    </div>
+                                </label>
+                                
+                                <label class="category-option">
+                                    <input type="radio" name="categoria" value="general"
+                                           <%= typeof formData !== 'undefined' && formData.categoria === 'general' ? 'checked' : '' %>>
+                                    <div class="category-card">
+                                        <span class="category-icon">📋</span>
+                                        <div class="category-name">General</div>
+                                        <div class="category-description">Temas variados, discusión abierta</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-hashtag"></i>
+                                Etiquetas
+                                <span class="badge bg-secondary ms-2">Opcional</span>
+                            </h3>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-tag"></i>
+                                    Palabras clave
+                                </label>
+                                <div class="tags-container" id="tagsContainer">
+                                    <input type="text" 
+                                           class="tag-input" 
+                                           id="tagInput" 
+                                           placeholder="Escribe una etiqueta y presiona Enter..."
+                                           maxlength="20">
+                                </div>
+                                <input type="hidden" name="tags" id="tagsHidden">
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Agrega palabras clave que ayuden a encontrar tu comunidad. Ej: vecinos, san-benito, seguridad
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="form-section">
+                            <div class="d-flex gap-3 justify-content-center">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus-circle me-2"></i>
+                                    Crear Comunidad
+                                </button>
+                                <a href="/comunidades" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>
+                                    Cancelar
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Vista Previa -->
+                <div class="preview-section">
+                    <div class="preview-title">
+                        <i class="fas fa-eye me-2"></i>
+                        Vista Previa
+                    </div>
+                    <div class="preview-card" id="previewCard">
+                        <div class="community-category mb-2" id="previewCategory" style="display: none;">
+                            <span class="badge bg-primary">📋 General</span>
+                        </div>
+                        <h5 class="fw-bold mb-2" id="previewTitulo">Nombre de tu comunidad</h5>
+                        <p class="text-muted mb-3" id="previewDescripcion">La descripción aparecerá aquí...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <%= usuario.nombre %>
+                            </small>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                Hoy
+                            </small>
+                        </div>
+                        <div class="mt-2" id="previewTags" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <!-- Consejos -->
+                <div class="mt-4">
+                    <div class="card border-0 consejos-card" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb);">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                Consejos para tu comunidad
+                            </h6>
+                            <ul class="list-unstyled mb-0 small">
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Usa un nombre claro y específico
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Describe claramente el propósito
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Selecciona la categoría correcta
+                                </li>
+                                <li class="mb-0">
+                                    <i class="fas fa-check text-success me-2"></i>
+                                    Agrega etiquetas relevantes
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Variables globales
+        let tags = [];
+        
+        // Cargar tags existentes si hay formData
+        <% if (typeof formData !== 'undefined' && formData.tags) { %>
+        tags = '<%= formData.tags %>'.split(',').map(tag => tag.trim()).filter(tag => tag);
+        renderTags();
+        updateTagsInput();
+        <% } %>
+        
+        // Contadores de caracteres
+        function setupCharacterCounters() {
+            const titulo = document.getElementById('titulo');
+            const descripcion = document.getElementById('descripcion');
+            const tituloCounter = document.getElementById('titulo-counter');
+            const descripcionCounter = document.getElementById('descripcion-counter');
+            
+            function updateTituloCounter() {
+                const count = titulo.value.length;
+                tituloCounter.textContent = `${count}/100`;
+                if (count > 80) tituloCounter.style.color = '#dc3545';
+                else tituloCounter.style.color = '#6c757d';
+                updatePreview();
+            }
+            
+            function updateDescripcionCounter() {
+                const count = descripcion.value.length;
+                descripcionCounter.textContent = `${count}/500`;
+                if (count > 450) descripcionCounter.style.color = '#dc3545';
+                else descripcionCounter.style.color = '#6c757d';
+                updatePreview();
+            }
+            
+            titulo.addEventListener('input', updateTituloCounter);
+            descripcion.addEventListener('input', updateDescripcionCounter);
+            
+            // Inicializar contadores
+            updateTituloCounter();
+            updateDescripcionCounter();
+        }
+        
+        // Sistema de tags
+        function setupTags() {
+            const tagInput = document.getElementById('tagInput');
+            const tagsContainer = document.getElementById('tagsContainer');
+            
+            tagInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    addTag(this.value.trim());
+                    this.value = '';
+                }
+                
+                if (e.key === 'Backspace' && this.value === '' && tags.length > 0) {
+                    removeTag(tags.length - 1);
+                }
+            });
+            
+            tagInput.addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    addTag(this.value.trim());
+                    this.value = '';
+                }
+            });
+            
+            tagsContainer.addEventListener('click', function() {
+                tagInput.focus();
+            });
+        }
+        
+        function addTag(tagText) {
+            if (!tagText || tags.length >= 5) return;
+            
+            // Limpiar y validar tag
+            tagText = tagText.toLowerCase().replace(/[^a-zA-Z0-9áéíóúñ\-]/g, '');
+            
+            if (tagText.length < 2 || tags.includes(tagText)) return;
+            
+            tags.push(tagText);
+            renderTags();
+            updateTagsInput();
+            updatePreview();
+        }
+        
+        function removeTag(index) {
+            tags.splice(index, 1);
+            renderTags();
+            updateTagsInput();
+            updatePreview();
+        }
+        
+        function renderTags() {
+            const tagsContainer = document.getElementById('tagsContainer');
+            const tagInput = document.getElementById('tagInput');
+            
+            // Limpiar tags existentes
+            const existingTags = tagsContainer.querySelectorAll('.tag-item');
+            existingTags.forEach(tag => tag.remove());
+            
+            // Agregar tags
+            tags.forEach((tag, index) => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'tag-item';
+                tagElement.innerHTML = `
+                    #${tag}
+                    <span class="tag-remove" onclick="removeTag(${index})">×</span>
+                `;
+                tagsContainer.insertBefore(tagElement, tagInput);
+            });
+        }
+        
+        function updateTagsInput() {
+            document.getElementById('tagsHidden').value = tags.join(',');
+        }
+        
+        // Vista previa
+        function updatePreview() {
+            const titulo = document.getElementById('titulo').value || 'Nombre de tu comunidad';
+            const descripcion = document.getElementById('descripcion').value || 'La descripción aparecerá aquí...';
+            const categoria = document.querySelector('input[name="categoria"]:checked');
+            
+            document.getElementById('previewTitulo').textContent = titulo;
+            document.getElementById('previewDescripcion').textContent = descripcion;
+            
+            const previewCategory = document.getElementById('previewCategory');
+            if (categoria) {
+                const categoryData = getCategoryData(categoria.value);
+                previewCategory.innerHTML = `<span class="badge bg-primary">${categoryData.emoji} ${categoryData.name}</span>`;
+                previewCategory.style.display = 'block';
+            } else {
+                previewCategory.style.display = 'none';
+            }
+            
+            const previewTags = document.getElementById('previewTags');
+            if (tags.length > 0) {
+                previewTags.innerHTML = tags.map(tag => 
+                    `<span class="badge bg-light text-primary me-1">#${tag}</span>`
+                ).join('');
+                previewTags.style.display = 'block';
+            } else {
+                previewTags.style.display = 'none';
+            }
+        }
+        
+        function getCategoryData(category) {
+            const categories = {
+                'tecnologia': { emoji: '💻', name: 'Tecnología' },
+                'deportes': { emoji: '⚽', name: 'Deportes' },
+                'cultura': { emoji: '🎨', name: 'Cultura' },
+                'educacion': { emoji: '📚', name: 'Educación' },
+                'salud': { emoji: '🏥', name: 'Salud' },
+                'general': { emoji: '📋', name: 'General' }
+            };
+            return categories[category] || categories['general'];
+        }
+        
+        // Validación del formulario
+        function validateForm() {
+            const titulo = document.getElementById('titulo').value.trim();
+            const descripcion = document.getElementById('descripcion').value.trim();
+            const categoria = document.querySelector('input[name="categoria"]:checked');
+            
+            if (!titulo || titulo.length < 3) {
+                alert('El nombre de la comunidad debe tener al menos 3 caracteres.');
+                document.getElementById('titulo').focus();
+                return false;
+            }
+            
+            if (!descripcion || descripcion.length < 10) {
+                alert('La descripción debe tener al menos 10 caracteres.');
+                document.getElementById('descripcion').focus();
+                return false;
+            }
+            
+            if (!categoria) {
+                alert('Por favor selecciona una categoría.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Event listeners
+        // Función para limpiar errores
+        function clearErrors() {
+            document.querySelectorAll('.alert').forEach(alert => {
+                alert.remove();
+            });
+            document.querySelectorAll('.is-invalid').forEach(field => {
+                field.classList.remove('is-invalid');
+            });
+        }
+        
+        // Función para mostrar alertas
+        function showAlert(type, message) {
+            const alertContainer = document.querySelector('.container .row .col-lg-8');
+            const alertHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            alertContainer.insertAdjacentHTML('afterbegin', alertHTML);
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupCharacterCounters();
+            setupTags();
+            
+            // Actualizar vista previa cuando cambie la categoría
+            document.querySelectorAll('input[name="categoria"]').forEach(radio => {
+                radio.addEventListener('change', updatePreview);
+            });
+            
+            // Manejo del formulario
+            document.getElementById('comunidadForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    return;
+                }
+                
+                const submitButton = document.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                
+                try {
+                    // Deshabilitar botón y mostrar cargando
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creando...';
+                    
+                    // Limpiar errores anteriores
+                    clearErrors();
+                    
+                    // Obtener datos del formulario
+                    const formData = new FormData(this);
+                    
+                    // Enviar datos
+                    const response = await fetch('/comunidades/crear', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            titulo: formData.get('titulo'),
+                            descripcion: formData.get('descripcion'),
+                            categoria: formData.get('categoria'),
+                            tags: formData.get('tags')
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Mostrar mensaje de éxito
+                        showAlert('success', result.message);
+                        
+                        // Redirigir después de 1 segundo
+                        setTimeout(() => {
+                            window.location.href = result.redirect || '/comunidades';
+                        }, 1000);
+                    } else {
+                        // Mostrar error
+                        showAlert('danger', result.error || 'Error al crear la comunidad');
+                    }
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    showAlert('danger', 'Error de conexión. Inténtalo de nuevo.');
+                } finally {
+                    // Restaurar botón
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = originalText;
+                }
+            });
+            
+            // Auto-dismiss alertas
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+            
+            // Inicializar vista previa
+            updatePreview();
+        });
+    </script>
+    
+       <!-- Sistema de Temas -->
+   <script src="/js/theme-switcher.js"></script>
+   
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin Reportes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Test Admin Reportes</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test de Navegación</h5>
+                    </div>
+                    <div class="card-body">
+                        <a href="/admin/reportes" class="btn btn-primary me-2">
+                            <i class="bi bi-flag me-2"></i>
+                            Ir a Reportes Admin
+                        </a>
+                        <a href="/admin" class="btn btn-outline-secondary me-2">
+                            <i class="bi bi-speedometer2 me-2"></i>
+                            Dashboard Admin
+                        </a>
+                        <a href="/admin/usuarios" class="btn btn-outline-secondary me-2">
+                            <i class="bi bi-people me-2"></i>
+                            Usuarios Admin
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test de Funciones</h5>
+                    </div>
+                    <div class="card-body">
+                        <button onclick="testVerReporte()" class="btn btn-info me-2">
+                            Test verReporte()
+                        </button>
+                        <button onclick="testEliminarReporte()" class="btn btn-danger me-2">
+                            Test eliminarReporte()
+                        </button>
+                        <button onclick="testMostrarToast()" class="btn btn-warning me-2">
+                            Test mostrarToast()
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Estado de la Aplicación</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="status"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para ver reporte
+        function verReporte(idReporte) {
+            console.log('👁️ Ver reporte:', idReporte);
+            mostrarToast(`Viendo reporte #${idReporte}`, 'info');
+        }
+
+        // Función para eliminar reporte
+        function eliminarReporte(idReporte, titulo) {
+            if (confirm(`¿Estás seguro de que quieres eliminar el reporte "${titulo}"?`)) {
+                console.log('🗑️ Eliminando reporte:', idReporte);
+                mostrarToast(`Reporte "${titulo}" eliminado`, 'success');
+            }
+        }
+
+        // Función para mostrar toast
+        function mostrarToast(mensaje, tipo = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${tipo} alert-dismissible fade show position-fixed`;
+            toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            toast.innerHTML = `
+                <i class="bi bi-${tipo === 'success' ? 'check-circle' : tipo === 'warning' ? 'exclamation-triangle' : tipo === 'error' ? 'x-circle' : 'info-circle'} me-2"></i>
+                ${mensaje}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
+        }
+
+        // Funciones de prueba
+        function testVerReporte() {
+            verReporte(123);
+        }
+
+        function testEliminarReporte() {
+            eliminarReporte(123, 'Test Reporte');
+        }
+
+        function testMostrarToast() {
+            mostrarToast('Este es un mensaje de prueba', 'success');
+        }
+
+        // Verificar estado de la aplicación
+        async function checkAppStatus() {
+            const statusDiv = document.getElementById('status');
+            
+            try {
+                // Verificar si el servidor está funcionando
+                const response = await fetch('/admin/reportes');
+                if (response.ok) {
+                    statusDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle me-2"></i>
+                            ✅ Servidor funcionando correctamente
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            📊 Ruta /admin/reportes accesible
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            ⚠️ Servidor respondiendo pero con estado ${response.status}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-x-circle me-2"></i>
+                        ❌ Error conectando al servidor: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Test Admin Reportes inicializado');
+            checkAppStatus();
+        });
+    </script>
+</body>
+</html>

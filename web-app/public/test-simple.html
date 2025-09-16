@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Simple del Traductor</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-element { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .translator-widget { position: fixed; top: 20px; right: 20px; background: white; border: 1px solid #ccc; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1 data-translate="true">Prueba del Traductor</h1>
+    
+    <div class="test-element">
+        <p data-translate="true">Este es un texto de prueba en español</p>
+    </div>
+    
+    <div class="test-element">
+        <span data-translate="true">Otro texto para traducir</span>
+    </div>
+    
+    <div class="test-element">
+        <button data-translate="true">Botón de prueba</button>
+    </div>
+    
+    <div class="translator-widget">
+        <button onclick="testTranslate()">Traducir</button>
+        <button onclick="testRestore()">Restaurar</button>
+        <div id="status"></div>
+    </div>
+    
+    <script>
+        // Traductor simplificado para prueba
+        let originalTexts = new Map();
+        let isTranslated = false;
+        
+        function testTranslate() {
+            if (isTranslated) return;
+            
+            const elements = document.querySelectorAll('[data-translate="true"]');
+            console.log('Elementos encontrados:', elements.length);
+            
+            // Guardar textos originales
+            elements.forEach(element => {
+                originalTexts.set(element, element.textContent);
+            });
+            
+            // Simular traducción (cambiar a inglés)
+            elements.forEach(element => {
+                const text = element.textContent;
+                if (text.includes('Prueba')) element.textContent = 'Test';
+                else if (text.includes('texto')) element.textContent = 'text';
+                else if (text.includes('español')) element.textContent = 'Spanish';
+                else if (text.includes('traducir')) element.textContent = 'translate';
+                else if (text.includes('Botón')) element.textContent = 'Button';
+                else if (text.includes('prueba')) element.textContent = 'test';
+            });
+            
+            isTranslated = true;
+            document.getElementById('status').textContent = 'Traducido';
+        }
+        
+        function testRestore() {
+            if (!isTranslated) return;
+            
+            originalTexts.forEach((originalText, element) => {
+                element.textContent = originalText;
+            });
+            
+            isTranslated = false;
+            document.getElementById('status').textContent = 'Restaurado';
+        }
+    </script>
+</body>
+</html>
+

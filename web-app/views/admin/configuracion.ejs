@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+        .config-section {
+            border-left: 4px solid #667eea;
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <div class="text-center mb-4">
+                        <img src="/images/logo.png" alt="MiCiudadSV" class="img-fluid mb-2" style="max-width: 80px;" onerror="this.style.display='none'">
+                        <h5 class="text-white">Admin Panel</h5>
+                        <small class="text-light opacity-75">
+                            Bienvenido, <%= usuario.nombre %>
+                        </small>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2">
+                            <a class="nav-link" href="/admin/logs">
+                                <i class="fas fa-file-alt me-2"></i>
+                                Ver Logs
+                            </a>
+                        </li>
+                        <li class="nav-item mb-2">
+                            <a class="nav-link active" href="/admin/configuracion">
+                                <i class="fas fa-cog me-2"></i>
+                                Configuración
+                            </a>
+                        </li>
+                        <hr class="text-light">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/auth/logout">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">
+                        <i class="fas fa-cog me-2"></i>
+                        Configuración del Sistema
+                    </h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-outline-secondary" onclick="location.reload()">
+                                <i class="fas fa-sync-alt"></i> Actualizar
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-success" onclick="guardarConfiguracion()">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Configuración General -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-globe me-2"></i>
+                        Configuración General del Sistema
+                    </div>
+                    <div class="card-body">
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Información del Sistema
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nombreSistema" class="form-label">Nombre del Sistema:</label>
+                                    <input type="text" class="form-control" id="nombreSistema" value="MiCiudadSV" placeholder="Nombre del sistema">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="versionSistema" class="form-label">Versión:</label>
+                                    <input type="text" class="form-control" id="versionSistema" value="1.0.0" placeholder="Versión del sistema">
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="descripcionSistema" class="form-label">Descripción:</label>
+                                    <textarea class="form-control" id="descripcionSistema" rows="2">Plataforma ciudadana para reportes y gestión comunitaria en El Salvador</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-envelope me-2"></i>
+                                Configuración de Email
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="emailSmtp" class="form-label">Servidor SMTP:</label>
+                                    <input type="text" class="form-control" id="emailSmtp" value="smtp.gmail.com" placeholder="servidor.smtp.com">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="emailPuerto" class="form-label">Puerto:</label>
+                                    <input type="number" class="form-control" id="emailPuerto" value="587" placeholder="587">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="emailSeguridad" class="form-label">Seguridad:</label>
+                                    <select class="form-select" id="emailSeguridad">
+                                        <option value="tls" selected>TLS</option>
+                                        <option value="ssl">SSL</option>
+                                        <option value="none">Ninguna</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="emailUsuario" class="form-label">Usuario/Email:</label>
+                                    <input type="email" class="form-control" id="emailUsuario" placeholder="sistema@miciudadsv.com">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="emailPassword" class="form-label">Contraseña:</label>
+                                    <input type="password" class="form-control" id="emailPassword" placeholder="Contraseña del email">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración de Seguridad -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Configuración de Seguridad
+                    </div>
+                    <div class="card-body">
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-user-lock me-2"></i>
+                                Autenticación y Sesiones
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="tiempoSesion" class="form-label">Duración de sesión (horas):</label>
+                                    <input type="number" class="form-control" id="tiempoSesion" value="24" min="1" max="168">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="intentosLogin" class="form-label">Máx. intentos de login:</label>
+                                    <input type="number" class="form-control" id="intentosLogin" value="5" min="3" max="10">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="tiempoBloqueo" class="form-label">Tiempo bloqueo (minutos):</label>
+                                    <input type="number" class="form-control" id="tiempoBloqueo" value="15" min="5" max="60">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="requierEmailVerificacion" checked>
+                                        <label class="form-check-label" for="requierEmailVerificacion">
+                                            Requiere verificación de email para registro
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="autenticacion2FA">
+                                        <label class="form-check-label" for="autenticacion2FA">
+                                            Habilitar autenticación de dos factores (2FA)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-key me-2"></i>
+                                Políticas de Contraseñas
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <label for="minLongitudPassword" class="form-label">Longitud mínima:</label>
+                                    <input type="number" class="form-control" id="minLongitudPassword" value="8" min="6" max="20">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="form-check form-switch mt-4">
+                                        <input class="form-check-input" type="checkbox" id="requiereMayusculas" checked>
+                                        <label class="form-check-label" for="requiereMayusculas">
+                                            Requiere mayúsculas
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="form-check form-switch mt-4">
+                                        <input class="form-check-input" type="checkbox" id="requiereNumeros" checked>
+                                        <label class="form-check-label" for="requiereNumeros">
+                                            Requiere números
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="form-check form-switch mt-4">
+                                        <input class="form-check-input" type="checkbox" id="requiereEspeciales">
+                                        <label class="form-check-label" for="requiereEspeciales">
+                                            Requiere símbolos
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración de Moderación -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-gavel me-2"></i>
+                        Configuración de Moderación
+                    </div>
+                    <div class="card-body">
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-filter me-2"></i>
+                                Filtros de Contenido
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="filtroGroserias" checked>
+                                        <label class="form-check-label" for="filtroGroserias">
+                                            Activar filtro de groserías
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="filtroSpam" checked>
+                                        <label class="form-check-label" for="filtroSpam">
+                                            Activar filtro anti-spam
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="moderacionAutomatica" checked>
+                                        <label class="form-check-label" for="moderacionAutomatica">
+                                            Moderación automática de contenido
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notificarModerador">
+                                        <label class="form-check-label" for="notificarModerador">
+                                            Notificar moderadores por email
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="palabrasProhibidas" class="form-label">Palabras prohibidas (separadas por comas):</label>
+                                <textarea class="form-control" id="palabrasProhibidas" rows="3" placeholder="palabra1, palabra2, palabra3...">puta, puto, mierda, cabron, hijo de puta, pendejo, idiota, estupido</textarea>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Límites de Reportes
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="maxReportesDia" class="form-label">Máx. reportes por día (por usuario):</label>
+                                    <input type="number" class="form-control" id="maxReportesDia" value="5" min="1" max="20">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="maxImagenesReporte" class="form-label">Máx. imágenes por reporte:</label>
+                                    <input type="number" class="form-control" id="maxImagenesReporte" value="3" min="1" max="10">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="tamanoMaxImagen" class="form-label">Tamaño máx. imagen (MB):</label>
+                                    <input type="number" class="form-control" id="tamanoMaxImagen" value="5" min="1" max="20" step="0.5">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración de Notificaciones -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-bell me-2"></i>
+                        Configuración de Notificaciones
+                    </div>
+                    <div class="card-body">
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-envelope-open me-2"></i>
+                                Notificaciones por Email
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="emailNuevoReporte" checked>
+                                        <label class="form-check-label" for="emailNuevoReporte">
+                                            Nuevo reporte ciudadano
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="emailNuevoUsuario" checked>
+                                        <label class="form-check-label" for="emailNuevoUsuario">
+                                            Nuevo usuario registrado
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="emailContenidoInappropiado">
+                                        <label class="form-check-label" for="emailContenidoInappropiado">
+                                            Contenido inapropiado detectado
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="emailErroresSistema">
+                                        <label class="form-check-label" for="emailErroresSistema">
+                                            Errores críticos del sistema
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-mobile-alt me-2"></i>
+                                Notificaciones Push (Futuro)
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Las notificaciones push estarán disponibles en una futura actualización del sistema.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración de Mantenimiento -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-tools me-2"></i>
+                        Configuración de Mantenimiento
+                    </div>
+                    <div class="card-body">
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-database me-2"></i>
+                                Limpieza Automática
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="limpiezaLogs" class="form-label">Eliminar logs después de (días):</label>
+                                    <input type="number" class="form-control" id="limpiezaLogs" value="90" min="7" max="365">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="limpiezaSesiones" class="form-label">Eliminar sesiones expiradas (días):</label>
+                                    <input type="number" class="form-control" id="limpiezaSesiones" value="7" min="1" max="30">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="backupAutomatico" class="form-label">Backup automático (días):</label>
+                                    <input type="number" class="form-control" id="backupAutomatico" value="7" min="1" max="30">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="modoMantenimiento">
+                                        <label class="form-check-label" for="modoMantenimiento">
+                                            <strong>Activar modo mantenimiento</strong>
+                                        </label>
+                                    </div>
+                                    <small class="text-muted">Los usuarios no podrán acceder al sistema</small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="limpiezaAutomatica" checked>
+                                        <label class="form-check-label" for="limpiezaAutomatica">
+                                            Habilitar limpieza automática
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h5 class="mb-3">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Estadísticas y Monitoreo
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="estadisticasDetalladas" checked>
+                                        <label class="form-check-label" for="estadisticasDetalladas">
+                                            Recopilar estadísticas detalladas
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="monitoreoRendimiento">
+                                        <label class="form-check-label" for="monitoreoRendimiento">
+                                            Monitoreo de rendimiento
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información del Sistema -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Información del Sistema
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Información del Servidor:</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>Sistema Operativo:</strong> <%= process.platform %></li>
+                                    <li><strong>Versión Node.js:</strong> <%= process.version %></li>
+                                    <li><strong>Memoria Total:</strong> <span id="memoriaTotal">Cargando...</span></li>
+                                    <li><strong>Memoria Libre:</strong> <span id="memoriaLibre">Cargando...</span></li>
+                                    <li><strong>Uptime:</strong> <span id="uptime">Cargando...</span></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Información de la Base de Datos:</h6>
+                                <ul class="list-unstyled">
+                                    <li><strong>Estado:</strong> <span class="badge bg-success">Conectada</span></li>
+                                    <li><strong>Total Usuarios:</strong> <span id="totalUsuarios">Cargando...</span></li>
+                                    <li><strong>Total Reportes:</strong> <span id="totalReportes">Cargando...</span></li>
+                                    <li><strong>Total Comunidades:</strong> <span id="totalComunidades">Cargando...</span></li>
+                                    <li><strong>Espacio usado:</strong> <span id="espacioBD">Cargando...</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Cargar información del sistema al inicio
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarInformacionSistema();
+            cargarConfiguracion();
+        });
+
+        // Función para cargar información del sistema
+        async function cargarInformacionSistema() {
+            try {
+                const response = await fetch('/admin/api/sistema/info');
+                const data = await response.json();
+                
+                document.getElementById('memoriaTotal').textContent = formatBytes(data.memoriaTotal || 0);
+                document.getElementById('memoriaLibre').textContent = formatBytes(data.memoriaLibre || 0);
+                document.getElementById('uptime').textContent = formatUptime(data.uptime || 0);
+                document.getElementById('totalUsuarios').textContent = data.totalUsuarios || 0;
+                document.getElementById('totalReportes').textContent = data.totalReportes || 0;
+                document.getElementById('totalComunidades').textContent = data.totalComunidades || 0;
+                document.getElementById('espacioBD').textContent = formatBytes(data.espacioBD || 0);
+                
+            } catch (error) {
+                console.error('Error cargando información del sistema:', error);
+            }
+        }
+
+        // Función para cargar configuración actual
+        async function cargarConfiguracion() {
+            try {
+                const response = await fetch('/admin/api/configuracion');
+                const config = await response.json();
+                
+                // Cargar valores en los campos
+                if (config.success) {
+                    const datos = config.configuracion;
+                    
+                    // Información general
+                    document.getElementById('nombreSistema').value = datos.nombreSistema || 'MiCiudadSV';
+                    document.getElementById('versionSistema').value = datos.versionSistema || '1.0.0';
+                    document.getElementById('descripcionSistema').value = datos.descripcionSistema || '';
+                    
+                    // Email
+                    document.getElementById('emailSmtp').value = datos.emailSmtp || '';
+                    document.getElementById('emailPuerto').value = datos.emailPuerto || 587;
+                    document.getElementById('emailSeguridad').value = datos.emailSeguridad || 'tls';
+                    document.getElementById('emailUsuario').value = datos.emailUsuario || '';
+                    
+                    // Seguridad
+                    document.getElementById('tiempoSesion').value = datos.tiempoSesion || 24;
+                    document.getElementById('intentosLogin').value = datos.intentosLogin || 5;
+                    document.getElementById('tiempoBloqueo').value = datos.tiempoBloqueo || 15;
+                    document.getElementById('requierEmailVerificacion').checked = datos.requierEmailVerificacion !== false;
+                    document.getElementById('autenticacion2FA').checked = datos.autenticacion2FA === true;
+                    
+                    // Políticas de contraseñas
+                    document.getElementById('minLongitudPassword').value = datos.minLongitudPassword || 8;
+                    document.getElementById('requiereMayusculas').checked = datos.requiereMayusculas !== false;
+                    document.getElementById('requiereNumeros').checked = datos.requiereNumeros !== false;
+                    document.getElementById('requiereEspeciales').checked = datos.requiereEspeciales === true;
+                    
+                    // Moderación
+                    document.getElementById('filtroGroserias').checked = datos.filtroGroserias !== false;
+                    document.getElementById('filtroSpam').checked = datos.filtroSpam !== false;
+                    document.getElementById('moderacionAutomatica').checked = datos.moderacionAutomatica !== false;
+                    document.getElementById('notificarModerador').checked = datos.notificarModerador === true;
+                    document.getElementById('palabrasProhibidas').value = datos.palabrasProhibidas || '';
+                    
+                    // Límites
+                    document.getElementById('maxReportesDia').value = datos.maxReportesDia || 5;
+                    document.getElementById('maxImagenesReporte').value = datos.maxImagenesReporte || 3;
+                    document.getElementById('tamanoMaxImagen').value = datos.tamanoMaxImagen || 5;
+                    
+                    // Notificaciones
+                    document.getElementById('emailNuevoReporte').checked = datos.emailNuevoReporte !== false;
+                    document.getElementById('emailNuevoUsuario').checked = datos.emailNuevoUsuario !== false;
+                    document.getElementById('emailContenidoInappropiado').checked = datos.emailContenidoInappropiado === true;
+                    document.getElementById('emailErroresSistema').checked = datos.emailErroresSistema === true;
+                    
+                    // Mantenimiento
+                    document.getElementById('limpiezaLogs').value = datos.limpiezaLogs || 90;
+                    document.getElementById('limpiezaSesiones').value = datos.limpiezaSesiones || 7;
+                    document.getElementById('backupAutomatico').value = datos.backupAutomatico || 7;
+                    document.getElementById('modoMantenimiento').checked = datos.modoMantenimiento === true;
+                    document.getElementById('limpiezaAutomatica').checked = datos.limpiezaAutomatica !== false;
+                    document.getElementById('estadisticasDetalladas').checked = datos.estadisticasDetalladas !== false;
+                    document.getElementById('monitoreoRendimiento').checked = datos.monitoreoRendimiento === true;
+                }
+                
+            } catch (error) {
+                console.error('Error cargando configuración:', error);
+            }
+        }
+
+        // Función para guardar configuración
+        async function guardarConfiguracion() {
+            const configuracion = {
+                // Información general
+                nombreSistema: document.getElementById('nombreSistema').value,
+                versionSistema: document.getElementById('versionSistema').value,
+                descripcionSistema: document.getElementById('descripcionSistema').value,
+                
+                // Email
+                emailSmtp: document.getElementById('emailSmtp').value,
+                emailPuerto: parseInt(document.getElementById('emailPuerto').value),
+                emailSeguridad: document.getElementById('emailSeguridad').value,
+                emailUsuario: document.getElementById('emailUsuario').value,
+                emailPassword: document.getElementById('emailPassword').value,
+                
+                // Seguridad
+                tiempoSesion: parseInt(document.getElementById('tiempoSesion').value),
+                intentosLogin: parseInt(document.getElementById('intentosLogin').value),
+                tiempoBloqueo: parseInt(document.getElementById('tiempoBloqueo').value),
+                requierEmailVerificacion: document.getElementById('requierEmailVerificacion').checked,
+                autenticacion2FA: document.getElementById('autenticacion2FA').checked,
+                
+                // Políticas de contraseñas
+                minLongitudPassword: parseInt(document.getElementById('minLongitudPassword').value),
+                requiereMayusculas: document.getElementById('requiereMayusculas').checked,
+                requiereNumeros: document.getElementById('requiereNumeros').checked,
+                requiereEspeciales: document.getElementById('requiereEspeciales').checked,
+                
+                // Moderación
+                filtroGroserias: document.getElementById('filtroGroserias').checked,
+                filtroSpam: document.getElementById('filtroSpam').checked,
+                moderacionAutomatica: document.getElementById('moderacionAutomatica').checked,
+                notificarModerador: document.getElementById('notificarModerador').checked,
+                palabrasProhibidas: document.getElementById('palabrasProhibidas').value,
+                
+                // Límites
+                maxReportesDia: parseInt(document.getElementById('maxReportesDia').value),
+                maxImagenesReporte: parseInt(document.getElementById('maxImagenesReporte').value),
+                tamanoMaxImagen: parseFloat(document.getElementById('tamanoMaxImagen').value),
+                
+                // Notificaciones
+                emailNuevoReporte: document.getElementById('emailNuevoReporte').checked,
+                emailNuevoUsuario: document.getElementById('emailNuevoUsuario').checked,
+                emailContenidoInappropiado: document.getElementById('emailContenidoInappropiado').checked,
+                emailErroresSistema: document.getElementById('emailErroresSistema').checked,
+                
+                // Mantenimiento
+                limpiezaLogs: parseInt(document.getElementById('limpiezaLogs').value),
+                limpiezaSesiones: parseInt(document.getElementById('limpiezaSesiones').value),
+                backupAutomatico: parseInt(document.getElementById('backupAutomatico').value),
+                modoMantenimiento: document.getElementById('modoMantenimiento').checked,
+                limpiezaAutomatica: document.getElementById('limpiezaAutomatica').checked,
+                estadisticasDetalladas: document.getElementById('estadisticasDetalladas').checked,
+                monitoreoRendimiento: document.getElementById('monitoreoRendimiento').checked
+            };
+
+            try {
+                const response = await fetch('/admin/api/configuracion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(configuracion)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Mostrar mensaje de éxito
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong>¡Configuración guardada exitosamente!</strong>
+                        Los cambios se han aplicado al sistema.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    
+                    // Insertar el alert al inicio del main
+                    const main = document.querySelector('main');
+                    main.insertBefore(alertDiv, main.firstChild.nextSibling);
+                    
+                    // Auto-cerrar después de 5 segundos
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 5000);
+                    
+                } else {
+                    alert('Error al guardar la configuración: ' + result.message);
+                }
+                
+            } catch (error) {
+                console.error('Error guardando configuración:', error);
+                alert('Error al guardar la configuración');
+            }
+        }
+
+        // Función para formatear bytes
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+
+        // Función para formatear uptime
+        function formatUptime(seconds) {
+            const days = Math.floor(seconds / (24 * 60 * 60));
+            const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((seconds % (60 * 60)) / 60);
+            
+            let result = '';
+            if (days > 0) result += `${days}d `;
+            if (hours > 0) result += `${hours}h `;
+            if (minutes > 0) result += `${minutes}m`;
+            
+            return result || '0m';
+        }
+
+        // Validación en tiempo real para campos críticos
+        document.getElementById('modoMantenimiento').addEventListener('change', function() {
+            if (this.checked) {
+                const confirmacion = confirm(
+                    '⚠️ ADVERTENCIA: Activar el modo mantenimiento impedirá que los usuarios accedan al sistema.\n\n' +
+                    '¿Estás seguro de que deseas continuar?'
+                );
+                
+                if (!confirmacion) {
+                    this.checked = false;
+                }
+            }
+        });
+
+        // Validación de longitud mínima de contraseña
+        document.getElementById('minLongitudPassword').addEventListener('change', function() {
+            const valor = parseInt(this.value);
+            if (valor < 6) {
+                alert('La longitud mínima de contraseña no puede ser menor a 6 caracteres por seguridad.');
+                this.value = 6;
+            }
+        });
+
+        // Validación de intentos de login
+        document.getElementById('intentosLogin').addEventListener('change', function() {
+            const valor = parseInt(this.value);
+            if (valor < 3) {
+                alert('El número mínimo de intentos de login debe ser al menos 3.');
+                this.value = 3;
+            }
+        });
+
+        // Actualizar información del sistema cada 30 segundos
+        setInterval(cargarInformacionSistema, 30000);
+
+        // Advertencia antes de salir si hay cambios sin guardar
+        let configInicial = null;
+        
+        window.addEventListener('load', function() {
+            // Guardar configuración inicial para comparar
+            setTimeout(() => {
+                configInicial = JSON.stringify(obtenerConfiguracionActual());
+            }, 1000);
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            const configActual = JSON.stringify(obtenerConfiguracionActual());
+            
+            if (configInicial && configInicial !== configActual) {
+                e.preventDefault();
+                e.returnValue = '¿Estás seguro de que deseas salir? Tienes cambios sin guardar.';
+                return e.returnValue;
+            }
+        });
+
+        function obtenerConfiguracionActual() {
+            return {
+                nombreSistema: document.getElementById('nombreSistema').value,
+                filtroGroserias: document.getElementById('filtroGroserias').checked,
+                modoMantenimiento: document.getElementById('modoMantenimiento').checked,
+                // Agregar otros campos críticos aquí
+            };
+        }
+    </script>
+    
+</body>
+</html>

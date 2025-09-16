@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --dark-bg: #1e293b;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #334155 100%);
+            box-shadow: var(--shadow-lg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link {
+            color: #cbd5e1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 4px 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .sidebar .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .sidebar .nav-link i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: var(--light-bg);
+        }
+
+        /* Header */
+        .page-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-header h3 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .form-body {
+            padding: 2rem;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+
+        /* Form Controls */
+        .form-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+
+        .form-control:read-only {
+            background-color: var(--light-bg);
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-info {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Role Badges */
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--info-color) 0%, #2563eb 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.25rem;
+        }
+
+        .role-badge i {
+            font-size: 0.875rem;
+        }
+
+        /* Loading States */
+        .btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .page-header {
+                padding: 1.5rem;
+            }
+            
+            .form-body {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            min-width: 300px;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--info-color);
+        }
+
+        .toast-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toast-body {
+            padding: 1rem;
+        }
+
+        .toast.success .toast-header {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .toast.error .toast-header {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .toast.info .toast-header {
+            background: rgba(59, 130, 246, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar" style="width: 280px;">
+        <div class="p-4">
+            <div class="text-center mb-4">
+                <h4 class="text-white fw-bold">Admin Panel</h4>
+                <small class="text-light">Mi Ciudad SV</small>
+            </div>
+        </div>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">
+                    <i class="bi bi-house-door"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/usuarios">
+                    <i class="bi bi-people"></i>
+                    Usuarios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/reportes">
+                    <i class="bi bi-flag"></i>
+                    Reportes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/comunidades">
+                    <i class="bi bi-building"></i>
+                    Comunidades
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/logs">
+                    <i class="bi bi-journal-text"></i>
+                    Logs
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/configuracion">
+                    <i class="bi bi-gear"></i>
+                    Configuración
+                </a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link" href="/dashboard">
+                    <i class="bi bi-arrow-left"></i>
+                    Volver al Dashboard
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1><%= titulo %></h1>
+                    <p>Edita la información del usuario y sus roles</p>
+                </div>
+                <div>
+                    <a href="/admin/usuarios" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        Volver a Usuarios
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <div class="form-header">
+                <h3><i class="bi bi-person-gear"></i> Información del Usuario</h3>
+            </div>
+            
+            <div class="form-body">
+                <form id="editarUsuarioForm">
+                    <input type="hidden" id="idUsuario" value="<%= usuarioData.idUsuario %>">
+
+                    <!-- Información Básica -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-person"></i>
+                            Información Básica
+                        </h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" 
+                                       value="<%= usuarioData.nombre %>" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="correo" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="correo" name="correo" 
+                                       value="<%= usuarioData.correo %>" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="contraseña" class="form-label">Nueva Contraseña (opcional)</label>
+                                <input type="password" class="form-control" id="contraseña" name="contraseña" 
+                                       placeholder="Dejar vacío para mantener la actual">
+                                <small class="text-muted">Mínimo 6 caracteres</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="confirmarContraseña" class="form-label">Confirmar Contraseña</label>
+                                <input type="password" class="form-control" id="confirmarContraseña" name="confirmarContraseña" 
+                                       placeholder="Confirmar nueva contraseña">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Roles y Permisos -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-shield-check"></i>
+                            Roles y Permisos
+                        </h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="idRol" class="form-label">Rol del Usuario</label>
+                                <select class="form-control" id="idRol" name="idRol">
+                                    <option value="0">Sin rol</option>
+                                    <% roles.forEach(function(rol) { %>
+                                        <option value="<%= rol.idRol %>" 
+                                                <%= usuarioData.roles && usuarioData.roles.some(r => r.idRol == rol.idRol) ? 'selected' : '' %>>
+                                            <%= rol.nombreRol %>
+                                        </option>
+                                    <% }); %>
+                                </select>
+                                <small class="text-muted">Selecciona el rol que tendrá este usuario</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="activo" class="form-label">Estado de la Cuenta</label>
+                                <select class="form-control" id="activo" name="activo">
+                                    <option value="1" <%= usuarioData.activo == 1 ? 'selected' : '' %>>Activa</option>
+                                    <option value="0" <%= usuarioData.activo == 0 ? 'selected' : '' %>>Inactiva</option>
+                                </select>
+                                <small class="text-muted">Controla si el usuario puede acceder al sistema</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Sistema -->
+                    <div class="form-section">
+                        <h4 class="section-title">
+                            <i class="bi bi-info-circle"></i>
+                            Información del Sistema
+                        </h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ID de Usuario</label>
+                                <input type="text" class="form-control" value="<%= usuarioData.idUsuario %>" readonly>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Fecha de Registro</label>
+                                <input type="text" class="form-control" 
+                                       value="<%= new Date(usuarioData.fechaCreacion).toLocaleDateString('es-ES') %>" readonly>
+                            </div>
+                        </div>
+                        
+                        <% if (usuarioData.roles && usuarioData.roles.length > 0) { %>
+                        <div class="mb-3">
+                            <label class="form-label">Roles Actuales</label>
+                            <div>
+                                <% usuarioData.roles.forEach(function(rol) { %>
+                                    <span class="role-badge">
+                                        <i class="bi bi-shield-check"></i>
+                                        <%= rol.nombreRol %>
+                                    </span>
+                                <% }); %>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+
+                                         <!-- Botones de Acción -->
+                     <div class="d-flex justify-content-between align-items-center pt-3">
+                         <div>
+                             <button type="button" class="btn btn-danger delete-user-btn" data-user-id="<%= usuarioData.idUsuario %>">
+                                 <i class="bi bi-trash"></i>
+                                 Eliminar Usuario
+                             </button>
+                             <button type="button" class="btn btn-info ms-2 test-delete-btn">
+                                 <i class="bi bi-bug"></i>
+                                 Probar
+                             </button>
+                         </div>
+                        
+                        <div>
+                            <a href="/admin/usuarios" class="btn btn-secondary me-2">
+                                <i class="bi bi-x"></i>
+                                Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success" id="btnGuardar">
+                                <i class="bi bi-check-lg"></i>
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Función para mostrar notificaciones toast
+        function mostrarToast(mensaje, tipo = 'success') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${tipo}`;
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <strong>${tipo === 'success' ? '✅ Éxito' : '❌ Error'}</strong>
+                    <button type="button" class="btn-close toast-close-btn"></button>
+                </div>
+                <div class="toast-body">
+                    ${mensaje}
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                }
+            }, 5000);
+        }
+
+        // Función para validar contraseñas
+        function validarContraseñas() {
+            const contraseña = document.getElementById('contraseña').value;
+            const confirmar = document.getElementById('confirmarContraseña').value;
+            
+            if (contraseña && contraseña !== confirmar) {
+                mostrarToast('Las contraseñas no coinciden', 'error');
+                return false;
+            }
+            
+            if (contraseña && contraseña.length < 6) {
+                mostrarToast('La contraseña debe tener al menos 6 caracteres', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Función para probar la eliminación
+        function probarEliminacion() {
+            const idUsuario = document.getElementById('idUsuario').value;
+            console.log('🧪 Probando eliminación para usuario ID:', idUsuario);
+            mostrarToast('Probando eliminación - Revisa la consola', 'info');
+        }
+
+        // Función para eliminar usuario
+        async function eliminarUsuario(idUsuario) {
+            console.log('🚀 Función eliminarUsuario ejecutada con ID:', idUsuario);
+            
+            if (!confirm('¿Estás seguro de que quieres eliminar este usuario? Esta acción no se puede deshacer.')) {
+                console.log('❌ Usuario canceló la eliminación');
+                return;
+            }
+            
+            try {
+                console.log('🗑️ Intentando eliminar usuario ID:', idUsuario);
+                
+                const response = await fetch('/admin/usuarios/eliminar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idUsuario: idUsuario })
+                });
+                
+                console.log('📡 Respuesta del servidor:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('📊 Datos de respuesta:', data);
+                
+                if (data.success) {
+                    mostrarToast('Usuario eliminado exitosamente');
+                    setTimeout(() => {
+                        window.location.href = '/admin/usuarios';
+                    }, 1500);
+                } else {
+                    mostrarToast(data.error || 'Error al eliminar usuario', 'error');
+                }
+            } catch (error) {
+                console.error('❌ Error en eliminarUsuario:', error);
+                mostrarToast('Error de conexión: ' + error.message, 'error');
+            }
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('editarUsuarioForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validarContraseñas()) {
+                return;
+            }
+            
+            const btnGuardar = document.getElementById('btnGuardar');
+            const btnOriginalText = btnGuardar.innerHTML;
+            
+            // Mostrar estado de carga
+            btnGuardar.classList.add('loading');
+            btnGuardar.disabled = true;
+            
+            try {
+                const formData = new FormData(this);
+                const data = {
+                    nombre: formData.get('nombre'),
+                    correo: formData.get('correo'),
+                    contraseña: formData.get('contraseña'),
+                    idRol: formData.get('idRol'),
+                    activo: formData.get('activo')
+                };
+                
+                const response = await fetch(`/admin/usuarios/<%= usuarioData.idUsuario %>/actualizar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    mostrarToast('Usuario actualizado exitosamente');
+                    setTimeout(() => {
+                        window.location.href = '/admin/usuarios';
+                    }, 1500);
+                } else {
+                    mostrarToast(result.error || 'Error al actualizar usuario', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarToast('Error de conexión', 'error');
+            } finally {
+                // Restaurar botón
+                btnGuardar.classList.remove('loading');
+                btnGuardar.disabled = false;
+                btnGuardar.innerHTML = btnOriginalText;
+            }
+        });
+
+        // Validación en tiempo real de contraseñas
+        document.getElementById('confirmarContraseña').addEventListener('input', function() {
+            const contraseña = document.getElementById('contraseña').value;
+            const confirmar = this.value;
+            
+            if (contraseña && confirmar && contraseña !== confirmar) {
+                this.setCustomValidity('Las contraseñas no coinciden');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+        
+        // Event listeners para botones
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listener para botón de eliminar usuario
+            const deleteBtn = document.querySelector('.delete-user-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    eliminarUsuario(userId);
+                });
+            }
+            
+            // Event listener para botón de probar eliminación
+            const testBtn = document.querySelector('.test-delete-btn');
+            if (testBtn) {
+                testBtn.addEventListener('click', probarEliminacion);
+            }
+            
+            // Event listeners para botones de cerrar toast
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('toast-close-btn')) {
+                    e.target.closest('.toast').remove();
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiCiudadSV - Página de Inicio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #64748b;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4e67f7, #5aceff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(78, 103, 247, 0.3);
+        }
+        
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 24px;
+            margin-left: 12px;
+            color: #212529;
+        }
+
+        .nav-link {
+            color: var(--gray-600) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #4e67f7 !important;
+            background: rgba(78, 103, 247, 0.1);
+        }
+
+        .btn {
+            border-radius: 25px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4e67f7, #5aceff);
+            color: white;
+            box-shadow: 0 4px 12px rgba(78, 103, 247, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(78, 103, 247, 0.4);
+        }
+
+        .btn-outline-primary {
+            background: transparent;
+            color: #4e67f7;
+            border: 2px solid #4e67f7;
+        }
+
+        .btn-outline-primary:hover {
+            background: #4e67f7;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(45deg, #3b5df5 0%, #5aceff 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 120px;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-text {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            text-align: center;
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-card i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .hero-card h4 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-card p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Welcome Message */
+        .welcome-message {
+            background: linear-gradient(135deg, #4e67f7, #5aceff);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            margin: 3rem auto 2rem;
+            text-align: center;
+            max-width: 800px;
+            box-shadow: 0 8px 32px rgba(78, 103, 247, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Features Section */
+        .section-alt {
+            background: white;
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            text-align: center;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            height: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(78, 103, 247, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: #4e67f7;
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: #4e67f7;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .feature-card h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, var(--gray-900), var(--gray-800));
+            color: white;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        }
+
+        .stat-card {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: block;
+            background: linear-gradient(135deg, #fff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        /* How it works */
+        .how-it-works {
+            background: var(--gray-50);
+            padding: 5rem 0;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4e67f7, #5aceff);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 auto 2rem;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(78, 103, 247, 0.3);
+        }
+
+        .step-card:not(:last-child) .step-number::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -60px;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #4e67f7, var(--gray-300));
+            transform: translateY(-50%);
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .step-description {
+            color: var(--gray-600);
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            background: white;
+            padding: 5rem 0;
+        }
+
+        .testimonial-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: #4e67f7;
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4e67f7, #5aceff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 8px 25px rgba(78, 103, 247, 0.3);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--gray-900);
+            font-size: 1.1rem;
+        }
+
+        .testimonial-location {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Alerts Section */
+        .alerts-section {
+            background: var(--gray-50);
+            padding: 5rem 0;
+        }
+
+        .alert-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid #4e67f7;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .alert-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border-left-color: var(--accent);
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .alert-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #4e67f7, #5aceff);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .alert-time {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            margin-left: auto;
+            background: var(--gray-100);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .alert-description {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        .subscribe-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .subscribe-card i {
+            font-size: 3rem;
+            color: #4e67f7;
+            margin-bottom: 1.5rem;
+        }
+
+        .subscribe-card h5 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+
+        .subscribe-card p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #4e67f7, #5aceff);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="waves" width="100" height="20" patternUnits="userSpaceOnUse"><path d="M0,10 Q25,0 50,10 T100,10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></pattern></defs><rect width="100" height="100" fill="url(%23waves)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-text {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons .btn {
+            border-radius: 25px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0.5rem 1rem;
+        }
+
+        .cta-buttons .btn-light {
+            background: white;
+            color: #4e67f7;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-buttons .btn-light:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-buttons .btn-outline-light {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-buttons .btn-outline-light:hover {
+            background: white;
+            color: #4e67f7;
+        }
+
+         /* Footer */
+        .footer {
+            background: var(--gray-900);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #4e67f7, #5aceff);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .footer-brand {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-text {
+            color: var(--gray-400);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .footer-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: #4e67f7;
+            transform: translateX(4px);
+        }
+
+        .newsletter-form {
+            display: flex;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-700);
+            border-radius: 8px;
+            background-color: var(--gray-800);
+            color: white;
+            outline: none;
+        }
+
+        .newsletter-input:focus {
+            border-color: #4e67f7;
+        }
+
+        .newsletter-btn {
+            padding: 0.75rem 1.5rem;
+            background: #4e67f7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .newsletter-btn:hover {
+            background: #5aceff;
+            transform: translateY(-2px);
+        }
+
+        .footer-copyright {
+            border-top: 1px solid var(--gray-800);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--gray-400);
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .step-card:not(:last-child) .step-number::after {
+                display: none;
+            }
+            
+            .cta-buttons .btn {
+                width: 100%;
+                margin: 0 0 1rem 0;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .navbar-nav {
+                text-align: center;
+                margin: 1rem 0;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4e67f7;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5aceff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <div class="navbar-logo">Sv</div>
+                <span>MiCiudadSV</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Inicio</a>
+                    </li>
+                    <% if (loggedIn) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/informacion">Información</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/reportes">Reportes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/comunidades">Comunidades</a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/informacion">Información</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#ayuda">Ayuda</a>
+                        </li>
+                    <% } %>
+                </ul>
+                
+                <div class="auth-buttons d-flex align-items-center">
+                    <!-- Botón de cambio de tema -->
+                    <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                        <i class="bi bi-moon-stars"></i>
+                    </button>
+
+                    <% if (loggedIn) { %>
+                        <!-- Dropdown para usuario logueado -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-2"></i>
+                                <%= usuario.nombre %>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li class="dropdown-header">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-circle fs-4 me-2"></i>
+                                        <div>
+                                            <strong><%= usuario.nombre %></strong>
+                                            <div class="text-muted small">Usuario registrado</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/dashboard">
+                                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                                </a></li>
+                                <li><a class="dropdown-item" href="/dashboard/perfil">
+                                    <i class="bi bi-person me-2"></i>Mi Perfil
+                                </a></li>
+                                <li><a class="dropdown-item" href="/dashboard/mis-reportes">
+                                    <i class="bi bi-file-text me-2"></i>Mis Reportes
+                                </a></li>
+                                <li><a class="dropdown-item" href="/dashboard/mis-comunidades">
+                                    <i class="bi bi-people me-2"></i>Mis Comunidades
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="/auth/logout" class="d-inline w-100">
+                                        <button type="submit" class="dropdown-item text-danger w-100 border-0 bg-transparent">
+                                            <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    <% } else { %>
+                        <!-- Botones para usuario no logueado -->
+                        <a href="/auth/login" class="btn btn-outline-primary me-2">Iniciar Sesión</a>
+                        <a href="/auth/registro" class="btn btn-primary">Registrarse</a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mensaje de bienvenida para usuario logueado -->
+    <% if (loggedIn) { %>
+        <div class="container mt-5 pt-5">
+            <div class="welcome-message">
+                <h4 class="mb-0">¡Bienvenido de vuelta, <%= usuario.nombre %>! 🎉</h4>
+                <p class="mb-0 mt-2">Ya puedes acceder a todas las funcionalidades de la plataforma</p>
+            </div>
+        </div>
+    <% } %>
+
+    <!-- Sección Hero -->
+    <section class="hero-section">
+        <div class="hero-wave"></div>
+        <div class="container">
+            <div class="row align-items-center hero-content">
+                <div class="col-lg-6">
+                    <% if (loggedIn) { %>
+                        <h1 class="hero-title">¡Hola <%= usuario.nombre %>!<br>Tu ciudad te necesita<br>activa</h1>
+                        <p class="hero-text">
+                            Ahora que eres parte de nuestra comunidad, puedes reportar incidentes, alertar a otros ciudadanos y contribuir a hacer de El Salvador un lugar más seguro.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="/dashboard" class="btn btn-primary">Ir al Dashboard</a>
+                            <a href="/reportes/crear" class="btn btn-outline-primary">Crear Reporte</a>
+                        </div>
+                    <% } else { %>
+                        <h1 class="hero-title">Ingresa tu reporte<br>y salva vidas<br>es tu oportunidad</h1>
+                        <p class="hero-text">
+                            Contribuye a crear una ciudad más segura reportando incidentes, alertando a la comunidad y actuando juntos para prevenir situaciones de riesgo.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="/auth/registro" class="btn btn-primary">Comenzar Ahora</a>
+                            <a href="/auth/login" class="btn btn-outline-primary">Ya tengo cuenta</a>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="col-lg-6 hero-image">
+                    <div class="hero-card">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <h4>
+                            <% if (loggedIn) { %>
+                                ¡Ya eres parte!
+                            <% } else { %>
+                                Reporta Incidentes
+                            <% } %>
+                        </h4>
+                        <p>
+                            <% if (loggedIn) { %>
+                                Usa todas las funcionalidades
+                            <% } else { %>
+                                Mantén tu comunidad informada y segura
+                            <% } %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de características -->
+    <section class="py-5 section-alt">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="section-title">
+                        <% if (loggedIn) { %>
+                            ¿Qué puedes hacer ahora?
+                        <% } else { %>
+                            ¿Por qué elegir MiCiudadSV?
+                        <% } %>
+                    </h2>
+                    <p class="section-subtitle">
+                        <% if (loggedIn) { %>
+                            Explora todas las funcionalidades disponibles para ti
+                        <% } else { %>
+                            Una plataforma diseñada para hacer tu ciudad más segura
+                        <% } %>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <% if (loggedIn) { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="feature-card">
+                            <i class="bi bi-speedometer2"></i>
+                            <h4>Dashboard Completo</h4>
+                            <p>Accede a estadísticas y gestiona tu actividad</p>
+                            <a href="/dashboard" class="btn btn-outline-primary btn-sm">Ir al Dashboard</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="feature-card">
+                            <i class="bi bi-plus-circle"></i>
+                            <h4>Crear Reportes</h4>
+                            <p>Reporta incidentes y mantén informada a tu comunidad</p>
+                            <a href="/reportes/crear" class="btn btn-outline-primary btn-sm">Crear Reporte</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="feature-card">
+                            <i class="bi bi-people"></i>
+                            <h4>Únete a Comunidades</h4>
+                            <p>Conecta con vecinos y mantente informado</p>
+                            <a href="/comunidades" class="btn btn-outline-primary btn-sm">Ver Comunidades</a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div class="col-md-4 mb-4">
+                        <div class="feature-card">
+                            <i class="bi bi-shield-check"></i>
+                            <h4>Seguro y Confiable</h4>
+                            <p>Tus datos están protegidos con la más alta seguridad</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="feature-card">
+                            <i class="bi bi-people"></i>
+                            <h4>Comunidad Activa</h4>
+                            <p>Únete a miles de ciudadanos comprometidos con la seguridad</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="feature-card">
+                            <i class="bi bi-lightning"></i>
+                            <h4>Respuesta Rápida</h4>
+                            <p>Alertas instantáneas para mantener informada a la comunidad</p>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de estadísticas -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-6 fw-bold text-white">Impacto en la Comunidad</h2>
+                    <p class="lead text-white-50">Números que demuestran nuestro compromiso con la seguridad ciudadana</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card">
+                        <span class="stat-number" data-count="1500">0</span>
+                        <div class="stat-label">Reportes Resueltos</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card">
+                        <span class="stat-number" data-count="5000">0</span>
+                        <div class="stat-label">Usuarios Activos</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card">
+                        <span class="stat-number" data-count="200">0</span>
+                        <div class="stat-label">Comunidades</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="stat-card">
+                        <span class="stat-number" data-count="98">0</span>
+                        <div class="stat-label">% de Satisfacción</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de cómo funciona -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-6 fw-bold">¿Cómo Funciona?</h2>
+                    <p class="lead text-muted">Solo necesitas 3 pasos para empezar a hacer la diferencia</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4 class="step-title">Regístrate</h4>
+                        <p class="step-description">Crea tu cuenta gratuita en menos de 2 minutos</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4 class="step-title">Reporta</h4>
+                        <p class="step-description">Describe el incidente y sube fotos si es necesario</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4 class="step-title">Impacta</h4>
+                        <p class="step-description">Tu reporte alerta a la comunidad y salva vidas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de testimonios -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-6 fw-bold">Lo que dicen nuestros usuarios</h2>
+                    <p class="lead text-muted">Testimonios reales de ciudadanos que han hecho la diferencia</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">M</div>
+                        <p class="testimonial-text">"Gracias a MiCiudadSV pude alertar a mi comunidad sobre un bache peligroso. En menos de 24 horas ya estaba reparado."</p>
+                        <div class="testimonial-author">María González</div>
+                        <div class="testimonial-location">San Salvador</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">C</div>
+                        <p class="testimonial-text">"La plataforma es muy fácil de usar. Ahora me siento más seguro sabiendo que puedo reportar cualquier incidente."</p>
+                        <div class="testimonial-author">Carlos Mendoza</div>
+                        <div class="testimonial-location">Santa Ana</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-avatar">A</div>
+                        <p class="testimonial-text">"Excelente herramienta para mantener informada a la comunidad. Los reportes se resuelven muy rápido."</p>
+                        <div class="testimonial-author">Ana Rodríguez</div>
+                        <div class="testimonial-location">San Miguel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de últimas alertas -->
+    <section class="alerts-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2 class="display-6 fw-bold mb-4">Últimas Alertas Comunitarias</h2>
+                    <p class="lead text-muted mb-5">Mantente informado sobre los incidentes más recientes en tu zona</p>
+                    
+                    <div class="alert-card">
+                        <div class="alert-header">
+                            <div class="alert-icon">
+                                <i class="bi bi-exclamation-triangle"></i>
+                            </div>
+                            <h5 class="alert-title">Bache en Avenida Principal</h5>
+                            <div class="alert-time">Hace 2 horas</div>
+                        </div>
+                        <p class="alert-description">Se reportó un bache peligroso en la Avenida Principal, altura del km 5. Se recomienda precaución al conducir.</p>
+                    </div>
+                    
+                    <div class="alert-card">
+                        <div class="alert-header">
+                            <div class="alert-icon">
+                                <i class="bi bi-lightbulb"></i>
+                            </div>
+                            <h5 class="alert-title">Alumbrado Público Defectuoso</h5>
+                            <div class="alert-time">Hace 5 horas</div>
+                        </div>
+                        <p class="alert-description">Poste de luz defectuoso en la esquina de la Calle 15. Se ha reportado a las autoridades correspondientes.</p>
+                    </div>
+                    
+                    <div class="alert-card">
+                        <div class="alert-header">
+                            <div class="alert-icon">
+                                <i class="bi bi-droplet"></i>
+                            </div>
+                            <h5 class="alert-title">Fuga de Agua</h5>
+                            <div class="alert-time">Hace 1 día</div>
+                        </div>
+                        <p class="alert-description">Fuga de agua en la Calle de los Pinos. Se está trabajando en la reparación.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="subscribe-card">
+                        <i class="bi bi-bell"></i>
+                        <h5>Recibe Alertas</h5>
+                        <p>Suscríbete para recibir notificaciones en tiempo real sobre incidentes en tu zona.</p>
+                        <button class="btn btn-primary">Suscribirse</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action para usuarios no logueados -->
+    <% if (!loggedIn) { %>
+        <section class="cta-section">
+            <div class="cta-content">
+                <div class="container">
+                    <h2 class="cta-title">¿Listo para hacer la diferencia?</h2>
+                    <p class="cta-text">Únete a nuestra comunidad y contribuye a crear un El Salvador más seguro</p>
+                    <div class="cta-buttons">
+                        <a href="/auth/registro" class="btn btn-light btn-lg">Registrarse Gratis</a>
+                    <a href="/auth/login" class="btn btn-outline-light btn-lg">Iniciar Sesión</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <% } %>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="footer-logo">
+                        <div class="footer-icon">Sv</div>
+                        <span class="footer-brand">MiCiudadSV</span>
+                    </div>
+                    <p class="footer-text">Plataforma ciudadana para reportes comunitarios y prevención de riesgos.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4 mb-md-0">
+                    <h4 class="footer-title">Enlaces</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/informacion">Información</a></li>
+                        <li><a href="#mapa">Mapa</a></li>
+                        <li><a href="#reportes">Reportes</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4 mb-md-0">
+                    <h4 class="footer-title">Recursos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#faq">Preguntas frecuentes</a></li>
+                        <li><a href="#tutoriales">Tutoriales</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <h4 class="footer-title">Conecta con nosotros</h4>
+                    <p>Suscríbete para recibir alertas y actualizaciones.</p>
+                    <div class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Tu correo electrónico">
+                        <button type="submit" class="newsletter-btn">Enviar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2025 MiCiudadSV. Todos los derechos reservados.</p>
+                <% if (loggedIn) { %>
+                    <small class="text-muted">Conectado como: <%= usuario.nombre %></small>
+                <% } %>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Cargar tema guardado
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Auto-hide welcome message after 5 seconds
+            const welcomeMessage = document.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                setTimeout(() => {
+                    welcomeMessage.style.transition = 'all 0.5s ease';
+                    welcomeMessage.style.opacity = '0';
+                    welcomeMessage.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        welcomeMessage.remove();
+                    }, 500);
+                }, 5000);
+            }
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Animación de contador para estadísticas
+            function animateCounter(element, target, duration = 2000) {
+                let start = 0;
+                const increment = target / (duration / 16);
+                
+                function updateCounter() {
+                    start += increment;
+                    if (start < target) {
+                        element.textContent = Math.floor(start);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        element.textContent = target;
+                    }
+                }
+                
+                updateCounter();
+            }
+
+            // Observador de intersección para animaciones
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-on-scroll');
+                        
+                        // Si es una tarjeta de estadísticas, animar el contador
+                        const statNumber = entry.target.querySelector('.stat-number');
+                        if (statNumber) {
+                            const target = parseInt(statNumber.getAttribute('data-count'));
+                            animateCounter(statNumber, target);
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            // Observar elementos para animación
+            document.querySelectorAll('.stat-card, .step-card, .testimonial-card, .alert-card').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Efecto parallax en el hero
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const heroSection = document.querySelector('.hero-section');
+                if (heroSection) {
+                    heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+                }
+            });
+
+            // Efecto de aparición gradual para las tarjetas de características
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('animate-on-scroll');
+            });
+
+        // Newsletter form
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const input = this.querySelector('.newsletter-input');
+                const btn = this.querySelector('.newsletter-btn');
+                
+                if (input.value.trim()) {
+                    btn.innerHTML = '✓ Enviado';
+                    btn.style.background = 'var(--success)';
+                    input.value = '';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = 'Enviar';
+                        btn.style.background = 'var(--primary)';
+                    }, 2000);
+                }
+            });
+        }
+
+            // Botón de suscripción a alertas
+            const subscribeBtn = document.querySelector('.cta-section .btn-primary');
+            if (subscribeBtn) {
+                subscribeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    this.innerHTML = '✓ Suscrito';
+                    this.style.background = '#28a745';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = 'Suscribirse';
+                        this.style.background = 'var(--primary)';
+                    }, 2000);
+                });
+            }
+
+            // Efecto hover en las tarjetas de alertas
+            const alertCards = document.querySelectorAll('.alert-card');
+            alertCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.borderLeftColor = '#ffc107';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.borderLeftColor = 'var(--primary)';
+                });
+            });
+
+            // Animación de las ondas en el CTA
+            const ctaSection = document.querySelector('.cta-section');
+            if (ctaSection) {
+                let waveOffset = 0;
+                setInterval(() => {
+                    waveOffset += 1;
+                    ctaSection.style.setProperty('--wave-offset', waveOffset + 'px');
+                }, 50);
+            }
+        });
+
+        <% if (loggedIn) { %>
+            // Actualizar estadísticas en tiempo real para usuarios logueados
+            setInterval(() => {
+                console.log('Usuario logueado: <%= usuario.nombre %>');
+            }, 30000);
+        <% } %>
+    </script>
+    
+       <!-- Sistema de Temas -->
+   <script src="/js/theme-switcher.js"></script>
+   
+</body>
+</html>

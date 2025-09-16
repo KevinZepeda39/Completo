@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --dark-bg: #1e293b;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #334155 100%);
+            box-shadow: var(--shadow-lg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar .nav-link {
+            color: #cbd5e1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 4px 16px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(4px);
+        }
+        
+        .sidebar .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .sidebar .nav-link i {
+            font-size: 1.1rem;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: var(--light-bg);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .main-content {
+            background: #0a0a0a;
+        }
+
+        /* Header */
+        .page-header {
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+                [data-theme="dark"] .page-header {
+            background: #1e1e1e;
+        }
+              padding: 2rem;
+              border-radius: 16px;
+              box-shadow: var(--shadow-sm);
+              margin-bottom: 2rem;
+              border: 1px solid var(--border-color);
+        
+        /* Elementos adicionales en modo oscuro */
+        [data-theme="dark"] .stats-grid {
+            background: transparent;
+        }
+        
+        [data-theme="dark"] .stat-card {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .stat-number {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .stat-label {
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .table-container {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .table-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        [data-theme="dark"] .page-title {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .page-subtitle {
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .text-dark {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-primary {
+            color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .role-badge {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .role-badge.admin {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        [data-theme="dark"] .role-badge.moderador {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        [data-theme="dark"] .role-badge.usuario {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+        
+        [data-theme="dark"] .status-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .user-avatar {
+            background: linear-gradient(135deg, #4d94ff, #3b82f6);
+            color: #ffffff;
+        }
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: var(--primary-color); }
+        .stat-icon.success { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: var(--success-color); }
+        .stat-icon.warning { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: var(--warning-color); }
+        .stat-icon.info { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: var(--info-color); }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .table {
+            margin: 0;
+        }
+
+        .table th {
+            background: #f8fafc;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .table td {
+            padding: 1rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8fafc;
+            transform: scale(1.01);
+        }
+
+        /* User Avatar */
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-right: 12px;
+        }
+
+        /* Role Badges */
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .role-badge.admin {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: var(--danger-color);
+            border: 1px solid #fecaca;
+        }
+
+        .role-badge.moderador {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            color: var(--warning-color);
+            border: 1px solid #fde68a;
+        }
+
+        .role-badge.usuario {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--info-color);
+            border: 1px solid #bae6fd;
+        }
+
+        .role-badge.sin-rol {
+            background: #f1f5f9;
+            color: var(--secondary-color);
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+        }
+
+        /* Role Selector */
+        .role-select {
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
+            background-color: white;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .role-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+
+        .role-select:hover {
+            border-color: var(--primary-color);
+        }
+
+        /* Loading State */
+        .user-row.loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .user-row.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Select Styles */
+        .role-select {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            background: white;
+            transition: all 0.2s ease;
+            min-width: 140px;
+        }
+
+        .role-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Actions Container */
+        .actions-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+        }
+        
+        .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-responsive {
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+            min-width: 300px;
+            overflow: hidden;
+        }
+
+        .toast-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toast-body {
+            padding: 16px;
+        }
+
+        .toast.success .toast-header {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: var(--success-color);
+        }
+
+        .toast.error .toast-header {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: var(--danger-color);
+        }
+
+        .toast.info .toast-header {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: var(--info-color);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            border-radius: 16px 16px 0 0;
+            border: none;
+        }
+        
+        .modal-header .btn-close {
+            filter: invert(1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+
+        .form-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .form-control-plaintext {
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+
+        /* Loading States */
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Elementos adicionales en modo oscuro */
+        [data-theme="dark"] .stats-grid {
+            background: transparent;
+        }
+        
+        [data-theme="dark"] .stat-card {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .stat-number {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .stat-label {
+            color: #adb5bd;
+        }
+        
+        [data-theme="dark"] .table-container {
+            background: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .table-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        [data-theme="dark"] .form-control,
+        [data-theme="dark"] .form-select {
+            background-color: #2d2d2d;
+            border-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .form-control:focus,
+        [data-theme="dark"] .form-select:focus {
+            background-color: #2d2d2d;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .form-label {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-primary {
+            color: #4d94ff;
+            border-color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .btn-outline-primary:hover {
+            background-color: #4d94ff;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-success {
+            color: #10b981;
+            border-color: #10b981;
+        }
+        
+        [data-theme="dark"] .btn-outline-success:hover {
+            background-color: #10b981;
+            border-color: #10b981;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-warning {
+            color: #f59e0b;
+            border-color: #f59e0b;
+        }
+        
+        [data-theme="dark"] .btn-outline-warning:hover {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-danger {
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+        
+        [data-theme="dark"] .btn-outline-danger:hover {
+            background-color: #ef4444;
+            border-color: #ef4444;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-outline-info {
+            color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        
+        [data-theme="dark"] .btn-outline-info:hover {
+            background-color: #3b82f6;
+            border-color: #3b82f6;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .btn-primary {
+            background: linear-gradient(135deg, #4d94ff 0%, #3b82f6 100%);
+            border-color: #4d94ff;
+        }
+        
+        [data-theme="dark"] .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: #10b981;
+        }
+        
+        [data-theme="dark"] .btn-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%);
+            border-color: #3b82f6;
+        }
+        
+        [data-theme="dark"] .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-color: #f59e0b;
+        }
+        
+        [data-theme="dark"] .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-color: #ef4444;
+        }
+        
+        [data-theme="dark"] .alert {
+            background-color: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .alert-success {
+            background-color: #0f5132;
+            border-color: #10b981;
+            color: #d1fae5;
+        }
+        
+        [data-theme="dark"] .alert-warning {
+            background-color: #92400e;
+            border-color: #f59e0b;
+            color: #fef3c7;
+        }
+        
+        [data-theme="dark"] .alert-danger {
+            background-color: #7f1d1d;
+            border-color: #ef4444;
+            color: #fee2e2;
+        }
+        
+        [data-theme="dark"] .alert-info {
+            background-color: #0c4a6e;
+            border-color: #3b82f6;
+            color: #dbeafe;
+        }
+        
+        [data-theme="dark"] .bg-light {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .text-light {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .opacity-75 {
+            opacity: 0.75 !important;
+        }
+        
+        [data-theme="dark"] .opacity-50 {
+            opacity: 0.5 !important;
+        }
+        
+        [data-theme="dark"] .text-dark {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-primary {
+            color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .pagination .page-link {
+            background-color: #2d2d2d;
+            color: #4d94ff;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .pagination .page-link:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .pagination .page-item.active .page-link {
+            background-color: #4d94ff;
+            border-color: #4d94ff;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .dropdown-menu {
+            background-color: #2d2d2d;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .dropdown-item {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .dropdown-item:hover {
+            background-color: #404040;
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .modal-content {
+            background-color: #1e1e1e;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .modal-header {
+            background-color: #2d2d2d;
+            border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .modal-footer {
+            background-color: #2d2d2d;
+            border-top-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="dark"] .modal-title {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .close {
+            color: #ffffff;
+        }
+        
+        [data-theme="dark"] .close:hover {
+            color: #adb5bd;
+        }
+        
+        /* Estilos adicionales para elementos que podrían estar en blanco */
+        [data-theme="dark"] .table tbody tr:hover {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .table tbody tr {
+            background-color: #1e1e1e;
+        }
+        
+        [data-theme="dark"] .table tbody tr:nth-child(even) {
+            background-color: #252525;
+        }
+        
+        [data-theme="dark"] .table tbody tr:hover {
+            background-color: #2d2d2d !important;
+        }
+        
+        [data-theme="dark"] .form-control-plaintext {
+            background-color: #2d2d2d !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        [data-theme="dark"] .badge.bg-success {
+            background-color: #10b981 !important;
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-break {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .small {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .fw-semibold {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .fw-bold {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-center {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .py-5 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .display-4 {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .h5 {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .p {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .footer {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .footer small {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .footer .text-primary {
+            color: #4d94ff !important;
+        }
+        
+        [data-theme="dark"] .text-end {
+            color: #ffffff !important;
+        }
+        
+        [data-theme="dark"] .text-end .text-muted {
+            color: #adb5bd !important;
+        }
+        
+        [data-theme="dark"] .text-end .fw-semibold {
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+            <!-- Sidebar -->
+        <nav class="sidebar" style="width: 280px;">
+            <div class="p-4">
+                    <div class="text-center mb-4">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check text-white" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="text-white fw-bold">Admin Panel</h4>
+                    <small class="text-light opacity-75">MiCiudadSV</small>
+                    </div>
+                    
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">
+                                <i class="bi bi-speedometer2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/usuarios">
+                                <i class="bi bi-people"></i>
+                                Usuarios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/reportes">
+                                <i class="bi bi-file-earmark-text"></i>
+                                Reportes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/comunidades">
+                                <i class="bi bi-house-door"></i>
+                                Comunidades
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/logs">
+                                <i class="bi bi-journal-text"></i>
+                                Logs
+                            </a>
+                        </li>
+                    <li class="nav-item mt-4">
+                        <hr class="text-light opacity-25">
+                            <a class="nav-link" href="/">
+                                <i class="bi bi-house"></i>
+                                Ir al Sitio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/auth/logout">
+                                <i class="bi bi-box-arrow-right"></i>
+                                Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Page Header -->
+            <div class="page-header fade-in">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="page-title">
+                            <i class="bi bi-people me-3"></i>
+                        Gestión de Usuarios
+                    </h1>
+                        <p class="page-subtitle">
+                            Administra los usuarios y sus roles en el sistema
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Botón de cambio de tema -->
+                        <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                            <i class="bi bi-moon-stars"></i>
+                        </button>
+                        <div class="text-end">
+                            <div class="text-muted small">Última actualización</div>
+                            <div class="fw-semibold"><%= new Date().toLocaleDateString('es-ES', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) %></div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid fade-in">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <div class="stat-number"><%= usuarios.length %></div>
+                    <div class="stat-label">Total de Usuarios</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="bi bi-shield-check"></i>
+                                    </div>
+                    <div class="stat-number">
+                        <%= usuarios.filter(u => u.roles && u.roles.includes('administrador')).length %>
+                                    </div>
+                    <div class="stat-label">Administradores</div>
+                                        </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="bi bi-shield"></i>
+                                    </div>
+                    <div class="stat-number">
+                        <%= usuarios.filter(u => u.roles && u.roles.includes('moderador')).length %>
+                                        </div>
+                    <div class="stat-label">Moderadores</div>
+                                    </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon info">
+                        <i class="bi bi-person"></i>
+                            </div>
+                    <div class="stat-number">
+                        <%= usuarios.filter(u => u.roles && u.roles.includes('usuario')).length %>
+                        </div>
+                    <div class="stat-label">Usuarios</div>
+                    </div>
+                </div>
+
+            <!-- Users Table -->
+            <div class="table-container fade-in">
+                <div class="table-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="table-title mb-0">
+                            <i class="bi bi-table me-2"></i>
+                            Lista de Usuarios
+                        </h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-light btn-sm export-users-btn">
+                                <i class="bi bi-download"></i>
+                                Exportar
+                            </button>
+                            <button class="btn btn-light btn-sm refresh-table-btn">
+                                <i class="bi bi-arrow-clockwise"></i>
+                                Refrescar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                <th>Usuario</th>
+                                <th>Correo</th>
+                                <th>Rol Actual</th>
+                                                <th>Registro</th>
+                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% if (usuarios.length === 0) { %>
+                                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="text-muted">
+                                            <i class="bi bi-inbox display-4 d-block mb-3"></i>
+                                            <h5>No se encontraron usuarios</h5>
+                                            <p>No hay usuarios registrados en el sistema.</p>
+                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% } else { %>
+                                <% usuarios.forEach(function(user) { %>
+                                    <tr class="user-row" data-user-id="<%= user.idUsuario %>">
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                <div class="user-avatar">
+                                                    <%= user.nombre.charAt(0).toUpperCase() %>
+                                                </div>
+                                                                <div>
+                                                    <div class="fw-semibold"><%= user.nombre %></div>
+                                                    <small class="text-muted">ID: <%= user.idUsuario %></small>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-envelope text-muted me-2"></i>
+                                                <span class="text-break"><%= user.correo %></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <% if (user.roles) { %>
+                                                <% user.roles.split(',').forEach(function(rol) { %>
+                                                    <% if (rol === 'administrador') { %>
+                                                        <span class="role-badge admin">
+                                                                    <i class="bi bi-shield-check"></i>
+                                                                    Admin
+                                                                </span>
+                                                    <% } else if (rol === 'moderador') { %>
+                                                        <span class="role-badge moderador">
+                                                                    <i class="bi bi-shield"></i>
+                                                                    Moderador
+                                                                </span>
+                                                            <% } else { %>
+                                                        <span class="role-badge usuario">
+                                                                    <i class="bi bi-person"></i>
+                                                            <%= rol %>
+                                                        </span>
+                                                    <% } %>
+                                                <% }); %>
+                                            <% } else { %>
+                                                <span class="role-badge sin-rol">
+                                                    <i class="bi bi-question-circle"></i>
+                                                    Sin rol
+                                                                </span>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-calendar text-muted me-2"></i>
+                                                <span><%= new Date(user.fechaCreacion).toLocaleDateString('es-ES', { 
+                                                    year: 'numeric', 
+                                                    month: 'short', 
+                                                    day: 'numeric' 
+                                                }) %></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle me-1"></i>
+                                                Activo
+                                            </span>
+                                                        </td>
+                                                        <td>
+                                            <div class="actions-container">
+                                                <!-- Edit Button -->
+                                                <a href="/admin/usuarios/<%= user.idUsuario %>/editar" 
+                                                   class="btn btn-outline-primary btn-sm" 
+                                                                        title="Editar usuario">
+                                                                    <i class="bi bi-pencil"></i>
+                                                    Editar
+                                                </a>
+                                                
+                                                <!-- Role Selector -->
+                                                <select class="role-select" 
+                                                        onchange="cambiarRol(<%= user.idUsuario %>, this.value)"
+                                                                        title="Cambiar rol">
+                                                    <option value="0">Sin rol</option>
+                                                    <% roles.forEach(function(rol) { %>
+                                                        <option value="<%= rol.idRol %>" 
+                                                                <%= user.roles && user.roles.split(',').some(r => r.trim() === rol.nombreRol) ? 'selected' : '' %>>
+                                                            <%= rol.nombreRol %>
+                                                        </option>
+                                                    <% }); %>
+                                                </select>
+                                                
+                                                <!-- Test Button for Role Change -->
+                                                <button type="button" class="btn btn-outline-info btn-sm ms-1 test-role-btn" 
+                                                        data-user-id="<%= user.idUsuario %>"
+                                                        title="Probar cambio de rol">
+                                                    <i class="bi bi-bug"></i>
+                                                    Probar
+                                                                </button>
+                                                
+                                                <!-- Delete Button -->
+                                                <% if (user.idUsuario !== usuario.id) { %>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm delete-user-btn" 
+                                                            title="Eliminar usuario" 
+                                                            data-user-id="<%= user.idUsuario %>"
+                                                            data-user-name="<%= user.nombre %>">
+                                                                        <i class="bi bi-trash"></i>
+                                                        Eliminar
+                                                                    </button>
+                                                                <% } %>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <% }); %>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+            <!-- Footer -->
+            <footer class="mt-5 py-4 text-center text-muted">
+                <small>
+                    © 2025 MiCiudadSV - Panel de Administración | 
+                    <span class="text-primary">v2.0</span>
+                </small>
+            </footer>
+                    </div>
+                </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal de Edición de Usuario -->
+    <div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-labelledby="editarUsuarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarUsuarioModalLabel">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Editar Usuario
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editarUsuarioForm">
+                        <input type="hidden" id="editUserId" name="idUsuario">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editNombre" class="form-label">
+                                    <i class="bi bi-person me-1"></i>
+                                    Nombre completo
+                                </label>
+                                <input type="text" class="form-control" id="editNombre" name="nombre" required 
+                                       minlength="2" maxlength="200">
+                                <div class="form-text">Mínimo 2 caracteres</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="editCorreo" class="form-label">
+                                    <i class="bi bi-envelope me-1"></i>
+                                    Correo electrónico
+                                </label>
+                                <input type="email" class="form-control" id="editCorreo" name="correo" required>
+                                <div class="form-text">Formato válido de email</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editContraseña" class="form-label">
+                                    <i class="bi bi-key me-1"></i>
+                                    Nueva contraseña
+                                </label>
+                                <input type="password" class="form-control" id="editContraseña" name="contraseña" 
+                                       minlength="6" maxlength="100">
+                                <div class="form-text">Deja en blanco para mantener la actual (mínimo 6 caracteres)</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="editRol" class="form-label">
+                                    <i class="bi bi-shield me-1"></i>
+                                    Rol del usuario
+                                </label>
+                                <select class="form-select" id="editRol" name="idRol">
+                                    <option value="0">Sin rol</option>
+                                    <% roles.forEach(function(rol) { %>
+                                        <option value="<%= rol.idRol %>">
+                                            <%= rol.nombreRol %>
+                                        </option>
+                                    <% }); %>
+                                </select>
+                                <div class="form-text">Selecciona el rol del usuario</div>
+                        </div>
+                    </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="bi bi-calendar me-1"></i>
+                                    Fecha de registro
+                                </label>
+                                <input type="text" class="form-control" id="editFechaRegistro" readonly>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Estado
+                                </label>
+                                <div class="form-control-plaintext">
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        Activo
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary save-changes-btn">
+                        <i class="bi bi-check-circle me-1"></i>
+                        Guardar Cambios
+                    </button>
+                </div>
+                    </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        console.log('✅ Vista de usuarios cargada correctamente');
+        
+        // Función para mostrar notificaciones toast
+        function mostrarToast(mensaje, tipo = 'info', duracion = 5000) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${tipo} fade-in`;
+            
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-${tipo === 'success' ? 'check-circle' : tipo === 'error' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
+                        <strong>${tipo === 'success' ? 'Éxito' : tipo === 'error' ? 'Error' : 'Información'}</strong>
+                    </div>
+                    <button type="button" class="btn-close toast-close-btn"></button>
+                </div>
+                <div class="toast-body">
+                    ${mensaje}
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Auto-remove
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, duracion);
+        }
+        
+        // Función para cambiar rol de usuario
+        async function cambiarRol(idUsuario, idRol) {
+            console.log('🔄 Cambiando rol del usuario ID:', idUsuario, 'a rol ID:', idRol);
+            
+            const row = document.querySelector(`[data-user-id="${idUsuario}"]`);
+            if (row) row.classList.add('loading');
+            
+            try {
+                console.log('📡 Enviando solicitud de cambio de rol...');
+                const response = await fetch('/admin/usuarios/cambiar-rol', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idUsuario, idRol })
+                });
+                
+                console.log('📡 Respuesta del servidor:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('📊 Resultado del cambio de rol:', result);
+                
+                if (result.success) {
+                    mostrarToast('Rol actualizado exitosamente', 'success');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    mostrarToast(result.error || 'Error al cambiar el rol', 'error');
+                }
+            } catch (error) {
+                console.error('❌ Error en cambiarRol:', error);
+                mostrarToast('Error de conexión: ' + error.message, 'error');
+            } finally {
+                if (row) row.classList.remove('loading');
+            }
+        }
+
+        // Función para probar el cambio de rol
+        function probarCambioRol(idUsuario) {
+            console.log('🧪 Probando cambio de rol para usuario ID:', idUsuario);
+            const selector = document.querySelector(`[data-user-id="${idUsuario}"] .role-select`);
+            if (selector) {
+                const valorActual = selector.value;
+                const textoSeleccionado = selector.options[selector.selectedIndex].text;
+                console.log('   - Valor actual:', valorActual);
+                console.log('   - Rol seleccionado:', textoSeleccionado);
+                mostrarToast(`Probando cambio de rol - Revisa la consola`, 'info');
+            } else {
+                console.log('❌ No se encontró el selector de roles');
+                mostrarToast('Error: No se encontró el selector de roles', 'error');
+            }
+        }
+        
+        // Función para eliminar usuario
+        async function eliminarUsuario(idUsuario, nombreUsuario) {
+            if (!confirm(`¿Estás seguro de eliminar al usuario "${nombreUsuario}"?\n\nEsta acción no se puede deshacer y eliminará todos los datos asociados al usuario.`)) {
+                return;
+            }
+            
+            const row = document.querySelector(`[data-user-id="${idUsuario}"]`);
+            if (row) row.classList.add('loading');
+            
+            try {
+                const response = await fetch('/admin/usuarios/eliminar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ idUsuario })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    mostrarToast('Usuario eliminado exitosamente', 'success');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    mostrarToast(result.error || 'Error al eliminar el usuario', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarToast('Error de conexión', 'error');
+            } finally {
+                if (row) row.classList.remove('loading');
+            }
+        }
+        
+        // Función para editar usuario
+        async function editarUsuario(idUsuario) {
+            try {
+                // Mostrar loading
+                mostrarToast('Cargando datos del usuario...', 'info');
+                
+                const response = await fetch(`/admin/usuarios/${idUsuario}/editar`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Llenar el modal con los datos del usuario
+                    document.getElementById('editUserId').value = result.usuario.idUsuario;
+                    document.getElementById('editNombre').value = result.usuario.nombre;
+                    document.getElementById('editCorreo').value = result.usuario.correo;
+                    document.getElementById('editContraseña').value = ''; // Limpiar contraseña
+                    document.getElementById('editFechaRegistro').value = new Date(result.usuario.fechaCreacion).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    // Seleccionar el rol actual
+                    if (result.roles.length > 0) {
+                        document.getElementById('editRol').value = result.roles[0].idRol;
+                    } else {
+                        document.getElementById('editRol').value = '0';
+                    }
+                    
+                    // Mostrar el modal
+                    const modal = new bootstrap.Modal(document.getElementById('editarUsuarioModal'));
+                    modal.show();
+                    
+                    mostrarToast('Datos del usuario cargados correctamente', 'success');
+                } else {
+                    mostrarToast(result.error || 'Error al cargar datos del usuario', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarToast('Error de conexión al cargar datos del usuario', 'error');
+            }
+        }
+        
+        // Función para guardar cambios del usuario
+        async function guardarCambiosUsuario() {
+            const form = document.getElementById('editarUsuarioForm');
+            const formData = new FormData(form);
+            
+            // Validaciones del lado del cliente
+            const nombre = formData.get('nombre').trim();
+            const correo = formData.get('correo').trim();
+            const contraseña = formData.get('contraseña');
+            const idRol = formData.get('idRol');
+            
+            if (nombre.length < 2) {
+                mostrarToast('El nombre debe tener al menos 2 caracteres', 'error');
+                return;
+            }
+            
+            if (!correo.includes('@')) {
+                mostrarToast('El correo electrónico no es válido', 'error');
+                return;
+            }
+            
+            if (contraseña && contraseña.length < 6) {
+                mostrarToast('La contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+            
+            try {
+                const userId = document.getElementById('editUserId').value;
+                
+                // Mostrar loading
+                mostrarToast('Guardando cambios...', 'info');
+                
+                const response = await fetch(`/admin/usuarios/${userId}/actualizar`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nombre,
+                        correo,
+                        contraseña: contraseña || '',
+                        idRol
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    mostrarToast('Usuario actualizado exitosamente', 'success');
+                    
+                    // Cerrar el modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editarUsuarioModal'));
+                    modal.hide();
+                    
+                    // Recargar la página después de un breve delay
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    mostrarToast(result.error || 'Error al actualizar el usuario', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarToast('Error de conexión al actualizar usuario', 'error');
+            }
+        }
+        
+        // Función para exportar usuarios
+        function exportarUsuarios() {
+            mostrarToast('Función de exportar usuarios - En desarrollo', 'info');
+        }
+        
+        // Función para refrescar tabla
+        function refrescarTabla() {
+            location.reload();
+        }
+        
+        // Agregar efectos de hover a las filas
+        document.addEventListener('DOMContentLoaded', function() {
+            const rows = document.querySelectorAll('.user-row');
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.01)';
+                });
+                
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+            
+            // Event listeners para botones de eliminar usuario
+            const deleteButtons = document.querySelectorAll('.delete-user-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    const userName = this.getAttribute('data-user-name');
+                    eliminarUsuario(userId, userName);
+                });
+            });
+            
+            // Event listeners para botones de probar cambio de rol
+            const testRoleButtons = document.querySelectorAll('.test-role-btn');
+            testRoleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    probarCambioRol(userId);
+                });
+            });
+            
+            // Event listener para botón de exportar usuarios
+            const exportBtn = document.querySelector('.export-users-btn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', exportarUsuarios);
+            }
+            
+            // Event listener para botón de refrescar tabla
+            const refreshBtn = document.querySelector('.refresh-table-btn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', refrescarTabla);
+            }
+            
+            // Event listener para botón de guardar cambios
+            const saveBtn = document.querySelector('.save-changes-btn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', guardarCambiosUsuario);
+            }
+            
+            // Event listeners para botones de cerrar toast
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('toast-close-btn')) {
+                    e.target.closest('.toast').remove();
+                }
+            });
+        });
+    </script>
+    
+    <!-- Sistema de Temas -->
+    <script src="/js/theme-switcher.js"></script>
+    
+</body>
+</html>

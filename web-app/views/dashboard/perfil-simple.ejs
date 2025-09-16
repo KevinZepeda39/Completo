@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - MiCiudadSV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-body: #f8f9fa;
+            --bg-card: #ffffff;
+            --bg-navbar: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0,0,0,0.1);
+            --primary-color: #0d6efd;
+            --info-color: #0dcaf0;
+            --warning-color: #ffc107;
+        }
+
+        /* Modo Oscuro */
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-navbar: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow-color: rgba(0,0,0,0.3);
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar {
+            background-color: var(--bg-navbar);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 3rem;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+        
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px var(--shadow-color);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-body));
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+            color: white;
+            text-align: center;
+        }
+        
+        .btn-edit-profile {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-edit-profile:hover {
+            background: rgba(255,255,255,0.3);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .user-info-item {
+            padding: 1rem;
+            border-radius: 10px;
+            background: var(--bg-card);
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--primary-color);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .user-info-item {
+            background-color: var(--bg-card);
+            border-color: var(--border-color);
+        }
+        
+        .user-info-item.editing {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 3px solid var(--warning-color);
+        }
+        
+        .quick-action-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+            color: white;
+        }
+
+        /* Estilos adicionales para modo oscuro */
+        [data-theme="dark"] .text-dark {
+            color: var(--text-primary) !important;
+        }
+
+        [data-theme="dark"] .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        [data-theme="dark"] .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+
+        [data-theme="dark"] .bg-light {
+            background-color: var(--bg-card) !important;
+        }
+
+        [data-theme="dark"] .border-light {
+            border-color: var(--border-color) !important;
+        }
+
+        [data-theme="dark"] .dropdown-menu {
+            background-color: var(--bg-card);
+            border-color: var(--border-color);
+        }
+
+        [data-theme="dark"] .dropdown-item {
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .dropdown-item:hover {
+            background-color: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .dropdown-header {
+            color: var(--text-muted);
+        }
+
+        [data-theme="dark"] .dropdown-divider {
+            border-color: var(--border-color);
+        }
+
+        /* Botón de cambio de tema */
+        .theme-toggle-btn {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            margin-right: 0.5rem;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        [data-theme="dark"] .theme-toggle-btn {
+            background-color: var(--bg-card);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .theme-toggle-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Indicador de tema */
+        .theme-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 9999;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .theme-indicator:hover {
+            opacity: 1;
+        }
+
+        [data-theme="dark"] .theme-indicator {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                MiCiudadSV
+            </a>
+            
+            <div class="d-flex align-items-center">
+                <!-- Botón de cambio de tema -->
+                <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema" onclick="toggleTheme()">
+                    <i class="bi bi-moon-stars"></i>
+                </button>
+                
+                <a href="/dashboard" class="btn btn-outline-primary me-2">
+                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                </a>
+                <a href="/" class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-house me-2"></i>Inicio
+                </a>
+                <form method="POST" action="/auth/logout" class="d-inline">
+                    <button type="submit" class="btn btn-outline-danger">
+                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header del perfil con información completa -->
+    <div class="profile-header">
+        <div class="container">
+            <div class="profile-avatar">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            
+            <h1 class="h1 mb-3"><%= usuario.nombre %></h1>
+            <p class="h5 mb-4 opacity-75">Mi Perfil - MiCiudadSV</p>
+            
+            <div class="row justify-content-center">
+                <div class="col-md-3 mb-2">
+                    <div class="status-badge">
+                        <i class="bi bi-check-circle me-2"></i>Usuario Activo
+                    </div>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <div class="status-badge">
+                        <i class="bi bi-shield-check me-2"></i>Verificado
+                    </div>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <div class="status-badge">
+                        <i class="bi bi-calendar-check me-2"></i>Miembro desde 2025
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button class="btn btn-edit-profile" onclick="toggleEditMode()">
+                    <i class="bi bi-pencil me-2"></i>Editar Mi Perfil
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <!-- Indicador de tema activo -->
+        <div class="theme-indicator" id="theme-indicator">
+            <i class="bi bi-sun me-1"></i>
+            <span id="theme-text">Tema Claro</span>
+        </div>
+
+        <!-- Contenedor de alertas -->
+        <div id="alert-container"></div>
+        
+        <!-- Información principal del usuario -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="card info-card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="bi bi-person-badge me-2"></i>
+                            Información Personal Completa
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="user-info-item" id="nombre-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-fill text-primary me-3 fs-4"></i>
+                                        <div class="w-100">
+                                            <small class="text-muted d-block">Nombre Completo</small>
+                                            <div class="view-mode">
+                                                <strong class="fs-5" id="nombre-view"><%= usuario.nombre %></strong>
+                                            </div>
+                                            <div class="edit-mode" style="display: none;">
+                                                <input type="text" class="form-control" id="nombre-edit" value="<%= usuario.nombre %>" placeholder="Tu nombre completo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="edit-buttons" id="nombre-buttons">
+                                        <button class="btn btn-success btn-sm" onclick="saveField('nombre')">
+                                            <i class="bi bi-check-lg me-1"></i>Guardar
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm" onclick="cancelEdit('nombre')">
+                                            <i class="bi bi-x-lg me-1"></i>Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="user-info-item" id="correo-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-envelope-fill text-primary me-3 fs-4"></i>
+                                        <div class="w-100">
+                                            <small class="text-muted d-block">Correo Electrónico</small>
+                                            <div class="view-mode">
+                                                <strong class="fs-5" id="correo-view"><%= usuario.correo %></strong>
+                                            </div>
+                                            <div class="edit-mode" style="display: none;">
+                                                <input type="email" class="form-control" id="correo-edit" value="<%= usuario.correo %>" placeholder="Tu correo electrónico">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="edit-buttons" id="correo-buttons">
+                                        <button class="btn btn-success btn-sm" onclick="saveField('correo')">
+                                            <i class="bi bi-check-lg me-1"></i>Guardar
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm" onclick="cancelEdit('correo')">
+                                            <i class="bi bi-x-lg me-1"></i>Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="user-info-item" id="telefono-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-telephone-fill text-primary me-3 fs-4"></i>
+                                        <div class="w-100">
+                                            <small class="text-muted d-block">Teléfono</small>
+                                            <div class="view-mode">
+                                                <strong class="fs-5" id="telefono-view">No especificado</strong>
+                                            </div>
+                                            <div class="edit-mode" style="display: none;">
+                                                <input type="tel" class="form-control" id="telefono-edit" placeholder="Tu número de teléfono">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="edit-buttons" id="telefono-buttons">
+                                        <button class="btn btn-success btn-sm" onclick="saveField('telefono')">
+                                            <i class="bi bi-check-lg me-1"></i>Guardar
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm" onclick="cancelEdit('telefono')">
+                                            <i class="bi bi-x-lg me-1"></i>Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="user-info-item" id="ubicacion-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-geo-alt-fill text-primary me-3 fs-4"></i>
+                                        <div class="w-100">
+                                            <small class="text-muted d-block">Ubicación</small>
+                                            <div class="view-mode">
+                                                <strong class="fs-5" id="ubicacion-view">No especificada</strong>
+                                            </div>
+                                            <div class="edit-mode" style="display: none;">
+                                                <input type="text" class="form-control" id="ubicacion-edit" placeholder="Tu ciudad o zona">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="edit-buttons" id="ubicacion-buttons">
+                                        <button class="btn btn-success btn-sm" onclick="saveField('ubicacion')">
+                                            <i class="bi bi-check-lg me-1"></i>Guardar
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm" onclick="cancelEdit('ubicacion')">
+                                            <i class="bi bi-x-lg me-1"></i>Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="user-info-item" id="bio-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-chat-quote-fill text-primary me-3 fs-4"></i>
+                                        <div class="w-100">
+                                            <small class="text-muted d-block">Biografía</small>
+                                            <div class="view-mode">
+                                                <strong class="fs-5" id="bio-view">No especificada</strong>
+                                            </div>
+                                            <div class="edit-mode" style="display: none;">
+                                                <textarea class="form-control" id="bio-edit" rows="3" placeholder="Cuéntanos sobre ti..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="edit-buttons" id="bio-buttons">
+                                        <button class="btn btn-success btn-sm" onclick="saveField('bio')">
+                                            <i class="bi bi-check-lg me-1"></i>Guardar
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm" onclick="cancelEdit('bio')">
+                                            <i class="bi bi-x-lg me-1"></i>Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="user-info-item" id="fecha-item">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-clock-history text-primary me-3 fs-4"></i>
+                                        <div class="w-100">
+                                            <small class="text-muted d-block">Última Actividad</small>
+                                            <div class="view-mode">
+                                                <strong class="fs-5" id="fecha-view"><%= new Date().toLocaleDateString('es-ES') %></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Nota:</strong> Haz clic en "Editar Mi Perfil" para modificar tu información personal. Los cambios se guardarán automáticamente.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Estadísticas del usuario -->
+                <div class="card stats-card mb-4">
+                    <div class="card-body">
+                        <h5 class="mb-3">
+                            <i class="bi bi-graph-up me-2"></i>
+                            Mi Actividad
+                        </h5>
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="h3 mb-1">0</div>
+                                <small>Reportes</small>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="h3 mb-1">0</div>
+                                <small>Comunidades</small>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="h3 mb-1">0</div>
+                                <small>Comentarios</small>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="h3 mb-1">0</div>
+                                <small>Votos</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Estado de la cuenta -->
+                <div class="card info-card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-shield-check me-2"></i>
+                            Estado de Mi Cuenta
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <span>Cuenta activa y verificada</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-envelope-check-fill text-info me-2"></i>
+                            <span>Email verificado</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-clock-fill text-warning me-2"></i>
+                            <span>Último acceso: Hoy</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-star-fill text-warning me-2"></i>
+                            <span>Usuario registrado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Acciones rápidas expandidas -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card info-card">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0">
+                            <i class="bi bi-lightning-charge me-2"></i>
+                            Acciones Rápidas - ¿Qué quieres hacer hoy?
+                        </h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <a href="/reportar" class="quick-action-btn w-100">
+                                    <i class="bi bi-plus-circle me-2"></i>
+                                    <div class="mt-2">Crear Reporte</div>
+                                    <small>Reporta un problema</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="/reportes" class="quick-action-btn w-100">
+                                    <i class="bi bi-file-text me-2"></i>
+                                    <div class="mt-2">Mis Reportes</div>
+                                    <small>Ver mi actividad</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="/comunidades" class="quick-action-btn w-100">
+                                    <i class="bi bi-people me-2"></i>
+                                    <div class="mt-2">Comunidades</div>
+                                    <small>Conecta con otros</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="/dashboard" class="quick-action-btn w-100">
+                                    <i class="bi bi-speedometer2 me-2"></i>
+                                    <div class="mt-2">Dashboard</div>
+                                    <small>Panel principal</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Información adicional -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card info-card">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="bi bi-lightbulb me-2"></i>
+                            Consejos para aprovechar al máximo tu cuenta
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="text-center">
+                                    <i class="bi bi-1-circle-fill text-primary fs-1 mb-2"></i>
+                                    <h6>Completa tu perfil</h6>
+                                    <p class="text-muted small">Agrega más información personal para conectar mejor con la comunidad</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="text-center">
+                                    <i class="bi bi-2-circle-fill text-primary fs-1 mb-2"></i>
+                                    <h6>Únete a comunidades</h6>
+                                    <p class="text-muted small">Participa en grupos de tu interés para estar informado</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="text-center">
+                                    <i class="bi bi-3-circle-fill text-primary fs-1 mb-2"></i>
+                                    <h6>Reporta activamente</h6>
+                                    <p class="text-muted small">Ayuda a mejorar tu ciudad reportando problemas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let editMode = false;
+        let originalData = {};
+
+        // Función para alternar el modo de edición
+        function toggleEditMode() {
+            editMode = !editMode;
+            const btn = document.querySelector('.btn-edit-profile');
+            
+            if (editMode) {
+                btn.innerHTML = '<i class="bi bi-eye me-2"></i>Ver Perfil';
+                btn.classList.remove('btn-edit-profile');
+                btn.classList.add('btn-outline-light');
+                showAllEditFields();
+            } else {
+                btn.innerHTML = '<i class="bi bi-pencil me-2"></i>Editar Mi Perfil';
+                btn.classList.remove('btn-outline-light');
+                btn.classList.add('btn-edit-profile');
+                hideAllEditFields();
+            }
+        }
+
+        // Mostrar todos los campos de edición
+        function showAllEditFields() {
+            const fields = ['nombre', 'correo', 'telefono', 'ubicacion', 'bio'];
+            fields.forEach(field => {
+                const viewMode = document.querySelector(`#${field}-item .view-mode`);
+                const editMode = document.querySelector(`#${field}-item .edit-mode`);
+                
+                if (viewMode && editMode) {
+                    viewMode.style.display = 'none';
+                    editMode.style.display = 'block';
+                    document.querySelector(`#${field}-item`).classList.add('editing');
+                }
+            });
+        }
+
+        // Ocultar todos los campos de edición
+        function hideAllEditFields() {
+            const fields = ['nombre', 'correo', 'telefono', 'ubicacion', 'bio'];
+            fields.forEach(field => {
+                const viewMode = document.querySelector(`#${field}-item .view-mode`);
+                const editMode = document.querySelector(`#${field}-item .edit-mode`);
+                
+                if (viewMode && editMode) {
+                    viewMode.style.display = 'block';
+                    editMode.style.display = 'none';
+                    document.querySelector(`#${field}-item`).classList.remove('editing');
+                }
+            });
+        }
+
+        // Guardar un campo específico
+        async function saveField(fieldName) {
+            const input = document.getElementById(`${fieldName}-edit`);
+            const newValue = input.value.trim();
+            
+            if (!newValue) {
+                showAlert('El campo no puede estar vacío', 'danger');
+                return;
+            }
+
+            try {
+                const response = await fetch('/dashboard/actualizar-perfil', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        campo: fieldName,
+                        valor: newValue
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        // Actualizar la vista
+                        document.getElementById(`${fieldName}-view`).textContent = newValue;
+                        
+                        // Cambiar a modo vista
+                        const viewMode = document.querySelector(`#${fieldName}-item .view-mode`);
+                        const editMode = document.querySelector(`#${fieldName}-item .edit-mode`);
+                        
+                        viewMode.style.display = 'block';
+                        editMode.style.display = 'none';
+                        document.querySelector(`#${fieldName}-item`).classList.remove('editing');
+                        
+                        showAlert('Campo actualizado correctamente', 'success');
+                        
+                        // Actualizar el nombre en el header si es el campo nombre
+                        if (fieldName === 'nombre') {
+                            document.querySelector('.profile-header h1').textContent = newValue;
+                        }
+                    } else {
+                        showAlert(data.message || 'Error al actualizar el campo', 'danger');
+                    }
+                } else {
+                    showAlert('Error al conectar con el servidor', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error al guardar los cambios', 'danger');
+            }
+        }
+
+        // Cancelar edición de un campo
+        function cancelEdit(fieldName) {
+            const input = document.getElementById(`${fieldName}-edit`);
+            const viewMode = document.querySelector(`#${fieldName}-item .view-mode`);
+            const editMode = document.querySelector(`#${fieldName}-item .edit-mode`);
+            
+            // Restaurar valor original
+            if (originalData[fieldName]) {
+                input.value = originalData[fieldName];
+            }
+            
+            viewMode.style.display = 'block';
+            editMode.style.display = 'none';
+            document.querySelector(`#${fieldName}-item`).classList.remove('editing');
+        }
+
+        // Mostrar alerta
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" id="${alertId}" role="alert">
+                    <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            
+            alertContainer.innerHTML = alertHtml;
+            
+            // Auto-ocultar después de 5 segundos
+            setTimeout(() => {
+                const alert = document.getElementById(alertId);
+                if (alert) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+
+        // Guardar datos originales al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            originalData = {
+                nombre: document.getElementById('nombre-edit').value,
+                correo: document.getElementById('correo-edit').value,
+                telefono: document.getElementById('telefono-edit').value || '',
+                ubicacion: document.getElementById('ubicacion-edit').value || '',
+                bio: document.getElementById('bio-edit').value || ''
+            };
+        });
+
+        // Función para cambiar tema
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            // Aplicar tema
+            if (newTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                document.body.classList.remove('dark-theme');
+                localStorage.setItem('theme', 'light');
+            }
+            
+            // Actualizar icono del botón
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                const icon = themeToggle.querySelector('i');
+                if (icon) {
+                    icon.className = newTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars';
+                }
+            }
+            
+            // Actualizar texto del indicador
+            const themeIndicator = document.getElementById('theme-indicator');
+            const themeText = document.getElementById('theme-text');
+            if (themeIndicator && themeText) {
+                themeText.textContent = newTheme === 'dark' ? 'Tema Oscuro' : 'Tema Claro';
+                themeIndicator.innerHTML = newTheme === 'dark' ? '<i class="bi bi-moon-stars me-1"></i> Tema Oscuro' : '<i class="bi bi-sun me-1"></i> Tema Claro';
+            }
+            
+            console.log(`🎨 Tema cambiado a: ${newTheme}`);
+        }
+
+        // Función para cargar tema guardado
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                if (savedTheme === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    document.body.classList.add('dark-theme');
+                    
+                    // Actualizar icono del botón
+                    const themeToggle = document.getElementById('theme-toggle');
+                    if (themeToggle) {
+                        const icon = themeToggle.querySelector('i');
+                        if (icon) {
+                            icon.className = 'bi bi-sun';
+                        }
+                    }
+                    
+                    // Actualizar texto del indicador
+                    const themeIndicator = document.getElementById('theme-indicator');
+                    if (themeIndicator) {
+                        themeIndicator.innerHTML = '<i class="bi bi-moon-stars me-1"></i> Tema Oscuro';
+                    }
+                }
+            }
+        }
+
+        // Cargar tema al inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedTheme();
+        });
+    </script>
+</body>
+</html>

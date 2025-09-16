@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidades - MiCiudadSV</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --primary-light: #4d94ff;
+            --primary-dark: #004499;
+            --secondary-color: #f8f9fa;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-color: #343a40;
+            --light-color: #ffffff;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+            color: #1e293b;
+        }
+        
+        [data-theme="dark"] body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        
+        /* Navbar */
+        .navbar {
+            padding: 15px 0;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .navbar {
+            background-color: #121212;
+            box-shadow: 0 1px 3px rgba(255,255,255,0.1);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-logo {
+            height: 40px;
+            width: 40px;
+            background: #4e67f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        
+        [data-theme="dark"] .navbar-logo {
+            background: #6c7ffd;
+        }
+        
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 20px;
+            margin-left: 10px;
+            color: #212529;
+        }
+        
+        [data-theme="dark"] .navbar-brand span {
+            color: #ffffff;
+        }
+
+        .nav-link {
+            color: #212529 !important;
+            font-weight: 500;
+            padding: 8px 16px !important;
+        }
+        
+        [data-theme="dark"] .nav-link {
+            color: #ffffff !important;
+        }
+
+        .nav-link.active {
+            color: #4e67f7 !important;
+            font-weight: 600;
+        }
+        
+        [data-theme="dark"] .nav-link.active {
+            color: #6c7ffd !important;
+        }
+        
+        .auth-buttons {
+            gap: 0.5rem;
+        }
+
+        .dropdown-menu {
+            min-width: 200px;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0;
+            background-color: #ffffff;
+        }
+        
+        [data-theme="dark"] .dropdown-menu {
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: #121212;
+        }
+
+        .dropdown-header {
+           padding: 0.5rem 1rem;
+           margin-bottom: 0;
+           color: #212529;
+       }
+       
+       [data-theme="dark"] .dropdown-header {
+           color: #ffffff;
+       }
+
+       .dropdown-item {
+           padding: 0.5rem 1rem;
+           clear: both;
+           font-weight: 400;
+           color: #212529;
+           text-align: inherit;
+           white-space: nowrap;
+           background-color: transparent;
+           border: 0;
+           display: flex;
+           align-items: center;
+           transition: all 0.2s ease-in-out;
+       }
+       
+       [data-theme="dark"] .dropdown-item {
+           color: #ffffff;
+       }
+
+       .dropdown-item:hover, .dropdown-item:focus {
+           color: #212529;
+           background-color: #f8f9fa;
+       }
+       
+       [data-theme="dark"] .dropdown-item:hover, 
+       [data-theme="dark"] .dropdown-item:focus {
+           color: #ffffff;
+           background-color: #1e1e1e;
+       }
+
+       .dropdown-item.text-danger:hover {
+           color: #fff;
+           background-color: #dc3545;
+       }
+        
+        /* Header de comunidades */
+        .communities-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5rem 0 4rem 0;
+            margin-bottom: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .communities-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        [data-theme="dark"] .communities-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        
+        .communities-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .communities-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .communities-header p {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        
+        .header-stats {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        [data-theme="dark"] .header-stats {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Controles y filtros */
+        .controls-section {
+            background: white;
+            padding: 3rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        [data-theme="dark"] .controls-section {
+            background: #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-container {
+            position: relative;
+        }
+        
+        .search-input {
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 1rem 1.5rem 1rem 3.5rem;
+            font-size: 1rem;
+            width: 100%;
+            background-color: #ffffff;
+            color: #1e293b;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        [data-theme="dark"] .search-input {
+            background-color: #334155;
+            border-color: #475569;
+            color: #f8fafc;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1), 0 4px 12px rgba(102, 126, 234, 0.15);
+            outline: none;
+        }
+        
+        [data-theme="dark"] .search-input:focus {
+            border-color: #6c7ffd;
+            box-shadow: 0 0 0 3px rgba(108, 127, 253, 0.1), 0 4px 12px rgba(108, 127, 253, 0.15);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        [data-theme="dark"] .search-icon {
+            color: #94a3b8;
+        }
+        
+        .filter-select {
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 1rem 1.2rem;
+            font-size: 1rem;
+            background-color: #ffffff;
+            color: #1e293b;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+        
+        [data-theme="dark"] .filter-select {
+            background-color: #334155;
+            border-color: #475569;
+            color: #f8fafc;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .filter-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1), 0 4px 12px rgba(102, 126, 234, 0.15);
+            outline: none;
+        }
+        
+        [data-theme="dark"] .filter-select:focus {
+            border-color: #6c7ffd;
+            box-shadow: 0 0 0 3px rgba(108, 127, 253, 0.1), 0 4px 12px rgba(108, 127, 253, 0.15);
+        }
+        
+        .btn-create {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            font-size: 1rem;
+        }
+        
+        [data-theme="dark"] .btn-create {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+        }
+        
+        .btn-create:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            color: white;
+        }
+        
+        [data-theme="dark"] .btn-create:hover {
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.5);
+        }
+        
+        /* Cards de comunidades */
+        .communities-grid {
+            padding: 4rem 0;
+        }
+        
+        .community-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            overflow: hidden;
+            height: 100%;
+            position: relative;
+        }
+        
+        .community-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        
+        .community-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        [data-theme="dark"] .community-card {
+            background: #1e293b;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .community-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        [data-theme="dark"] .community-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-header-custom {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        [data-theme="dark"] .card-header-custom {
+            background: linear-gradient(135deg, #334155, #475569);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .community-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .community-title {
+            color: #f8fafc;
+        }
+        
+        .community-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .community-title a:hover {
+            color: #667eea;
+        }
+        
+        [data-theme="dark"] .community-title a:hover {
+            color: #6c7ffd;
+        }
+        
+        .community-category {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        [data-theme="dark"] .community-category {
+            background: linear-gradient(135deg, #6c7ffd 0%, #8b5cf6 100%);
+            box-shadow: 0 2px 8px rgba(108, 127, 253, 0.4);
+        }
+        
+        .community-description {
+            color: #64748b;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            padding: 0 1rem;
+        }
+        
+        [data-theme="dark"] .community-description {
+            color: #cbd5e1;
+        }
+        
+        .community-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-top: 1px solid #f1f5f9;
+            font-size: 0.9rem;
+            color: #64748b;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+        
+        [data-theme="dark"] .community-meta {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            background: #334155;
+        }
+        
+        .creator-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .comments-count,
+        .members-count {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 500;
+        }
+        
+        .community-tags {
+            margin: 1rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.4rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .tag:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        [data-theme="dark"] .tag {
+            background: rgba(108, 127, 253, 0.2);
+            color: #6c7ffd;
+            border-color: rgba(108, 127, 253, 0.3);
+        }
+        
+        [data-theme="dark"] .tag:hover {
+            background: rgba(108, 127, 253, 0.3);
+        }
+        
+        /* Paginación */
+        .pagination-section {
+            padding: 3rem 0;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        [data-theme="dark"] .pagination-section {
+            background: #1e293b;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pagination .page-link {
+            border: none;
+            color: #667eea;
+            padding: 0.8rem 1.2rem;
+            margin: 0 0.3rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        [data-theme="dark"] .pagination .page-link {
+            background-color: #334155;
+            color: #6c7ffd;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pagination .page-link:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+            color: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        
+        [data-theme="dark"] .pagination .page-link:hover {
+            background-color: rgba(108, 127, 253, 0.1);
+            color: #6366f1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 127, 253, 0.15);
+        }
+        
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        [data-theme="dark"] .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #6c7ffd 0%, #8b5cf6 100%);
+            border-color: #6c7ffd;
+            color: white;
+            box-shadow: 0 4px 12px rgba(108, 127, 253, 0.4);
+        }
+        
+        /* Estados vacíos */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .empty-state {
+            color: #94a3b8;
+        }
+        
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            color: #667eea;
+        }
+        
+        [data-theme="dark"] .empty-icon {
+            opacity: 0.8;
+            color: #6c7ffd;
+        }
+        
+        .empty-state h3 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        
+        [data-theme="dark"] .empty-state h3 {
+            color: #f8fafc;
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        /* Botón flotante */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            font-size: 1.8rem;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        [data-theme="dark"] .fab {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.5);
+        }
+        
+        .fab:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.6);
+            color: white;
+        }
+        
+        [data-theme="dark"] .fab:hover {
+            box-shadow: 0 12px 35px rgba(34, 197, 94, 0.7);
+        }
+        
+        .fab:active {
+            transform: scale(0.95);
+        }
+        
+        /* Alertas */
+        .alert {
+            border: none;
+            border-radius: 15px;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .alert-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            color: #059669;
+            border-left: 4px solid #10b981;
+        }
+        
+        [data-theme="dark"] .alert-success {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));
+            color: #22c55e;
+            border-left: 4px solid #22c55e;
+        }
+        
+        .alert-danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            color: #dc2626;
+            border-left: 4px solid #ef4444;
+        }
+        
+        [data-theme="dark"] .alert-danger {
+            background: linear-gradient(135deg, rgba(255, 106, 106, 0.2), rgba(255, 106, 106, 0.1));
+            color: #ff6a6a;
+            border-left: 4px solid #ff6a6a;
+        }
+        
+        /* Texto de resultados */
+        .results-info {
+            transition: all 0.3s ease;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        [data-theme="dark"] .results-info {
+            color: #94a3b8 !important;
+        }
+        
+        /* Botón Ver más */
+        .btn-ver-mas {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+        }
+        
+        .btn-ver-mas:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        [data-theme="dark"] .btn-ver-mas {
+            border-color: #6c7ffd;
+            color: #6c7ffd;
+        }
+        
+        [data-theme="dark"] .btn-ver-mas:hover {
+            background-color: #6c7ffd;
+            border-color: #6c7ffd;
+            color: #ffffff;
+        }
+        
+        /* Fecha de creación */
+        .fecha-creacion {
+            transition: all 0.3s ease;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        [data-theme="dark"] .fecha-creacion {
+            color: #94a3b8 !important;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .communities-header h1 {
+                font-size: 2rem;
+            }
+            
+            .communities-header p {
+                font-size: 1.1rem;
+            }
+            
+            .header-stats {
+                padding: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .controls-section {
+                padding: 1rem 0;
+            }
+            
+            .fab {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <div class="navbar-logo">Sv</div>
+                <span>MiCiudadSV</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="bi bi-house-door me-2"></i>
+                            Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reportes">
+                            <i class="bi bi-flag me-2"></i>
+                            Reportes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/comunidades">
+                            <i class="bi bi-people me-2"></i>
+                            Comunidades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/comunidades/chat/global">
+                            <i class="bi bi-chat-dots me-2"></i>
+                            Chat Global
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="auth-buttons d-flex align-items-center">
+                    <!-- Botón de cambio de tema -->
+                    <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                        <i class="bi bi-moon-stars"></i>
+                    </button>
+
+                    <div class="notification-badge" style="position: relative; background-color: var(--danger); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 15px;">3</div>
+                    
+                    <% if (loggedIn && usuario) { %>
+                    <!-- Dropdown para usuario logueado -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <%= usuario.nombre %>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li class="dropdown-header">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                                    <div>
+                                        <strong><%= usuario.nombre %></strong>
+                                        <div class="text-muted small">Usuario registrado</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/dashboard">
+                                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="/dashboard/perfil">
+                                <i class="bi bi-person me-2"></i>Ver Perfil
+                            </a></li>
+                            <li><a class="dropdown-item" href="/reportes">
+                                <i class="bi bi-file-text me-2"></i>Reportes
+                            </a></li>
+                            <li><a class="dropdown-item" href="/comunidades">
+                                <i class="bi bi-people me-2"></i>Comunidades
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="/auth/logout" class="d-inline w-100">
+                                    <button type="submit" class="dropdown-item text-danger w-100 border-0 bg-transparent">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <% } else { %>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-outline-primary" href="/auth/login">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                        </a>
+                        <a class="btn btn-primary" href="/auth/registro">
+                            <i class="bi bi-person-plus me-2"></i>Registrarse
+                        </a>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header de Comunidades -->
+    <div class="communities-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1>
+                        <i class="fas fa-users me-3"></i>
+                        Comunidades
+                    </h1>
+                    <p>Conecta con personas que comparten tus intereses y participa en conversaciones que importan para tu ciudad</p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="header-stats">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <span class="stat-number"><%= estadisticas.total || 0 %></span>
+                                    <div class="stat-label">Comunidades</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <span class="stat-number">
+                                        <%= (estadisticas.tecnologia || 0) + (estadisticas.deportes || 0) + (estadisticas.cultura || 0) + (estadisticas.educacion || 0) + (estadisticas.salud || 0) + (estadisticas.general || 0) %>
+                                    </span>
+                                    <div class="stat-label">Categorías</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertas -->
+    <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+    <div class="container mt-3">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <%= mensaje %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+    <% } %>
+    
+    <% if (typeof error !== 'undefined' && error) { %>
+    <div class="container mt-3">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+    <% } %>
+
+    <!-- Controles y Filtros -->
+    <div class="controls-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 mb-3 mb-lg-0">
+                    <form action="/comunidades" method="GET" class="d-flex">
+                        <div class="search-container flex-grow-1">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" 
+                                   class="form-control search-input" 
+                                   name="buscar" 
+                                   placeholder="Buscar comunidades..."
+                                   value="<%= filtros.buscar || '' %>">
+                            <input type="hidden" name="categoria" value="<%= filtros.categoria || '' %>">
+                        </div>
+                        <button type="submit" class="btn btn-primary ms-2">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="col-lg-3 mb-3 mb-lg-0">
+                    <form action="/comunidades" method="GET">
+                        <select class="form-select filter-select" name="categoria" onchange="this.form.submit()">
+                            <option value="">Todas las categorías</option>
+                            <option value="tecnologia" <%= filtros.categoria === 'tecnologia' ? 'selected' : '' %>>
+                                💻 Tecnología (<%= estadisticas.tecnologia || 0 %>)
+                            </option>
+                            <option value="deportes" <%= filtros.categoria === 'deportes' ? 'selected' : '' %>>
+                                ⚽ Deportes (<%= estadisticas.deportes || 0 %>)
+                            </option>
+                            <option value="cultura" <%= filtros.categoria === 'cultura' ? 'selected' : '' %>>
+                                🎨 Cultura (<%= estadisticas.cultura || 0 %>)
+                            </option>
+                            <option value="educacion" <%= filtros.categoria === 'educacion' ? 'selected' : '' %>>
+                                📚 Educación (<%= estadisticas.educacion || 0 %>)
+                            </option>
+                            <option value="salud" <%= filtros.categoria === 'salud' ? 'selected' : '' %>>
+                                🏥 Salud (<%= estadisticas.salud || 0 %>)
+                            </option>
+                            <option value="general" <%= filtros.categoria === 'general' ? 'selected' : '' %>>
+                                📋 General (<%= estadisticas.general || 0 %>)
+                            </option>
+                        </select>
+                        <input type="hidden" name="buscar" value="<%= filtros.buscar || '' %>">
+                    </form>
+                </div>
+                
+                                 <div class="col-lg-3 mb-3 mb-lg-0">
+                     <div class="text-muted results-info">
+                         <i class="fas fa-info-circle me-2"></i>
+                         <span id="results-info">
+                             Mostrando <%= comunidades.length %> de <%= paginacion.totalComunidades %> comunidades
+                         </span>
+                     </div>
+                 </div>
+                
+                <div class="col-lg-2 text-end">
+                    <% if (loggedIn) { %>
+                    <a href="/comunidades/crear" class="btn btn-create">
+                        <i class="fas fa-plus me-2"></i>
+                        Crear
+                    </a>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid de Comunidades -->
+    <div class="communities-grid">
+        <div class="container">
+            <% if (comunidades && comunidades.length > 0) { %>
+            <div class="row">
+                <% comunidades.forEach(function(comunidad) { %>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card community-card h-100">
+                        <div class="card-header-custom">
+                            <h5 class="community-title">
+                                <a href="/comunidades/<%= comunidad.id %>" class="text-decoration-none text-dark">
+                                    <%= comunidad.titulo %>
+                                </a>
+                            </h5>
+                            <span class="community-category">
+                                <% 
+                                let categoryEmoji = '📋';
+                                let categoryName = comunidad.categoria || 'general';
+                                
+                                switch(categoryName) {
+                                    case 'tecnologia': categoryEmoji = '💻'; break;
+                                    case 'deportes': categoryEmoji = '⚽'; break;
+                                    case 'cultura': categoryEmoji = '🎨'; break;
+                                    case 'educacion': categoryEmoji = '📚'; break;
+                                    case 'salud': categoryEmoji = '🏥'; break;
+                                    default: categoryEmoji = '📋';
+                                }
+                                %>
+                                <%= categoryEmoji %> <%= categoryName.charAt(0).toUpperCase() + categoryName.slice(1) %>
+                            </span>
+                        </div>
+                        
+                        <div class="card-body">
+                            <p class="community-description">
+                                <%= comunidad.descripcion %>
+                            </p>
+                            
+                            <% if (comunidad.tags) { %>
+                            <div class="community-tags">
+                                <% 
+                                const tags = comunidad.tags.split(',');
+                                tags.forEach(function(tag) { 
+                                    if (tag.trim()) {
+                                %>
+                                <span class="tag">#<%= tag.trim() %></span>
+                                <% 
+                                    }
+                                }); 
+                                %>
+                            </div>
+                            <% } %>
+                            
+                            <div class="community-meta">
+                                <div class="creator-info">
+                                    <i class="fas fa-user-circle text-primary"></i>
+                                    <span><%= comunidad.creadorNombre || 'Anónimo' %></span>
+                                </div>
+                                <div class="comments-count">
+                                    <i class="fas fa-comments text-muted"></i>
+                                    <span><%= comunidad.totalComentarios || 0 %></span>
+                                </div>
+                                <div class="members-count">
+                                    <i class="fas fa-users text-muted"></i>
+                                    <span><%= comunidad.totalMiembros || 0 %> miembros</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer bg-transparent border-0 pb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                                                 <small class="text-muted fecha-creacion">
+                                     <i class="fas fa-calendar-alt me-1"></i>
+                                     <%= new Date(comunidad.fechaCreacion).toLocaleDateString('es-ES', {
+                                         year: 'numeric',
+                                         month: 'short',
+                                         day: 'numeric'
+                                     }) %>
+                                 </small>
+                                                                 <a href="/comunidades/<%= comunidad.id %>" class="btn btn-sm btn-outline-primary btn-ver-mas">
+                                     <i class="fas fa-arrow-right me-1"></i>
+                                     Ver más
+                                 </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+            <% } else { %>
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>No hay comunidades disponibles</h3>
+                <p>
+                    <% if (filtros.buscar || filtros.categoria) { %>
+                        No se encontraron comunidades con los filtros aplicados.
+                        <br>
+                        <a href="/comunidades" class="text-primary">Ver todas las comunidades</a>
+                    <% } else { %>
+                        Sé el primero en crear una comunidad y conectar con otros ciudadanos.
+                    <% } %>
+                </p>
+                <% if (loggedIn && (!filtros.buscar && !filtros.categoria)) { %>
+                <a href="/comunidades/crear" class="btn btn-primary mt-3">
+                    <i class="fas fa-plus me-2"></i>
+                    Crear Primera Comunidad
+                </a>
+                <% } %>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Paginación -->
+    <% if (paginacion.totalPages > 1) { %>
+    <div class="pagination-section">
+        <div class="container">
+            <nav aria-label="Navegación de comunidades">
+                <ul class="pagination justify-content-center">
+                    <% if (paginacion.hasPrev) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<%= paginacion.prevPage %>&categoria=<%= filtros.categoria || '' %>&buscar=<%= filtros.buscar || '' %>">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    <% } %>
+                    
+                    <% 
+                    let startPage = Math.max(1, paginacion.currentPage - 2);
+                    let endPage = Math.min(paginacion.totalPages, paginacion.currentPage + 2);
+                    
+                    for (let i = startPage; i <= endPage; i++) { 
+                    %>
+                    <li class="page-item <%= i === paginacion.currentPage ? 'active' : '' %>">
+                        <a class="page-link" href="?page=<%= i %>&categoria=<%= filtros.categoria || '' %>&buscar=<%= filtros.buscar || '' %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                    <% } %>
+                    
+                    <% if (paginacion.hasNext) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<%= paginacion.nextPage %>&categoria=<%= filtros.categoria || '' %>&buscar=<%= filtros.buscar || '' %>">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </nav>
+            
+            <div class="text-center text-muted mt-3">
+                Página <%= paginacion.currentPage %> de <%= paginacion.totalPages %> 
+                (<%= paginacion.totalComunidades %> comunidades en total)
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <!-- Botón flotante para crear comunidad -->
+    <% if (loggedIn) { %>
+    <a href="/comunidades/crear" class="fab" title="Crear nueva comunidad">
+        <i class="fas fa-plus"></i>
+    </a>
+    <% } %>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Auto-dismiss alertas
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
+        });
+        
+        // Actualizar estadísticas en tiempo real
+        setInterval(async function() {
+            try {
+                const response = await fetch('/comunidades/api/estadisticas');
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Actualizar contadores si cambianon
+                    const statsElements = document.querySelectorAll('.stat-number');
+                    if (statsElements.length >= 2) {
+                        statsElements[0].textContent = data.estadisticas.totalComunidades;
+                        statsElements[1].textContent = 
+                            data.estadisticas.tecnologia + 
+                            data.estadisticas.deportes + 
+                            data.estadisticas.cultura + 
+                            data.estadisticas.educacion + 
+                            data.estadisticas.salud + 
+                            data.estadisticas.general;
+                    }
+                }
+            } catch (error) {
+                console.log('Error actualizando estadísticas:', error);
+            }
+        }, 30000); // Cada 30 segundos
+        
+        // Mejorar UX del buscador
+        const searchInput = document.querySelector('.search-input');
+        if (searchInput) {
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                
+                // Auto-submit después de 1 segundo de inactividad
+                searchTimeout = setTimeout(() => {
+                    if (this.value.length >= 3 || this.value.length === 0) {
+                        this.form.submit();
+                    }
+                }, 1000);
+            });
+        }
+    </script>
+    
+       <!-- Sistema de Temas -->
+   <script src="/js/theme-switcher.js"></script>
+   
+   <script>
+       // Función para aplicar tema
+       function applyTheme(theme) {
+           document.documentElement.setAttribute('data-theme', theme);
+           localStorage.setItem('theme', theme);
+       }
+
+       // Función para obtener tema guardado
+       function getSavedTheme() {
+           return localStorage.getItem('theme') || 'light';
+       }
+
+       // Aplicar tema al cargar
+       document.addEventListener('DOMContentLoaded', function() {
+           const savedTheme = getSavedTheme();
+           applyTheme(savedTheme);
+           
+           // Actualizar icono del botón de tema
+           const themeToggle = document.getElementById('theme-toggle');
+           if (themeToggle) {
+               const icon = themeToggle.querySelector('i');
+               if (savedTheme === 'dark') {
+                   icon.className = 'bi bi-sun';
+                   themeToggle.title = 'Cambiar a modo claro';
+               } else {
+                   icon.className = 'bi bi-moon-stars';
+                   themeToggle.title = 'Cambiar a modo oscuro';
+               }
+           }
+       });
+
+       // Event listener para el botón de cambio de tema
+       const themeToggle = document.getElementById('theme-toggle');
+       if (themeToggle) {
+           themeToggle.addEventListener('click', function() {
+               const currentTheme = getSavedTheme();
+               const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+               applyTheme(newTheme);
+               
+               // Actualizar icono
+               const icon = this.querySelector('i');
+               if (newTheme === 'dark') {
+                   icon.className = 'bi bi-sun';
+                   this.title = 'Cambiar a modo claro';
+               } else {
+                   icon.className = 'bi bi-moon-stars';
+                   this.title = 'Cambiar a modo oscuro';
+               }
+           });
+       }
+   </script>
+   
+</body>
+</html>

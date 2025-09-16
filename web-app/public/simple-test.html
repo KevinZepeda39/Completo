@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple del Sistema de Temas</title>
+    
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-box {
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid;
+            border-radius: 10px;
+        }
+        
+        .theme-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .status {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌙 Test Simple del Sistema de Temas</h1>
+    
+    <div class="test-box">
+        <h2>Esta es una caja de prueba</h2>
+        <p>Si el sistema de temas funciona, esta caja debería cambiar de color cuando cambies el tema.</p>
+        <button class="theme-button" onclick="toggleTheme()">Cambiar Tema</button>
+    </div>
+    
+    <div class="status">
+        <strong>Estado del Tema:</strong><br>
+        Tema actual: <span id="current-theme">Claro</span><br>
+        Atributo data-theme: <span id="data-theme">light</span><br>
+        Clases del body: <span id="body-classes">Ninguna</span>
+    </div>
+    
+    <div class="test-box">
+        <h3>Formulario de prueba</h3>
+        <input type="text" placeholder="Campo de texto" style="padding: 10px; margin: 10px 0; width: 200px;">
+        <select style="padding: 10px; margin: 10px 0; width: 200px;">
+            <option>Opción 1</option>
+            <option>Opción 2</option>
+        </select>
+    </div>
+    
+    <script>
+        // Función simple para cambiar tema
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            if (newTheme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+                document.body.classList.add('dark-theme');
+            } else {
+                html.removeAttribute('data-theme');
+                document.body.classList.remove('dark-theme');
+            }
+            
+            updateStatus();
+        }
+        
+        // Función para actualizar el estado
+        function updateStatus() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const bodyClasses = document.body.className || 'Ninguna';
+            
+            document.getElementById('current-theme').textContent = currentTheme === 'dark' ? 'Oscuro' : 'Claro';
+            document.getElementById('data-theme').textContent = currentTheme;
+            document.getElementById('body-classes').textContent = bodyClasses;
+        }
+        
+        // Actualizar estado inicial
+        updateStatus();
+        
+        // Actualizar estado cada segundo
+        setInterval(updateStatus, 1000);
+    </script>
+</body>
+</html>
+

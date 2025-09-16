@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Reporte - MiCiudadSV</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Sistema de Temas -->
+    <link href="/css/themes.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    
+    <style>
+        :root {
+            /* Variables para modo claro */
+            --primary: #4e67f7;
+            --primary-dark: #3d56e8;
+            --danger: #ff6a6a;
+            --success: #28a745;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --text-dark: #212529;
+            --text-light: #6c757d;
+            --bg-body: #ffffff;
+            --bg-section: #f8f9fa;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --border-color: rgba(0,0,0,0.1);
+            --shadow-light: 0 2px 20px rgba(0,0,0,0.08);
+            --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
+            --shadow-heavy: 0 15px 50px rgba(0,0,0,0.15);
+            --border-radius: 16px;
+            --border-radius-sm: 12px;
+        }
+        
+        [data-theme="dark"] {
+            /* Variables para modo oscuro */
+            --primary: #6c7ffd;
+            --primary-dark: #5a6fd8;
+            --danger: #ff6b6b;
+            --success: #51cf66;
+            --warning: #ffd43b;
+            --info: #74c0fc;
+            --text-dark: #ffffff;
+            --text-light: #adb5bd;
+            --bg-body: #1a1a1a;
+            --bg-section: #2d2d2d;
+            --bg-gradient: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            --border-color: rgba(255,255,255,0.1);
+            --shadow-light: 0 2px 20px rgba(0,0,0,0.3);
+            --shadow-medium: 0 8px 30px rgba(0,0,0,0.4);
+            --shadow-heavy: 0 15px 50px rgba(0,0,0,0.5);
+        }
+        
+        body {
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            margin: 0 1rem;
+            margin-top: 1rem;
+        }
+
+        [data-theme="dark"] .navbar {
+            background: rgba(26, 26, 26, 0.95);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-logo {
+            height: 45px;
+            width: 45px;
+            background: var(--bg-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 22px;
+            margin-left: 12px;
+            color: var(--text-dark);
+            background: var(--bg-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: var(--text-dark) !important;
+            font-weight: 500;
+            padding: 0.75rem 1.25rem !important;
+            border-radius: var(--border-radius-sm);
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+
+        .nav-link:hover {
+            background: rgba(78, 103, 247, 0.1);
+            color: var(--primary) !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: white !important;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .theme-toggle {
+            background: var(--bg-gradient);
+            border: none;
+            color: white;
+            padding: 10px 14px;
+            border-radius: var(--border-radius-sm);
+            transition: all 0.3s ease;
+            margin-right: 15px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .dropdown-menu {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            box-shadow: var(--shadow-medium);
+        }
+
+        [data-theme="dark"] .dropdown-menu {
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .dropdown-item {
+            color: var(--text-dark);
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(78, 103, 247, 0.1);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        [data-theme="dark"] .page-header {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .page-title {
+            margin-bottom: 1rem;
+            color: white;
+            font-weight: 700;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        
+        .card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .card {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+        
+        .card-header {
+            background: var(--bg-gradient);
+            border: none;
+            font-weight: 600;
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .card-body {
+            background: transparent;
+            padding: 2rem;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid transparent;
+            color: var(--text-dark);
+            border-radius: var(--border-radius-sm);
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .form-control,
+        [data-theme="dark"] .form-select {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: var(--primary);
+            color: var(--text-dark);
+            box-shadow: 0 0 0 0.25rem rgba(78, 103, 247, 0.15);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="dark"] .form-control:focus,
+        [data-theme="dark"] .form-select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: var(--text-light);
+        }
+        
+        #mapContainer {
+            height: 350px;
+            border-radius: var(--border-radius-sm);
+            margin-top: 1rem;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            overflow: hidden;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed var(--primary);
+            border-radius: var(--border-radius-sm);
+            padding: 2rem;
+            text-align: center;
+            background: rgba(78, 103, 247, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload-area:hover {
+            background: rgba(78, 103, 247, 0.1);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .file-upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .file-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+        
+        .file-preview-item {
+            position: relative;
+            width: 100%;
+            height: 120px;
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .file-preview-item:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .file-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            background: rgba(220, 53, 69, 0.95);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .remove-btn:hover {
+            background: rgba(220, 53, 69, 1);
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--bg-gradient);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-outline-secondary {
+            color: var(--text-light);
+            border: 2px solid var(--border-color);
+            background: transparent;
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--bg-gradient);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--bg-gradient);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .alert {
+            border-radius: var(--border-radius-sm);
+            border: none;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .alert-danger {
+            background: rgba(255, 106, 106, 0.15);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.15);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .list-group-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--border-color);
+            color: var(--text-dark);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] .list-group-item {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .list-group-item:hover {
+            background: rgba(78, 103, 247, 0.1);
+            transform: translateX(5px);
+        }
+
+        .badge {
+            color: white;
+            border-radius: var(--border-radius-sm);
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+        }
+
+        .text-muted {
+            color: var(--text-light) !important;
+        }
+
+        .location-btn {
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            padding: 0.875rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .location-btn:hover {
+            background: var(--bg-gradient);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .progress-bar {
+            background: var(--bg-gradient);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .form-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-section-title {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        .floating-label {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .floating-label .form-control {
+            padding-top: 1.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .floating-label .form-label {
+            position: absolute;
+            top: 0.5rem;
+            left: 1rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            color: var(--text-light);
+        }
+
+        .floating-label .form-control:focus + .form-label,
+        .floating-label .form-control:not(:placeholder-shown) + .form-label {
+            top: 0.25rem;
+            left: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: var(--bg-gradient);
+            transform: scale(1.2);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .step.completed {
+            background: var(--success);
+            transform: scale(1.1);
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -2rem;
+            width: 2rem;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%);
+        }
+
+        .step:last-child::after {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .content-section {
+                padding: 2rem 0;
+            }
+            
+            .page-header {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            #mapContainer {
+                height: 250px;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .step {
+                width: 40px;
+                height: 40px;
+                margin: 0 0.5rem;
+            }
+
+            .step::after {
+                width: 1rem;
+                right: -1rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.2s; }
+        .card:nth-child(4) { animation-delay: 0.3s; }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <div class="navbar-logo">Sv</div>
+                <span>MiCiudadSV</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/informacion">Información</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reportes">Reportes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/reportar">Reportar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <!-- Botón de cambio de tema -->
+                    <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                        <i class="bi bi-moon-stars"></i>
+                    </button>
+
+                    <div class="notification-badge" style="position: relative; background-color: var(--danger); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 15px;">2</div>
+                    
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <%= usuario.nombre %>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/dashboard">
+                                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="/dashboard/perfil">
+                                <i class="bi bi-person me-2"></i>Ver Perfil
+                            </a></li>
+                            <li><a class="dropdown-item" href="/reportes">
+                                <i class="bi bi-file-text me-2"></i>Reportes
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="/auth/logout" class="d-inline w-100">
+                                    <button type="submit" class="dropdown-item text-danger w-100 border-0 bg-transparent">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="content-section">
+        <div class="container">
+            <!-- Header de la página -->
+            <div class="page-header">
+                <h1 class="page-title">Crear Nuevo Reporte</h1>
+                <p class="page-subtitle">Ayuda a mejorar tu ciudad reportando problemas y situaciones que requieren atención</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Formulario principal -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="bi bi-pencil-square me-2"></i>
+                            Información del reporte
+                        </div>
+                        <div class="card-body">
+                            <form action="/reportes/crear" method="POST" enctype="multipart/form-data" id="reportForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Título del reporte</label>
+                                    <input type="text" name="titulo" class="form-control" required 
+                                        placeholder="Describe brevemente el problema">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Descripción</label>
+                                    <textarea name="descripcion" class="form-control" rows="4" required
+                                            placeholder="Describe detalladamente lo que está sucediendo"></textarea>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Imagen (opcional)</label>
+                                    <input type="file" name="imagen" class="form-control" accept="image/*">
+                                    <small class="text-muted">Máximo 5MB. Formatos: JPG, PNG, GIF</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Ubicación</label>
+                                    <input type="text" name="ubicacion" class="form-control" 
+                                        placeholder="Describe la ubicación del problema">
+                                    <input type="hidden" name="latitud" id="latitud">
+                                    <input type="hidden" name="longitud" id="longitud">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Categoría</label>
+                                    <select name="categoria" class="form-control" required>
+                                        <option value="">Selecciona una categoría</option>
+                                        <option value="general">General</option>
+                                        <option value="seguridad">Seguridad</option>
+                                        <option value="infraestructura">Infraestructura</option>
+                                        <option value="servicios">Servicios</option>
+                                        <option value="emergency">Emergencia</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end">
+                                    <a href="/reportes" class="btn btn-outline-secondary me-2">Cancelar</a>
+                                    <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <!-- Consejos y recomendaciones -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="bi bi-lightbulb me-2"></i>
+                            Consejos para un buen reporte
+                        </div>
+                        <div class="card-body">
+                            <ul class="mb-0">
+                                <li class="mb-2">
+                                    <i class="bi bi-geo-alt text-primary me-1"></i>
+                                    Incluye detalles específicos sobre la ubicación
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-card-text text-primary me-1"></i>
+                                    Describe claramente lo que está sucediendo
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-camera text-primary me-1"></i>
+                                    Agrega fotos si es posible para mejor visualización
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-tags text-primary me-1"></i>
+                                    Selecciona la categoría correcta para tu reporte
+                                </li>
+                                <li>
+                                    <i class="bi bi-clock text-primary me-1"></i>
+                                    Los reportes urgentes se procesan con mayor prioridad
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Reportes recientes -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <i class="bi bi-clock-history me-2"></i>
+                            Reportes recientes
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush" id="reportesRecientes">
+                                <div class="list-group-item text-center py-4">
+                                    <i class="bi bi-hourglass-split text-muted" style="font-size: 2rem;"></i>
+                                    <p class="mt-2 mb-0 text-muted">Cargando reportes recientes...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Leaflet JS for maps -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    
+    <!-- Script personalizado -->
+    <script>
+        // Función para toggle de tema
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const themeIcon = document.getElementById('theme-icon');
+            if (newTheme === 'dark') {
+                themeIcon.className = 'bi bi-sun-fill';
+            } else {
+                themeIcon.className = 'bi bi-moon-fill';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cargar tema guardado
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const themeIcon = document.getElementById('theme-icon');
+            if (savedTheme === 'dark') {
+                themeIcon.className = 'bi bi-sun-fill';
+            }
+
+            // Previsualización de imagen
+            const fileInput = document.getElementById('archivos'); // Changed ID
+            const imagePreview = document.getElementById('filePreview'); // Changed ID
+           
+            fileInput.addEventListener('change', function() {
+                imagePreview.innerHTML = '';
+               
+                if (this.files && this.files.length > 0) { // Changed to check files.length > 0
+                    for (let i = 0; i < this.files.length; i++) {
+                        const file = this.files[i];
+                        console.log('📁 Archivo seleccionado:', file.name, file.type, file.size);
+                        
+                        if (!file.type.match('image.*') && !file.type.match('application/pdf') && !file.type.match('application/msword') && !file.type.match('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+                            alert('Por favor selecciona una imagen, PDF, documento de Word (.docx) o .doc');
+                            this.value = ''; // Clear selected files
+                            return;
+                        }
+
+                        if (file.size > 10 * 1024 * 1024) { // Changed max size to 10MB
+                            alert('El archivo es demasiado grande. Máximo 10MB.');
+                            this.value = ''; // Clear selected files
+                            return;
+                        }
+                        
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            const previewItem = document.createElement('div');
+                            previewItem.className = 'file-preview-item';
+                            
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            
+                            const removeBtn = document.createElement('button');
+                            removeBtn.className = 'remove-btn';
+                            removeBtn.innerHTML = '<i class="bi bi-x"></i>';
+                            removeBtn.type = 'button';
+                            removeBtn.addEventListener('click', function() {
+                                previewItem.remove();
+                                fileInput.value = ''; // Clear selected files
+                            });
+                           
+                            previewItem.appendChild(img);
+                            previewItem.appendChild(removeBtn);
+                            imagePreview.appendChild(previewItem);
+                        }
+                       
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+          
+            // Mapa
+            let map;
+            let marker;
+            
+            try {
+                // Inicializar mapa centrado en El Salvador
+                map = L.map('mapContainer').setView([13.6929, -89.2182], 9);
+               
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+               
+                // Evento click en el mapa
+                map.on('click', function(e) {
+                    if (marker) {
+                        map.removeLayer(marker);
+                    }
+                   
+                    marker = L.marker(e.latlng).addTo(map);
+                    
+                    // Actualizar campos de ubicación
+                    document.getElementById('latitud').value = e.latlng.lat.toFixed(6);
+                    document.getElementById('longitud').value = e.latlng.lng.toFixed(6);
+                    
+                    // Geocodificación inversa básica (descripción de ubicación)
+                    const ubicacionInput = document.getElementById('direccion'); // Changed ID
+                    if (!ubicacionInput.value.trim()) {
+                        ubicacionInput.value = `Lat: ${e.latlng.lat.toFixed(5)}, Lng: ${e.latlng.lng.toFixed(5)}`;
+                    }
+                    
+                    console.log('📍 Ubicación seleccionada:', e.latlng);
+                });
+               
+                // Cargar ubicación desde formData si existe
+                const latInput = document.getElementById('latitud');
+                const lngInput = document.getElementById('longitud');
+                if (latInput.value && lngInput.value) {
+                    const lat = parseFloat(latInput.value);
+                    const lng = parseFloat(lngInput.value);
+                    marker = L.marker([lat, lng]).addTo(map);
+                    map.setView([lat, lng], 15);
+                }
+               
+            } catch (error) {
+                console.error("❌ Error al cargar el mapa:", error);
+                document.getElementById('mapContainer').innerHTML = `
+                    <div class="alert alert-warning m-3">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        No se pudo cargar el mapa. Puedes ingresar la ubicación manualmente.
+                    </div>
+                `;
+            }
+               
+            // Usar mi ubicación
+            const useMyLocationBtn = document.querySelector('.location-btn'); // Changed selector
+            useMyLocationBtn.addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    this.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Obteniendo...';
+                    this.disabled = true;
+                    
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        if (map) {
+                            if (marker) {
+                                map.removeLayer(marker);
+                            }
+                            
+                            marker = L.marker([lat, lng]).addTo(map);
+                            map.setView([lat, lng], 16);
+                        }
+                        
+                        document.getElementById('latitud').value = lat.toFixed(6);
+                        document.getElementById('longitud').value = lng.toFixed(6);
+                        
+                        const ubicacionInput = document.getElementById('direccion'); // Changed ID
+                        if (!ubicacionInput.value.trim()) {
+                            ubicacionInput.value = `Mi ubicación (${lat.toFixed(5)}, ${lng.toFixed(5)})`;
+                        }
+                        
+                        useMyLocationBtn.innerHTML = '<i class="bi bi-geo-alt-fill me-1"></i>Mi ubicación';
+                        useMyLocationBtn.disabled = false;
+                        
+                        console.log('📍 Ubicación obtenida:', { lat, lng });
+                        
+                    }, function(error) {
+                        console.error('❌ Error obteniendo ubicación:', error);
+                        alert('No se pudo acceder a tu ubicación. Verifica los permisos del navegador.');
+                        
+                        useMyLocationBtn.innerHTML = '<i class="bi bi-geo-alt-fill me-1"></i>Mi ubicación';
+                        useMyLocationBtn.disabled = false;
+                    }, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 60000
+                    });
+                } else {
+                    alert('Tu navegador no soporta geolocalización.');
+                }
+            });
+           
+            // Validación del formulario
+            const form = document.getElementById('reportForm');
+            form.addEventListener('submit', function(event) {
+                const titulo = document.getElementById('titulo').value.trim();
+                const descripcion = document.getElementById('descripcion').value.trim();
+                const categoria = this.querySelector('select[name="categoria"]').value;
+                
+                let valid = true;
+                let errors = [];
+                
+                if (!titulo) {
+                    errors.push('El título es obligatorio');
+                    valid = false;
+                } else if (titulo.length > 255) {
+                    errors.push('El título no puede superar los 255 caracteres');
+                    valid = false;
+                }
+                
+                if (!descripcion) {
+                    errors.push('La descripción es obligatoria');
+                    valid = false;
+                } else if (descripcion.length > 2000) {
+                    errors.push('La descripción no puede superar los 2000 caracteres');
+                    valid = false;
+                }
+                
+                if (!categoria) {
+                    errors.push('Debes seleccionar una categoría');
+                    valid = false;
+                }
+                
+                if (!valid) {
+                    event.preventDefault();
+                    alert('Por favor corrige los siguientes errores:\n• ' + errors.join('\n• '));
+                    return false;
+                }
+                
+                // Mostrar loading en el botón
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Enviando...';
+                submitBtn.disabled = true;
+                
+                // También deshabilitar el botón cancelar para evitar navegación accidental
+                const cancelBtn = this.querySelector('button[type="button"][onclick="resetForm()"]'); // Changed selector
+                if (cancelBtn) {
+                    cancelBtn.style.pointerEvents = 'none';
+                    cancelBtn.style.opacity = '0.6';
+                }
+                
+                console.log('📤 Enviando reporte...');
+            });
+
+            // Cargar reportes recientes
+            function cargarReportesRecientes() {
+                fetch('/reportes/api/lista?limit=3')
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('reportesRecientes');
+                        if (data && data.success && data.data.length > 0) {
+                            container.innerHTML = '';
+                            data.data.forEach(reporte => {
+                                const fechaCreacion = new Date(reporte.fechaCreacion);
+                                const fechaFormateada = fechaCreacion.toLocaleDateString('es-ES', {
+                                    day: '2-digit',
+                                    month: '2-digit', 
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                                
+                                const item = document.createElement('div');
+                                item.className = 'list-group-item list-group-item-action py-3';
+                                
+                                // Determinar badge de estado
+                                let badgeClass = 'bg-warning';
+                                let badgeText = reporte.estado || 'Pendiente';
+                                
+                                if (badgeText === 'Completado') badgeClass = 'bg-success';
+                                else if (badgeText === 'Rechazado') badgeClass = 'bg-danger';
+                                else if (badgeText === 'En progreso') badgeClass = 'bg-info';
+                                
+                                item.innerHTML = `
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">${reporte.titulo}</h6>
+                                            <p class="mb-1 text-muted small">
+                                                ${reporte.descripcion.substring(0, 80)}${reporte.descripcion.length > 80 ? '...' : ''}
+                                            </p>
+                                            <small class="text-muted">
+                                                <i class="bi bi-clock me-1"></i>${fechaFormateada}
+                                            </small>
+                                        </div>
+                                        <span class="badge ${badgeClass} ms-2">${badgeText}</span>
+                                    </div>
+                                `;
+                                container.appendChild(item);
+                            });
+                        } else {
+                            container.innerHTML = `
+                                <div class="list-group-item text-center py-4">
+                                    <i class="bi bi-inbox text-muted" style="font-size: 2rem;"></i>
+                                    <p class="mt-2 mb-0 text-muted">No hay reportes recientes</p>
+                                </div>
+                            `;
+                        }
+                    })
+                    .catch(error => {
+                        console.log('⚠️ Error cargando reportes recientes:', error);
+                        const container = document.getElementById('reportesRecientes');
+                        container.innerHTML = `
+                            <div class="list-group-item text-center py-4">
+                                <i class="bi bi-exclamation-triangle text-warning" style="font-size: 2rem;"></i>
+                                <p class="mt-2 mb-0 text-muted">Error cargando reportes</p>
+                            </div>
+                        `;
+                    });
+            }
+
+            // Cargar reportes recientes al inicio
+            cargarReportesRecientes();
+
+            // Auto-ocultar alertas después de 5 segundos
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    if (alert) {
+                        alert.style.transition = 'opacity 0.5s, transform 0.5s';
+                        alert.style.opacity = '0';
+                        alert.style.transform = 'translateY(-20px)';
+                        setTimeout(() => {
+                            if (alert.parentNode) {
+                                alert.remove();
+                            }
+                        }, 500);
+                    }
+                }, 5000);
+            });
+
+            // Debug de sesión
+            console.log('🔍 Estado de sesión en reportar:');
+            console.log('- Usuario:', '<%= usuario.nombre %>');
+            console.log('- Puede crear reportes: Sí');
+            
+            // Verificar si hay datos del formulario precargados
+            <% if (typeof formData !== 'undefined' && Object.keys(formData).length > 0) { %>
+                console.log('📝 Datos del formulario precargados:', {
+                    titulo: '<%= formData.titulo || "" %>',
+                    descripcion: '<%= (formData.descripcion || "").substring(0, 50) %>...',
+                    categoria: '<%= formData.categoria || "" %>'
+                });
+            <% } %>
+        });
+
+        // Función para limpiar formulario
+        function limpiarFormulario() {
+            if (confirm('¿Estás seguro de que quieres limpiar el formulario?')) {
+                document.getElementById('reportForm').reset();
+                document.getElementById('imagePreview').innerHTML = '';
+                document.getElementById('latitud').value = '';
+                document.getElementById('longitud').value = '';
+                
+                // Limpiar mapa si existe
+                if (map && currentMarker) {
+                    map.removeLayer(currentMarker);
+                    currentMarker = null;
+                }
+                
+                showAlert('Formulario limpiado correctamente', 'info');
+            }
+        }
+
+        // Función para mostrar alertas
+        function showAlert(message, type) {
+            const alertContainer = document.createElement('div');
+            alertContainer.className = `alert alert-${type} alert-dismissible fade show`;
+            alertContainer.innerHTML = `
+                <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // Insertar al inicio del formulario
+            const form = document.getElementById('reportForm');
+            form.insertBefore(alertContainer, form.firstChild);
+            
+            // Auto-ocultar después de 5 segundos
+            setTimeout(() => {
+                if (alertContainer.parentNode) {
+                    alertContainer.remove();
+                }
+            }, 5000);
+        }
+
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Formulario de reporte inicializado');
+            
+            // Configurar el formulario
+            const form = document.getElementById('reportForm');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    // Validar campos requeridos
+                    const titulo = document.querySelector('input[name="titulo"]').value.trim();
+                    const descripcion = document.querySelector('textarea[name="descripcion"]').value.trim();
+                    const categoria = document.querySelector('select[name="categoria"]').value;
+                    
+                    if (!titulo || !descripcion || !categoria) {
+                        e.preventDefault();
+                        showAlert('Por favor, completa todos los campos requeridos', 'warning');
+                        return false;
+                    }
+                    
+                    // Mostrar indicador de envío
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Enviando...';
+                    submitBtn.disabled = true;
+                    
+                    // Simular envío (aquí iría la lógica real)
+                    setTimeout(() => {
+                        showAlert('Reporte enviado correctamente. Gracias por tu contribución.', 'success');
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }, 2000);
+                });
+            }
+
+            // Previsualización de imagen
+            const fileInput = document.querySelector('input[name="imagen"]');
+            if (fileInput) {
+                fileInput.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        if (!file.type.startsWith('image/')) {
+                            showAlert('Por favor selecciona una imagen válida', 'warning');
+                            this.value = '';
+                            return;
+                        }
+                        
+                        if (file.size > 5 * 1024 * 1024) {
+                            showAlert('La imagen es demasiado grande. Máximo 5MB.', 'warning');
+                            this.value = '';
+                            return;
+                        }
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            // Crear o actualizar la previsualización
+                            let preview = document.getElementById('imagePreview');
+                            if (!preview) {
+                                preview = document.createElement('div');
+                                preview.id = 'imagePreview';
+                                preview.className = 'mt-3';
+                                fileInput.parentNode.appendChild(preview);
+                            }
+                            
+                            preview.innerHTML = `
+                                <div class="file-preview-item">
+                                    <img src="${e.target.result}" alt="Previsualización" class="img-fluid rounded">
+                                    <button type="button" class="remove-btn" onclick="removeImage()">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            `;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+
+        // Función para remover imagen
+        function removeImage() {
+            const fileInput = document.querySelector('input[name="imagen"]');
+            const preview = document.getElementById('imagePreview');
+            
+            if (fileInput) fileInput.value = '';
+            if (preview) preview.innerHTML = '';
+        }
+    </script>
+    
+       <!-- Sistema de Temas -->
+   <script src="/js/theme-switcher.js"></script>
+   
+</body>
+</html>

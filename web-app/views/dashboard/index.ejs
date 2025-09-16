@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --danger-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --info-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            
+            --primary-color: #667eea;
+            --secondary-color: #f093fb;
+            --success-color: #4facfe;
+            --warning-color: #43e97b;
+            --danger-color: #fa709a;
+            --info-color: #a8edea;
+            
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-navbar: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            
+            /* Variables adicionales para el navbar */
+            --primary: #4e67f7;
+            --success: #28a745;
+            --danger: #dc3545;
+            --text-dark: #212529;
+            --text-light: #6c757d;
+            --bg-section: #f8f9fa;
+        }
+
+        /* Modo Oscuro */
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-navbar: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+            
+            /* Variables adicionales para modo oscuro */
+            --primary: #6c7ffd;
+            --success: #51cf66;
+            --danger: #ff6a6a;
+            --text-dark: #ffffff;
+            --text-light: #adb5bd;
+            --bg-section: #1e1e1e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 15px 0;
+            background-color: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        [data-theme="dark"] .navbar {
+            background-color: #121212;
+            box-shadow: 0 1px 3px rgba(255,255,255,0.1);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-logo {
+            height: 40px;
+            width: 40px;
+            background: #4e67f7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        
+        [data-theme="dark"] .navbar-logo {
+            background: #6c7ffd;
+        }
+        
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 20px;
+            margin-left: 10px;
+            color: #212529;
+        }
+        
+        [data-theme="dark"] .navbar-brand span {
+            color: #ffffff;
+        }
+
+        .nav-link {
+            color: #212529 !important;
+            font-weight: 500;
+            padding: 8px 16px !important;
+        }
+        
+        [data-theme="dark"] .nav-link {
+            color: #ffffff !important;
+        }
+
+        .nav-link.active {
+            color: #4e67f7 !important;
+            font-weight: 600;
+        }
+        
+        [data-theme="dark"] .nav-link.active {
+            color: #6c7ffd !important;
+        }
+        
+        .auth-buttons {
+            gap: 0.5rem;
+        }
+
+        .dropdown-menu {
+            min-width: 200px;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0;
+            background-color: #ffffff;
+        }
+        
+        [data-theme="dark"] .dropdown-menu {
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: #121212;
+        }
+
+        .dropdown-header {
+           padding: 0.5rem 1rem;
+           margin-bottom: 0;
+           color: #212529;
+       }
+       
+       [data-theme="dark"] .dropdown-header {
+           color: #ffffff;
+       }
+
+       .dropdown-item {
+           padding: 0.5rem 1rem;
+           clear: both;
+           font-weight: 400;
+           color: #212529;
+           text-align: inherit;
+           white-space: nowrap;
+           background-color: transparent;
+           border: 0;
+           display: flex;
+           align-items: center;
+           transition: all 0.2s ease-in-out;
+       }
+       
+       [data-theme="dark"] .dropdown-item {
+           color: #ffffff;
+       }
+
+       .dropdown-item:hover, .dropdown-item:focus {
+           color: #212529;
+           background-color: #f8f9fa;
+       }
+       
+       [data-theme="dark"] .dropdown-item:hover, 
+       [data-theme="dark"] .dropdown-item:focus {
+           color: #ffffff;
+           background-color: #1e1e1e;
+       }
+
+       .dropdown-item.text-danger:hover {
+           color: #fff;
+           background-color: #dc3545;
+       }
+
+       .dropdown-divider {
+           height: 0;
+           margin: 0.5rem 0;
+           overflow: hidden;
+           border-top: 1px solid var(--border-color);
+       }
+
+       .btn-outline-primary {
+           color: var(--primary);
+           border-color: var(--primary);
+       }
+
+       .btn-outline-primary:hover {
+           color: #fff;
+           background-color: var(--primary);
+           border-color: var(--primary);
+       }
+       
+       .btn-primary {
+           background-color: var(--primary);
+           border-color: var(--primary);
+       }
+
+       .btn-primary:hover {
+           background-color: var(--primary);
+           border-color: var(--primary);
+           opacity: 0.9;
+       }
+       
+       /* Botón de modo oscuro */
+       .theme-toggle {
+           background: none;
+           border: 1px solid var(--border-color);
+           color: var(--text-dark);
+           padding: 8px 12px;
+           border-radius: 8px;
+           transition: all 0.3s ease;
+           margin-right: 10px;
+       }
+
+       .theme-toggle:hover {
+           background-color: var(--bg-section);
+           transform: scale(1.05);
+       }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--primary-gradient);
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-weight: 600;
+        }
+
+        /* Cards Modernas */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .stat-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .stat-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: var(--success-gradient);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: var(--warning-gradient);
+        }
+
+        .stat-card:nth-child(4) .stat-icon {
+            background: var(--danger-gradient);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .quick-actions h3 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-height: 60px;
+        }
+
+        .action-btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .action-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            color: white;
+        }
+
+        .action-btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .action-btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Recent Reports */
+        .recent-reports {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .recent-reports h3 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .report-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--bg-body);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .report-item:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .report-info h6 {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .report-info small {
+            color: var(--text-muted);
+        }
+
+        .report-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pendiente {
+            background: rgba(255, 193, 7, 0.2);
+            color: #b45309;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-completado {
+            background: rgba(34, 197, 94, 0.2);
+            color: #15803d;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        /* Communities Section */
+        .communities-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .communities-section h3 {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .no-communities {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .explore-btn {
+            background: var(--success-gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .explore-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            color: white;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .fade-in-up:nth-child(2) { animation-delay: 0.1s; }
+        .fade-in-up:nth-child(3) { animation-delay: 0.2s; }
+        .fade-in-up:nth-child(4) { animation-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar-nav {
+                text-align: center;
+                padding: 1rem 0;
+            }
+            
+            .navbar-nav .nav-link {
+                margin: 0.5rem 0;
+                padding: 0.75rem 1rem;
+            }
+            
+            .theme-toggle {
+                margin: 1rem auto;
+                display: block;
+                width: fit-content;
+            }
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-body);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="/dashboard">
+                <div class="navbar-logo">Sv</div>
+                <span>MiCiudadSV</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="bi bi-speedometer2 me-2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reportes">
+                            <i class="bi bi-flag me-2"></i>
+                            Reportes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/comunidades">
+                            <i class="bi bi-house-door me-2"></i>
+                            Comunidades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/perfil">
+                            <i class="bi bi-person me-2"></i>
+                            Mi Perfil
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="auth-buttons d-flex align-items-center">
+                    <!-- Botón de cambio de tema -->
+                    <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle-btn" id="theme-toggle" title="Cambiar tema">
+                        <i class="bi bi-moon-stars"></i>
+                    </button>
+
+                    <div class="notification-badge" style="position: relative; background-color: var(--danger); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 15px;">2</div>
+                    <!-- Dropdown para usuario logueado -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-2"></i>
+                            <%= usuario.nombre %>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li class="dropdown-header">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                                    <div>
+                                        <strong><%= usuario.nombre %></strong>
+                                        <div class="text-muted small">Usuario registrado</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/dashboard">
+                                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="/dashboard/perfil">
+                                <i class="bi bi-person me-2"></i>Ver Perfil
+                            </a></li>
+                            <li><a class="dropdown-item" href="/reportes">
+                                <i class="bi bi-file-text me-2"></i>Reportes
+                            </a></li>
+                            <li><a class="dropdown-item" href="/comunidades">
+                                <i class="bi bi-people me-2"></i>Comunidades
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="/auth/logout" class="d-inline w-100">
+                                    <button type="submit" class="dropdown-item text-danger w-100 border-0 bg-transparent">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">¡Bienvenido, <%= usuario.nombre %>!</h1>
+                <p class="hero-subtitle">Tu centro de control personal para gestionar reportes, comunidades y actividades en MiCiudadSV</p>
+                <div class="hero-badge">
+                    <i class="bi bi-star-fill me-2"></i>
+                    Panel de Usuario Activo
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card fade-in-up">
+                <div class="stat-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-number"><%= totalUsuarios || 42 %></div>
+                <div class="stat-label">Total Usuarios</div>
+            </div>
+            
+            <div class="stat-card fade-in-up">
+                <div class="stat-icon">
+                    <i class="bi bi-flag"></i>
+                </div>
+                <div class="stat-number"><%= totalReportes || 16 %></div>
+                <div class="stat-label">Total Reportes</div>
+            </div>
+            
+            <div class="stat-card fade-in-up">
+                <div class="stat-icon">
+                    <i class="bi bi-building"></i>
+                </div>
+                <div class="stat-number"><%= totalComunidades || 36 %></div>
+                <div class="stat-label">Comunidades</div>
+            </div>
+            
+            <div class="stat-card fade-in-up">
+                <div class="stat-icon">
+                    <i class="bi bi-chat-dots"></i>
+                </div>
+                <div class="stat-number"><%= totalMensajes || 12 %></div>
+                <div class="stat-label">Mensajes</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3>
+                <i class="bi bi-lightning-charge text-warning"></i>
+                Acciones Rápidas
+            </h3>
+            <div class="action-buttons">
+                <a href="/reportes/crear" class="action-btn action-btn-primary">
+                    <i class="bi bi-plus-circle"></i>
+                    Crear Reporte
+                </a>
+                <a href="/dashboard/perfil" class="action-btn action-btn-secondary">
+                    <i class="bi bi-person-circle"></i>
+                    Ver Mi Perfil
+                </a>
+                <a href="/comunidades" class="action-btn action-btn-secondary">
+                    <i class="bi bi-people-fill"></i>
+                    Gestionar Comunidades
+                </a>
+                <a href="/reportes" class="action-btn action-btn-secondary">
+                    <i class="bi bi-list-ul"></i>
+                    Ver Todos los Reportes
+                </a>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Recent Reports -->
+            <div class="recent-reports">
+                <h3>
+                    <i class="bi bi-clock-history text-primary"></i>
+                    Reportes Recientes
+                </h3>
+                
+                <% if (typeof reportesRecientes !== 'undefined' && reportesRecientes.length > 0) { %>
+                    <% reportesRecientes.slice(0, 5).forEach(function(reporte) { %>
+                        <div class="report-item">
+                            <div class="report-info">
+                                <h6><%= reporte.titulo %></h6>
+                                <small>Por <%= reporte.usuarioNombre || 'Usuario' %> • <%= new Date(reporte.fechaCreacion).toLocaleDateString('es-SV') %></small>
+                            </div>
+                            <span class="report-status status-<%= reporte.estado %>">
+                                <%= reporte.estado.charAt(0).toUpperCase() + reporte.estado.slice(1) %>
+                            </span>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="text-center py-4">
+                        <i class="bi bi-flag text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-3">No hay reportes recientes</p>
+                        <a href="/reportes/crear" class="btn btn-primary">
+                            <i class="bi bi-plus me-2"></i>
+                            Crear Primer Reporte
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Communities Section -->
+            <div class="communities-section">
+                <h3>
+                    <i class="bi bi-people-fill text-success"></i>
+                    Mis Comunidades
+                </h3>
+                
+                <% if (typeof comunidadesUsuario !== 'undefined' && comunidadesUsuario.length > 0) { %>
+                    <% comunidadesUsuario.slice(0, 3).forEach(function(comunidad) { %>
+                        <div class="report-item">
+                            <div class="report-info">
+                                <h6><%= comunidad.titulo %></h6>
+                                <small><%= comunidad.miembros || 0 %> miembros</small>
+                            </div>
+                            <span class="report-status status-completado">
+                                Activa
+                            </span>
+                        </div>
+                    <% }); %>
+                    
+                    <% if (comunidadesUsuario.length > 3) { %>
+                        <a href="/comunidades" class="btn btn-outline-primary mt-3">
+                            Ver Todas (<%= comunidadesUsuario.length %>)
+                        </a>
+                    <% } %>
+                <% } else { %>
+                    <div class="no-communities">
+                        <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                        <p class="mt-3">No perteneces a ninguna comunidad</p>
+                    </div>
+                    <a href="/comunidades" class="explore-btn">
+                        <i class="bi bi-search"></i>
+                        Explorar Comunidades
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Sistema de Temas -->
+    <script src="/js/theme-switcher.js"></script>
+    
+    <script>
+        // Función para aplicar tema
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        // Función para obtener tema guardado
+        function getSavedTheme() {
+            return localStorage.getItem('theme') || 'light';
+        }
+
+        // Aplicar tema al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = getSavedTheme();
+            applyTheme(savedTheme);
+            
+            // Actualizar icono del botón de tema
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                const icon = themeToggle.querySelector('i');
+                if (savedTheme === 'dark') {
+                    icon.className = 'bi bi-sun';
+                    themeToggle.title = 'Cambiar a modo claro';
+                } else {
+                    icon.className = 'bi bi-moon-stars';
+                    themeToggle.title = 'Cambiar a modo oscuro';
+                }
+            }
+            
+            // Marcar página activa en el navbar
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.card, .stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Event listener para el botón de cambio de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = getSavedTheme();
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                applyTheme(newTheme);
+                
+                // Actualizar icono
+                const icon = this.querySelector('i');
+                if (newTheme === 'dark') {
+                    icon.className = 'bi bi-sun';
+                    this.title = 'Cambiar a modo claro';
+                } else {
+                    icon.className = 'bi bi-moon-stars';
+                    this.title = 'Cambiar a modo oscuro';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
